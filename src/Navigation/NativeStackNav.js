@@ -16,7 +16,6 @@ import HomeScreen from '../Components/Screens/DeviceScreen/DeviceHome';
 import SplashScreen from '../Components/Screens/EntryScreen/SplashScreen';
 import ProfileScreen from '../Components/Screens/ProfileScreen/ProfileScreen';
 import AddDevice from '../Components/Screens/DeviceScreen/AddDevice';
-import BottomTabBar from './BottomTabBar';
 import DeviceReport from '../Components/Screens/Reports/DeviceReport';
 import PumpSettingHome from '../Components/Screens/PumpSettings/PumpSettingHome';
 import CalibrationSettings from '../Components/Screens/PumpSettings/CalibrationSettings';
@@ -48,7 +47,6 @@ import StockHome from '../Components/Screens/Admin/Stock/StockHome';
 import AddStock from '../Components/Screens/Admin/Stock/AddStock';
 import PinReset from '../Components/Screens/Athentication/PinReset';
 import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer';
-import OnboardingScreen from '../Components/Screens/EntryScreen/OnboardingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,10 +56,6 @@ export default function NativeStackNav() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                    name="OnboardingScreen"
-                    options={{ headerShown: false }}
-                    component={OnboardingScreen} />
                 <Stack.Screen
                     name="SplashScreen"
                     options={{ headerShown: false }}
@@ -90,10 +84,6 @@ export default function NativeStackNav() {
                     name="RegisterScreen"
                     options={{ headerShown: false }}
                     component={RegisterScreen} />
-                <Stack.Screen
-                    name="BottomTabBar"
-                    options={{ headerShown: false }}
-                    component={BottomTabBar} />
                 <Stack.Screen
                     name="HomeScreen"
                     options={{ headerShown: false }}
