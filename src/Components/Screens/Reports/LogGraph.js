@@ -6,49 +6,49 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 export default function LogGraph() {
 
     const rVoltage = [
-        { x: 0, y: 230 },
-        { x: 8, y: 200 },
-        { x: 13, y: 345 },
-        { x: 22, y: 250 },
-        { x: 24, y: 400 },
+        { x: 0, y: Math.random() * 500 },
+        { x: 8, y: Math.random() * 500 },
+        { x: 13, y: Math.random() * 500 },
+        { x: 22, y: Math.random() * 500 },
+        { x: 24, y: Math.random() * 500 },
     ];
 
     const yVoltage = [
-        { x: 0, y: 430 },
-        { x: 5, y: 200 },
-        { x: 8, y: 345 },
-        { x: 22, y: 450 },
-        { x: 24, y: 250 },
+        { x: 0, y: Math.random() * 500 },
+        { x: 8, y: Math.random() * 500 },
+        { x: 13, y: Math.random() * 500 },
+        { x: 22, y: Math.random() * 500 },
+        { x: 24, y: Math.random() * 500 },
     ];
     const bVoltage = [
-        { x: 0, y: 650 },
-        { x: 5, y: 300 },
-        { x: 8, y: 455 },
-        { x: 22, y: 450 },
-        { x: 24, y: 350 },
+        { x: 0, y: Math.random() * 500 },
+        { x: 8, y: Math.random() * 500 },
+        { x: 13, y: Math.random() * 500 },
+        { x: 22, y: Math.random() * 500 },
+        { x: 24, y: Math.random() * 500 },
     ];
 
     const rAmps = [
-        { x: 1, y: 0.3 },
-        { x: 8, y: 0.8 },
-        { x: 13, y: 0.1 },
-        { x: 22, y: 0.2 },
-        { x: 24, y: 0.1 },
+        { x: 1, y: Math.random() },
+        { x: 8, y: Math.random() },
+        { x: 13, y: Math.random() },
+        { x: 22, y: Math.random() },
+        { x: 24, y: Math.random() },
     ];
 
     const yAmps = [
-        { x: 1, y: 0.1 },
-        { x: 5, y: 0.5 },
-        { x: 8, y: 0.8 },
-        { x: 22, y: 0.8 },
-        { x: 24, y: 0.3 },
+        { x: 1, y: Math.random() },
+        { x: 8, y: Math.random() },
+        { x: 13, y: Math.random() },
+        { x: 22, y: Math.random() },
+        { x: 24, y: Math.random() },
     ];
     const bAmps = [
-        { x: 1, y: 0.5 },
-        { x: 5, y: 0.8 },
-        { x: 8, y: 0.5 },
-        { x: 22, y: 0.8 },
-        { x: 24, y: 0.5 },
+        { x: 1, y: Math.random() },
+        { x: 8, y: Math.random() },
+        { x: 13, y: Math.random() },
+        { x: 22, y: Math.random() },
+        { x: 24, y: Math.random() },
     ];
 
     return (
@@ -151,8 +151,8 @@ export default function LogGraph() {
                         backgroundGradientFrom: 'white',
                         backgroundGradientTo: 'white',
                         decimalPlaces: 1,
-                        color: (opacity = 1) => `rgba(169, 113, 113, 1)`,
-                        labelColor: (opacity = 1) => `rgba(0, 0, 0, 0.5)`,
+                        color: () => `rgba(169, 113, 113, 1)`,
+                        labelColor: () => `rgba(0, 0, 0, 0.5)`,
                     }}
                 />
                 <Text style={styles.timeTxt}>Time</Text>
