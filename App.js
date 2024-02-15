@@ -8,7 +8,6 @@ export default function App() {
       <StatusBar style="auto" />
       <NativeStackNav />
     </View>
-
   );
 }
 
