@@ -12,7 +12,8 @@ export default function Header1() {
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={styles.Container}>
+
+        <View style={styles.Container}>
             <Image style={styles.image}
                 source={require('../../Images/Logo.png')}
             />
@@ -24,10 +25,12 @@ export default function Header1() {
                     type='octicon'
                     name='bell-fill'
                     size={19}
-                    color={Colors.primary200}
+                    color={Colors.primary60}
                 />
             </Pressable>
-        </SafeAreaView>
+        </View>
+
+
     )
 }
 
@@ -37,9 +40,11 @@ const styles = StyleSheet.create({
         height: hp('2.5')
     },
     Container: {
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         padding: 10,
+        paddingTop: 15,
         paddingHorizontal: 15,
-        flexDirection: 'row', justifyContent: 'space-between'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 })

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Timer from '../../Others/Timer';
-import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
+import { CommonStyles, GradientColor } from '../../../Utilities/GlobalStyles/CommonStyles';
 import Header from '../../Others/Header';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button } from '@rneui/themed';
@@ -87,7 +87,7 @@ export default function NumberSettings({ route }) {
                     item?.numbers.map((item, index) => {
                         return (
                             <LinearGradient
-                                colors={['#8432DF', '#4743EF', '#9220d0', '#0B54FE']}
+                                colors={GradientColor}
                                 start={{ x: 0.5, y: 0.5 }}
                                 end={{ x: 1, y: 1 }}
                                 style={styles.numberContainer}

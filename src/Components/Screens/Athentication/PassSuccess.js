@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Image, Input } from '@rneui/themed';
-import LottieView from "lottie-react-native";
 import React from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';

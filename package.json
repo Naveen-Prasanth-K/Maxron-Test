@@ -27,6 +27,7 @@
     "react-native-animatable": "^1.4.0",
     "react-native-collapsible": "^1.6.1",
     "react-native-confirmation-code-field": "^7.3.2",
+    "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-onboarding-swiper": "^1.2.0",
     "react-native-reanimated": "~3.6.2",

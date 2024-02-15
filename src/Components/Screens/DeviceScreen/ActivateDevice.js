@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
-import Header1 from '../../Others/Header1'
+import Header from '../../Others/Header'
 import { ScrollView } from 'react-native'
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -9,17 +9,17 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function AddDevice() {
+export default function ActivateDevice() {
 
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
 
-    const AddDeviceHandler = () => {
-        navigation.navigate('HomeScreen')
+    const ActiveDeviceHandler = () => {
+        navigation.goBack()
     }
 
     const CancelHandler = () => {
-        navigation.navigate('HomeScreen')
+        navigation.goBack()
     }
 
     const BarCodeScanHandler = () => {
@@ -32,14 +32,14 @@ export default function AddDevice() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header1 />
+            <Header />
             {isLoading && (
                 <View style={styles.loaderContainer}>
                     <ActivityIndicator size="large" color={Colors.secondary} />
                 </View>
             )}
             <ScrollView>
-                <Text style={CommonStyles.pageHeading}>Add Device</Text>
+                <Text style={CommonStyles.pageHeading}>Activate Device</Text>
                 <View>
                     <Input
                         placeholder='Enter or Scan QR *'
@@ -74,6 +74,14 @@ export default function AddDevice() {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                     />
+                    <Input
+                        placeholder='Enter 4 digit Security PIN *'
+                        inputContainerStyle={CommonStyles.inputContainerStyle}
+                        inputStyle={CommonStyles.inputStyle}
+                        placeholderTextColor={Colors.primary100}
+                        keyboardType='numeric'
+                        maxLength={4}
+                    />
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
                         <Button
                             title="Cancel"
@@ -83,11 +91,11 @@ export default function AddDevice() {
                             onPress={() => CancelHandler()}
                         />
                         <Button
-                            title="Save"
+                            title="Activate"
                             titleStyle={CommonStyles.inputTitleStyle}
                             buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
                             containerStyle={styles.ContainerStyle}
-                            onPress={() => AddDeviceHandler()}
+                            onPress={() => ActiveDeviceHandler()}
                         />
                     </View>
                 </View>

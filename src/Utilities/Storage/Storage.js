@@ -1,12 +1,14 @@
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const setOnboarding = async (key, value) => {
-
     try {
         await AsyncStorage.setItem(key, value);
+
     } catch (error) {
         console.log('Error storing value: ', error);
     }
+
 };
 
 export const getOnboarding = async (key) => {

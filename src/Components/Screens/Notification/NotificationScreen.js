@@ -18,26 +18,26 @@ export default function NotificationScreen() {
                 ListHeaderComponent={<Text style={CommonStyles.pageHeading}>Notification</Text>}
                 renderItem={({ item }) => (
                     <View>
-                        <View style={[styles.card, { backgroundColor: Colors.lightBlue }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                        <View style={styles.card}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Image style={styles.image}
                                     source={require('../../../Images//Logo.png')}
                                 />
                                 <View style={{ marginLeft: 20 }}>
-                                    <Text style={styles.mainText} numberOfLines={2}>Motor is Running in low Voltage
-                                        Fuse </Text>
+                                    <Text style={styles.mainText}>Service Request</Text>
+                                    <Text style={styles.subText}>New Service Request Received from Naveen Prasanth</Text>
                                     <Text style={styles.subText}>{new Date().toDateString()} , {date.toLocaleTimeString()}</Text>
                                 </View>
                             </View>
-
                         </View>
-                        <View style={[styles.card, { backgroundColor: Colors.lightOrange }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                        <View style={styles.card}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Image style={styles.image}
                                     source={require('../../../Images//Logo.png')}
                                 />
                                 <View style={{ marginLeft: 20 }}>
-                                    <Text style={styles.mainText} numberOfLines={2}>Motor Disconnected to the Modem</Text>
+                                    <Text style={styles.mainText}>Device Request</Text>
+                                    <Text style={styles.subText}>New Service Request Received from Naveen Prasanth</Text>
                                     <Text style={styles.subText}>{new Date().toDateString()} , {date.toLocaleTimeString()}</Text>
                                 </View>
                             </View>
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
     mainText: {
         fontSize: wp(4.2),
         fontWeight: '600',
-        width: '90%'
+        width: '100%'
     }
 })

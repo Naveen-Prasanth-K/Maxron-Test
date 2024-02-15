@@ -6,9 +6,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../Utilities/GlobalStyles/Colors';
 import { WinDimensions } from '../Utilities/GlobalStyles/WinDimension';
 
-import HomeTab from '../Components/Screens/HomeScreen/HomeScreen';
+import DeviceHome from '../Components/Screens/DeviceScreen/DeviceHome';
 import ProfileTab from '../Components/Screens/ProfileScreen/ProfileScreen';
-import SettingsTab from '../Components/Screens/SettingScreen/SettingsScreen';
+// import SettingsTab from '../Components/Screens/SettingScreen/SettingsScreen';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -29,8 +29,8 @@ export default function BottomTabBar() {
                 }}
             >
                 <BottomTabs.Screen
-                    name="BottomHome"
-                    component={HomeTab}
+                    name="DeviceHome"
+                    component={DeviceHome}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{
@@ -53,7 +53,7 @@ export default function BottomTabBar() {
                         )
                     }}
                 />
-                <BottomTabs.Screen
+                {/* <BottomTabs.Screen
                     name="BottomProfile"
                     component={ProfileTab}
                     options={{
@@ -102,7 +102,7 @@ export default function BottomTabBar() {
                             </Animated.View>
                         )
                     }}
-                />
+                /> */}
 
             </BottomTabs.Navigator>
         </View>

@@ -1,5 +1,10 @@
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../GlobalStyles/Colors';
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+export const GradientColor = ['#8432DF', '#4743EF', '#9220d0', '#0B54FE'];
 
 export const CommonStyles = {
 
@@ -14,6 +19,17 @@ export const CommonStyles = {
     pageContainer: {
         flex: 1,
         backgroundColor: 'white'
+    },
+    noDeviceImgContainer: {
+        flex: 1,
+        alignItems: 'center',
+        height: height * 0.65,
+        justifyContent: 'center'
+    },
+    noDeviceImg: {
+        width: width * 0.65,
+        height: width * 0.65,
+        alignSelf: 'center'
     },
 
     //Button for Login
@@ -48,7 +64,7 @@ export const CommonStyles = {
         borderColor: Colors.primary75,
         borderWidth: 1,
         alignSelf: 'center',
-        height: hp('6.5%'),
+        height: hp('6%'),
         width: '95%',
         borderRadius: 8,
         backgroundColor: Colors.primary60,
@@ -72,6 +88,40 @@ export const CommonStyles = {
         alignItems: 'center',
         marginHorizontal: 20,
         marginVertical: 10
-    }
+    },
+
+    //Overlay
+    overlayContainer: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        borderTopLeftRadius: 35,
+        borderTopRightRadius: 35
+    },
+
+    //HeaderText
+    adminHeader: {
+        paddingBottom: 0,
+        paddingVertical: 5,
+    },
+    welcomeTxt: {
+        fontSize: wp('3.5'),
+        color: 'white',
+        fontWeight: '300',
+        marginHorizontal: 15
+    },
+    adminTxt: {
+        fontSize: wp('6.5'),
+        color: 'white',
+        fontWeight: '700',
+        marginHorizontal: 15,
+        marginBottom: 15
+    },
+    dealerTxt: {
+        fontSize: wp('3.5'),
+        marginHorizontal: 15,
+        fontWeight: '500',
+        marginVertical: 15
+    },
 
 };

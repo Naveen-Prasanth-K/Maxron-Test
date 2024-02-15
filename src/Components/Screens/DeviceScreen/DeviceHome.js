@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
@@ -8,30 +8,69 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../Utilities/GlobalStyles/WinDimension';
 import Header1 from '../../Others/Header1';
+import Switch from '../../../Utilities/UI/Switch';
 
 const { width, height } = Dimensions.get('window');
 const cardGap = 10;
 
-export default function HomeScreen() {
+export default function DeviceHome({ data }) {
 
     const navigation = useNavigation();
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const cardWidth = (screenWidth - cardGap * 5) / (isLandscape ? 4 : 2);
 
+    const [userActive, setUserActive] = useState(data?.customerStatus)
+
+    const userHandler = () => {
+        setUserActive(!userActive);
+    };
+
     const headerItem = () => (
         <View style={styles.headerItemContainer}>
-            <Text style={CommonStyles.pageHeading}>Devices</Text>
-            <Pressable
-                style={({ pressed }) => pressed && CommonStyles.pressed}
-                onPress={AddDeviceHandler}>
-                <Icon
-                    type='ionicon'
-                    name='add-circle'
-                    size={43}
-                    color={Colors.primary}
-                />
-            </Pressable>
+            <View style={styles.container}>
+                <View  >
+                    <Image
+                        source={require('../../../Images/Profile/usericon.png')}
+                        style={styles.uploadPic}
+                    />
+                </View>
+                <View style={{ marginLeft: 30 }}>
+                    <Text style={styles.userID}>{data?.customerName}</Text>
+                    <View style={styles.locationContainer}>
+                        <Icon
+                            type='entypo'
+                            name='location-pin'
+                            size={18}
+                            style={{ marginRight: 5 }}
+                            color={Colors.secondary}
+                        />
+                        <Text style={styles.nameTxt}>{data?.location}</Text>
+                    </View>
+                </View>
+
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.text1}>Mobile</Text>
+                <Text style={styles.text2}>{data?.mobileNo}</Text>
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.text1}>User Status</Text>
+                <Switch value={userActive} onToggle={() => userHandler} />
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.text1}>Delete User</Text>
+                <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                    <Icon
+                        type='material'
+                        name='logout'
+                        size={22}
+                        style={{ marginRight: 0 }}
+                        color={Colors.secondary}
+                    />
+                </Pressable>
+
+            </View>
         </View>
     )
 
@@ -44,10 +83,8 @@ export default function HomeScreen() {
         navigation.navigate('AddDevice')
     }
 
-
     return (
         <>
-            <Header1 />
             <View style={CommonStyles.pageContainer}>
                 <FlatList
                     data={DEVICEDATA}
@@ -76,11 +113,11 @@ export default function HomeScreen() {
                         </View>
                     )}
                     ListEmptyComponent={
-                        <View style={{ flex: 1, alignItems: 'center', height: height * 0.65, justifyContent: 'center' }}>
+                        <View style={CommonStyles.noDeviceImgContainer}>
                             <Image
                                 resizeMode="cover"
                                 source={require('../../../Images/HomeScreen/NoDevice.png')}
-                                style={styles.noDeviceImg}
+                                style={CommonStyles.noDeviceImg}
                             />
                         </View>
                     } />
@@ -119,16 +156,50 @@ const styles = StyleSheet.create({
         fontSize: wp('6.5'),
         fontWeight: '700'
     },
-    headerItemContainer: {
+    uploadPic: {
+        width: wp(26),
+        height: wp(26),
+        borderRadius: 100,
+        justifyContent: 'center'
+    },
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        marginVertical: 35,
+    },
+    userID: {
+        textAlign: 'center',
+        fontSize: 21,
+        fontWeight: '600',
+    },
+    rowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 20,
+        marginHorizontal: 15,
+        marginBottom: 20,
         alignItems: 'center',
-        marginVertical: 10
+        backgroundColor: Colors.lightBlue,
+        padding: 15,
+        borderRadius: 8
     },
-    noDeviceImg: {
-        width: width * 0.65,
-        height: width * 0.65,
-        alignSelf: 'center'
-    }
+    text1: {
+        fontSize: wp('4.5'),
+        fontWeight: '700',
+        color: Colors.primary
+    },
+    text2: {
+        fontSize: wp('4'),
+        fontWeight: '400',
+        color: Colors.primary
+    },
+    locationContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    nameTxt: {
+        fontSize: wp('3.5'),
+        color: Colors.primary200
+    },
 })

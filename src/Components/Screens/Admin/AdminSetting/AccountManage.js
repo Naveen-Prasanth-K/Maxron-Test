@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import Header from '../../../Others/Header';
+import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
+import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button } from '@rneui/themed';
-import { Colors } from '../../../Utilities/GlobalStyles/Colors';
+
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -40,7 +41,7 @@ export default function AccountManage() {
                             <Image source={{ uri: image }} style={styles.uploadPic} />
                         ) : (
                             <Image
-                                source={require('../../../Images/Profile/usericon.png')}
+                                source={require('../../../../Images/Profile/usericon.png')}
                                 style={styles.uploadPic}
                             />
                         )}
@@ -68,16 +69,6 @@ export default function AccountManage() {
                             value='Naveen Prasanth'
                         />
                         <Input
-                            label='Address'
-                            labelStyle={styles.labelStyle}
-                            placeholder='Adress'
-                            inputContainerStyle={styles.inputContainerStyle}
-                            inputStyle={styles.inputStyle}
-                            placeholderTextColor={Colors.primary100}
-                            value='1234 NW Bobcat Lane, St. Robert, MO 65584-5678'
-                            multiline
-                        />
-                        <Input
                             label='Mobile No'
                             labelStyle={styles.labelStyle}
                             placeholder='Mobile No'
@@ -85,14 +76,32 @@ export default function AccountManage() {
                             inputStyle={styles.inputStyle}
                             placeholderTextColor={Colors.primary100}
                             value='8940352877'
-                            disabled
                             maxLength={10}
                             keyboardType='number-pad'
                             leftIcon={
                                 <Text style={styles.inputStyle}>+91</Text>
                             }
                         />
-                        <Text style={styles.subText}>Your Mobile cannot be changed</Text>
+                        <Input
+                            label='Change Password'
+                            labelStyle={styles.labelStyle}
+                            placeholder='Change Password *'
+                            inputContainerStyle={styles.inputContainerStyle}
+                            inputStyle={styles.inputStyle}
+                            placeholderTextColor={Colors.primary100}
+                            secureTextEntry={true}
+
+                        />
+                        <Text style={styles.text1}>*If you want to change password use this fields. Otherwise leave it empty</Text>
+                        <Input
+                            label='Re Enter Password'
+                            labelStyle={styles.labelStyle}
+                            placeholder='Re Enter Password *'
+                            inputContainerStyle={styles.inputContainerStyle}
+                            inputStyle={styles.inputStyle}
+                            placeholderTextColor={Colors.primary100}
+                            secureTextEntry={true}
+                        />
                     </View>
                 </View>
                 <View style={{ marginTop: 25 }}>
@@ -153,6 +162,12 @@ const styles = StyleSheet.create({
         color: Colors.primary100,
         marginHorizontal: 25,
         marginTop: -25
+    },
+    text1: {
+        marginHorizontal: 20,
+        marginBottom: 8,
+        marginTop: -20,
+        fontSize: hp('1.2'),
     },
 
 })
