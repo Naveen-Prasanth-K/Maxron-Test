@@ -50,9 +50,9 @@ export default function DeviceReport() {
                             </TouchableOpacity>
                         </View>
                         <TabView value={index} onChange={setIndex} animationType="spring">
-                            <TabView.Item style={styles.tabItem} >
+                            {/* <TabView.Item style={styles.tabItem} >
                                 <LogGraph />
-                            </TabView.Item>
+                            </TabView.Item> */}
                             <TabView.Item style={styles.tabItem}>
                                 <Activities />
                             </TabView.Item>
