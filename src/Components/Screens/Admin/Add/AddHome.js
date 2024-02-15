@@ -54,10 +54,11 @@ const AddHome = () => {
                             style={({ pressed }) => [pressed && CommonStyles.pressed, styles.deviceContainer]}
                             onPress={() => CreateDealerHandler()}
                         >
-                            <Image
-                                resizeMode="cover"
-                                source={require('../../../../Images/HomeScreen/Dealer.png')}
-                                style={{ width: cardWidth * 0.35, height: 75, alignSelf: 'center', tintColor: Colors.primary }}
+                            <Icon
+                                type='material'
+                                name='people-alt'
+                                size={50}
+                                color={Colors.secondary}
                             />
                             <Text style={styles.deviceName}>Add Dealer</Text>
                         </Pressable>
@@ -67,10 +68,11 @@ const AddHome = () => {
                             style={({ pressed }) => [pressed && CommonStyles.pressed, styles.deviceContainer]}
                             onPress={() => CreateCustomerHandler()}
                         >
-                            <Image
-                                resizeMode="cover"
-                                source={require('../../../../Images/HomeScreen/VectorProfile.png')}
-                                style={{ width: cardWidth * 0.25, height: 40, alignSelf: 'center', tintColor: Colors.primary, marginBottom: 15 }}
+                            <Icon
+                                type='material-community'
+                                name='account'
+                                size={50}
+                                color={Colors.secondary}
                             />
                             <Text style={styles.deviceName}>Add Customer</Text>
                         </Pressable>
@@ -80,16 +82,16 @@ const AddHome = () => {
                             style={({ pressed }) => [pressed && CommonStyles.pressed, styles.deviceContainer]}
                             onPress={() => CreateDeviceHandler()}
                         >
-                            <Image
-                                resizeMode="cover"
-                                source={require('../../../../Images/HomeScreen/Device.png')}
-                                style={{ width: cardWidth * 0.35, height: 48, alignSelf: 'center', tintColor: Colors.primary, marginBottom: 15 }}
+                            <Icon
+                                type='material'
+                                name='on-device-training'
+                                size={50}
+                                color={Colors.secondary}
                             />
                             <Text style={styles.deviceName}>Add Device</Text>
                         </Pressable>
                     </View>
                 </View>
-
             </ScrollView>
         </SafeAreaView>
     )

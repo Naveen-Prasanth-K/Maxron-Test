@@ -9,6 +9,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 
 export default function Activities() {
+
+    const navigation = useNavigation();
+
     return (
         <View>
             <View style={styles.card}>

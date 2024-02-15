@@ -280,7 +280,6 @@ const styles = StyleSheet.create({
     },
     ButtonStyle: {
         borderRadius: 8,
-        height: hp('5%'),
     },
     buttonContainer: {
         marginTop: 10,
