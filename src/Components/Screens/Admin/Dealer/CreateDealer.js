@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 
 const CreateDealer = ({ route }) => {
 
@@ -18,7 +18,7 @@ const CreateDealer = ({ route }) => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update Dealer Info' : 'Create Dealer'}</Text>
                 <Input

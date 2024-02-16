@@ -6,12 +6,12 @@ import { getOnboarding } from '../Utilities/Storage/Storage';
 
 //Screens
 import DevicePage from '../Components/Screens/DeviceScreen/DevicePage';
-import ForgotPass from '../Components/Screens/Athentication/ForgotPass';
-import LoginScreen from '../Components/Screens/Athentication/LoginScreen';
-import NewPassword from '../Components/Screens/Athentication/NewPassword';
-import OtpVerify from '../Components/Screens/Athentication/OtpVerify';
-import PassSuccess from '../Components/Screens/Athentication/PassSuccess';
-import RegisterScreen from '../Components/Screens/Athentication/RegisterScreen';
+import ForgotPass from '../Components/Screens/Authentication/ForgotPass';
+import LoginScreen from '../Components/Screens/Authentication/LoginScreen';
+import NewPassword from '../Components/Screens/Authentication/NewPassword';
+import OtpVerify from '../Components/Screens/Authentication/OtpVerify';
+import PassSuccess from '../Components/Screens/Authentication/PassSuccess';
+import RegisterScreen from '../Components/Screens/Authentication/RegisterScreen';
 import HomeScreen from '../Components/Screens/DeviceScreen/DeviceHome';
 import SplashScreen from '../Components/Screens/EntryScreen/SplashScreen';
 import ProfileScreen from '../Components/Screens/ProfileScreen/ProfileScreen';
@@ -45,8 +45,9 @@ import AddAdminUser from '../Components/Screens//Admin/AdminSetting/AddAdminUser
 import DeviceOrder from '../Components/Screens/Admin/DeviceOrder/DeviceOrder';
 import StockHome from '../Components/Screens/Admin/Stock/StockHome';
 import AddStock from '../Components/Screens/Admin/Stock/AddStock';
-import PinReset from '../Components/Screens/Athentication/PinReset';
+import PinReset from '../Components/Screens/Authentication/PinReset';
 import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer';
+import DealerBottomBar from './DealerBottomBar';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,10 @@ export default function NativeStackNav() {
                     name="RegisterScreen"
                     options={{ headerShown: false }}
                     component={RegisterScreen} />
+                <Stack.Screen
+                    name="DealerBottomBar"
+                    options={{ headerShown: false }}
+                    component={DealerBottomBar} />
                 <Stack.Screen
                     name="HomeScreen"
                     options={{ headerShown: false }}

@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import MotorOnOff from './MotorOnOff';
 import ThreePhase from './ThreePhase';
 import Selection from './Selection';
@@ -32,7 +32,7 @@ export default function DevicePage({ route }) {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 15, marginBottom: 5 }}>

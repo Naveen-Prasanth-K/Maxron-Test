@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView, Pressable, Dimensions, TouchableOpacity } from 'react-native';
 import HorizontalCalendar from './HorizontalCalendar';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Tab, Text, TabView } from '@rneui/themed';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -20,7 +20,7 @@ const DeviceReport = () => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View>
                     <Text style={CommonStyles.pageHeading}>Reports</Text>

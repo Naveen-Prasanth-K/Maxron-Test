@@ -5,9 +5,14 @@ import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, Touchabl
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
-import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import { CommonStyles, GradientColor } from '../../../../Utilities/GlobalStyles/CommonStyles';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import SearchBar from '../../../Others/SearchBar';
+import { StatusBar } from 'expo-status-bar';
+import { LinearGradient } from 'expo-linear-gradient';
+import Header1 from '../../../Others/Header1';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Store from '../../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
@@ -15,16 +20,38 @@ const CustomerList = () => {
 
     const navigation = useNavigation();
 
-    const headerItem = () => (
-        <View style={styles.headerItemContainer}>
-            <Text style={CommonStyles.pageHeading}>Customers</Text>
-            <Text style={styles.foundCount}>180 found</Text>
-            <View>
-                <View style={{ marginTop: 20 }}>
-                    <SearchBar />
+    const AdminHeader = () => (
+        <>
+            <HeaderCommon />
+            <View style={styles.headerItemContainer}>
+                <Text style={CommonStyles.pageHeading}>Customers</Text>
+                <Text style={styles.foundCount}>180 found</Text>
+                <View>
+                    <View style={{ marginTop: 20 }}>
+                        <SearchBar />
+                    </View>
                 </View>
             </View>
-        </View>
+        </>
+    )
+
+    const DealerHeader = () => (
+        <>
+            <StatusBar translucent={true} backgroundColor={'transparent'} />
+            <LinearGradient
+                colors={GradientColor}
+                start={{ x: 0.5, y: 1 }}
+                end={{ x: 1, y: 0.5 }}
+            >
+                <Header1 />
+                <View style={CommonStyles.adminHeader}>
+                    <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
+                    <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                    <SearchBar />
+                </View>
+            </LinearGradient>
+            <Text style={CommonStyles.dealerTxt}>CUSTOMER</Text>
+        </>
     )
 
     const DetailPageHandler = (item) => {
@@ -33,11 +60,10 @@ const CustomerList = () => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
             <FlatList
                 data={CUSTOMERDATA}
                 keyExtractor={(item) => item?.rfId}
-                ListHeaderComponent={headerItem}
+                ListHeaderComponent={Store.screen == 'Admin' ? AdminHeader : DealerHeader}
                 renderItem={({ item }) => (
                     <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => DetailPageHandler(item)}>
                         <Text style={styles.devicenameTxt}>{item?.customerName}</Text>

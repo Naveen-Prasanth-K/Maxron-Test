@@ -1,12 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input } from '@rneui/themed';
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../Utilities/GlobalStyles/WinDimension';
+import Store from '../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,7 +19,7 @@ export default function LoginScreen() {
     const isTablet = Dimensions.get('window').width >= 600;
 
     const LoginHandler = () => {
-        navigation.navigate('AdminBottomBar')
+        navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
     }
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView, Pressable, Dimensions, TouchableOpacity } from 'react-native';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { Tab, Text, TabView } from '@rneui/themed';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -18,7 +18,7 @@ export default function DeviceOrder() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <Text style={CommonStyles.pageHeading}>Device Orders</Text>
             <View style={{ flex: 1, height: screenHeight * 0.90 }}>
                 <View style={{ flexDirection: 'row' }}>

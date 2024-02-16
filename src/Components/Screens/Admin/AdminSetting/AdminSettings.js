@@ -3,7 +3,7 @@ import { Icon, Image, Overlay, Button } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles, GradientColor } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import Header1 from '../../../Others/Header1';

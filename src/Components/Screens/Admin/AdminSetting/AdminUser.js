@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles, GradientColor } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../../Utilities/GlobalStyles/WinDimension';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { LinearGradient } from 'expo-linear-gradient';
 import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
@@ -46,7 +46,7 @@ const AdminUser = () => {
     return (
         <>
             <View style={CommonStyles.pageContainer}>
-                <Header />
+                <HeaderCommon />
                 <FlatList
                     data={DEALERDATA}
                     keyExtractor={(item) => item?.rfId}

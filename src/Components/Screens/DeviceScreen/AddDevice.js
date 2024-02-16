@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
-import Header from '../../Others/Header'
+import HeaderCommon from '../../Others/HeaderCommon'
 import { ScrollView } from 'react-native'
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -32,7 +32,7 @@ export default function AddDevice() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             {isLoading && (
                 <View style={styles.loaderContainer}>
                     <ActivityIndicator size="large" color={Colors.secondary} />

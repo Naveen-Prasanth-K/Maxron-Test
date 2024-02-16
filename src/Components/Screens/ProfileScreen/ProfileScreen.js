@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button } from '@rneui/themed';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';

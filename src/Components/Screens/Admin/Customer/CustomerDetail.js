@@ -3,7 +3,7 @@ import { Icon, Image, Divider, Button } from '@rneui/themed';
 import React from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import DeviceHome from '../../DeviceScreen/DeviceHome';
 
 const CustomerDetail = ({ route }) => {
@@ -12,7 +12,7 @@ const CustomerDetail = ({ route }) => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <DeviceHome data={item} />
         </View>
     )

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button, Overlay } from '@rneui/themed';
 import Switch from '../../../../Utilities/UI/Switch';
@@ -44,7 +44,7 @@ const DealerInfo = ({ route }) => {
     return (
         <>
             <View style={CommonStyles.pageContainer}>
-                <Header />
+                <HeaderCommon />
                 <ScrollView>
                     <Text style={CommonStyles.pageHeading}>Dealer Info</Text>
                     <View style={styles.headerItemContainer}>

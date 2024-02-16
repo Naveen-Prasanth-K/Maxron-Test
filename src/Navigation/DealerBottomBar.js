@@ -6,9 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../Utilities/GlobalStyles/Colors';
 import { WinDimensions } from '../Utilities/GlobalStyles/WinDimension';
 
-import HomeTab from '../Components/Screens/HomeScreen/HomeScreen';
-import ProfileTab from '../Components/Screens/ProfileScreen/ProfileScreen';
-// import SettingsTab from '../Components/Screens/SettingScreen/SettingsScreen';
+import CustomerList from '../Components/Screens/Admin/Customer/CustomerList';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -29,8 +27,8 @@ export default function DealerBottomBar() {
                 }}
             >
                 <BottomTabs.Screen
-                    name="BottomHome"
-                    component={HomeTab}
+                    name="CustomerList"
+                    component={CustomerList}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{
@@ -53,57 +51,6 @@ export default function DealerBottomBar() {
                         )
                     }}
                 />
-                <BottomTabs.Screen
-                    name="BottomProfile"
-                    component={ProfileTab}
-                    options={{
-                        tabBarLabel: ({ focused }) => (
-                            <Text style={{
-                                color: focused ? Colors.secondary : Colors.primary,
-                                marginBottom: isLandscape ? 0 : 13,
-                                marginHorizontal: isLandscape ? 25 : 30,
-                                textAlign: 'center',
-                                fontSize: focused ? wp('4.1') : wp('3.7'),
-                            }}>
-                                Profile
-                            </Text>
-                        ),
-                        tabBarIcon: ({ color, focused }) => (
-                            <Animated.View style={{
-                            }}>
-                                <Image
-                                    style={{ tintColor: color, width: 21, height: 21, transform: [{ scale: focused ? 1.1 : 1, }], marginHorizontal: 8 }}
-                                    source={require("../Images/HomeScreen/Profile.png")} />
-                            </Animated.View>
-                        )
-                    }}
-                />
-                {/* <BottomTabs.Screen
-                    name="BottomSettings"
-                    component={SettingsTab}
-                    options={{
-                        tabBarLabel: ({ focused }) => (
-                            <Text style={{
-                                color: focused ? Colors.secondary : Colors.primary,
-                                marginBottom: isLandscape ? 0 : 13,
-                                marginHorizontal: isLandscape ? 25 : 30,
-                                textAlign: 'center',
-                                fontSize: focused ? wp('4.1') : wp('3.7'),
-                            }}>
-                                Settings
-                            </Text>
-                        ),
-                        tabBarIcon: ({ color, focused }) => (
-                            <Animated.View style={{
-                            }}>
-                                <Image
-                                    style={{ tintColor: color, width: 21, height: 21, transform: [{ scale: focused ? 1.1 : 1, }], marginHorizontal: 8 }}
-                                    source={require("../Images/HomeScreen/Setting.png")} />
-                            </Animated.View>
-                        )
-                    }}
-                /> */}
-
             </BottomTabs.Navigator>
         </View>
 
