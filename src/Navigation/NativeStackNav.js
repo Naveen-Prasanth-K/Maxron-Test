@@ -52,7 +52,6 @@ const Stack = createNativeStackNavigator();
 
 export default function NativeStackNav() {
 
-
     return (
         <NavigationContainer>
             <Stack.Navigator>

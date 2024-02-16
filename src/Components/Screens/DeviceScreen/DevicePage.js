@@ -107,7 +107,7 @@ export default function DevicePage({ route }) {
                         title="Device Report"
                         titleStyle={styles.inputTitleStyle}
                         buttonStyle={styles.ButtonContainerStyle}
-                        onPress={() => DeviceReportHandler()}
+                        onPress={() => navigation.navigate('DeviceReport')}
                         icon={{
                             type: 'entypo',
                             name: 'area-graph',

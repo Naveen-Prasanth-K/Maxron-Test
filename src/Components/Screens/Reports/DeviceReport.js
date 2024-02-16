@@ -12,7 +12,7 @@ import LogGraph from './LogGraph';
 
 const screenHeight = Dimensions.get("window").height;
 
-export default function DeviceReport() {
+const DeviceReport = () => {
 
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -63,6 +63,8 @@ export default function DeviceReport() {
         </View>
     );
 }
+
+export default DeviceReport
 
 const styles = StyleSheet.create({
     container: {
