@@ -38,7 +38,7 @@ import CustomerList from '../Components/Screens/Admin/Customer/CustomerList';
 import CustomerDetail from '../Components/Screens/Admin/Customer/CustomerDetail';
 import UnSoldDevices from '../Components/Screens/Admin/UnSoldDevices';
 import ActivateDevice from '../Components/Screens/DeviceScreen/ActivateDevice';
-import DealerInfo from '../Components/Screens/Admin/Dealer/DealerInfo';
+import AdminDealerInfo from '../Components/Screens/Admin/Dealer/AdminDealerInfo';
 import CreateDealer from '../Components/Screens/Admin/Dealer/CreateDealer';
 import AdminUser from '../Components/Screens/Admin/AdminSetting/AdminUser';
 import AddAdminUser from '../Components/Screens//Admin/AdminSetting/AddAdminUser';
@@ -48,6 +48,7 @@ import AddStock from '../Components/Screens/Admin/Stock/AddStock';
 import PinReset from '../Components/Screens/Authentication/PinReset';
 import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer';
 import DealerBottomBar from './DealerBottomBar';
+import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -193,9 +194,9 @@ export default function NativeStackNav() {
                     options={{ headerShown: false }}
                     component={ActivateDevice} />
                 <Stack.Screen
-                    name="DealerInfo"
+                    name="AdminDealerInfo"
                     options={{ headerShown: false }}
-                    component={DealerInfo} />
+                    component={AdminDealerInfo} />
                 <Stack.Screen
                     name="CreateDealer"
                     options={{ headerShown: false }}
@@ -228,6 +229,10 @@ export default function NativeStackNav() {
                     name="CreateCustomer"
                     options={{ headerShown: false }}
                     component={CreateCustomer} />
+                <Stack.Screen
+                    name="DealerProfile"
+                    options={{ headerShown: false }}
+                    component={DealerProfile} />
             </Stack.Navigator>
         </NavigationContainer>
     )

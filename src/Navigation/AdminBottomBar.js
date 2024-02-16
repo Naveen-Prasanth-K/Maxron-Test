@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../Utilities/GlobalStyles/Colors';
 import { WinDimensions } from '../Utilities/GlobalStyles/WinDimension';
 import AdminHome from '../Components/Screens/Admin/AdminHome';
-import DealerHome from '../Components/Screens/Admin/Dealer/DealerHome';
+import AdminDealerHome from '../Components/Screens/Admin/Dealer/AdminDealerHome';
 import RequestHome from '../Components/Screens/Admin/Request/RequestHome';
 import AdminSettings from '../Components/Screens/Admin/AdminSetting/AdminSettings';
 import AddHome from '../Components/Screens/Admin/Add/AddHome';
@@ -55,8 +55,8 @@ export default function AdminBottomBar() {
                     }}
                 />
                 <BottomTabs.Screen
-                    name="DealerHome"
-                    component={DealerHome}
+                    name="AdminDealerHome"
+                    component={AdminDealerHome}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{

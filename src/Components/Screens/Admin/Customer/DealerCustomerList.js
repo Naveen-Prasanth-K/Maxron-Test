@@ -5,26 +5,35 @@ import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, Touchabl
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
-import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
+import { CommonStyles, GradientColor } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import SearchBar from '../../../Others/SearchBar';
 import HeaderCommon from '../../../Others/HeaderCommon';
+import { LinearGradient } from 'expo-linear-gradient';
+import Header1 from '../../../Others/Header1';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
-const CustomerList = () => {
+const DealerCustomerList = () => {
 
     const navigation = useNavigation();
 
     const headerItem = () => (
-        <View style={styles.headerItemContainer}>
-            <Text style={CommonStyles.pageHeading}>Customers</Text>
-            <Text style={styles.foundCount}>180 found</Text>
-            <View>
-                <View style={{ marginTop: 20 }}>
+        <>
+            <LinearGradient
+                colors={GradientColor}
+                start={{ x: 0.5, y: 1 }}
+                end={{ x: 1, y: 0.5 }}
+            >
+                <Header1 />
+                <View style={CommonStyles.adminHeader}>
+                    <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
+                    <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
                     <SearchBar />
                 </View>
-            </View>
-        </View>
+            </LinearGradient>
+            <Text style={CommonStyles.dealerTxt}>CUSTOMER</Text>
+        </>
     )
 
     const DetailPageHandler = (item) => {
@@ -32,8 +41,7 @@ const CustomerList = () => {
     }
 
     return (
-        <View style={CommonStyles.pageContainer}>
-            <HeaderCommon />
+        <SafeAreaView style={CommonStyles.pageContainer}>
             <FlatList
                 data={CUSTOMERDATA}
                 keyExtractor={(item) => item?.rfId}
@@ -66,12 +74,11 @@ const CustomerList = () => {
                         />
                     </View>
                 } />
-
-        </View>
+        </SafeAreaView>
     )
 }
 
-export default CustomerList
+export default DealerCustomerList
 
 const styles = StyleSheet.create({
     foundCount: {

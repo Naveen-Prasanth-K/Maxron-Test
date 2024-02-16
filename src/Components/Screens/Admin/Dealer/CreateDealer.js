@@ -6,10 +6,11 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../../Others/HeaderCommon';
+import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 
 const CreateDealer = ({ route }) => {
 
-    const { item } = route.params
+    const { item } = route.params || { item: DEALERDATA[0] }
     const navigation = useNavigation();
 
     const sendHandler = () => {
