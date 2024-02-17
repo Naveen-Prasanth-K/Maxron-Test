@@ -8,15 +8,22 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../Utilities/GlobalStyles/WinDimension';
 import Store from '../../../Utilities/Store/Store';
+import Switch from '../../../Utilities/UI/Switch';
+import { observer } from 'mobx-react';
 
 const { width, height } = Dimensions.get('window');
 
-export default function LoginScreen() {
+const LoginScreen = () => {
 
     const navigation = useNavigation();
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const isTablet = Dimensions.get('window').width >= 600;
+
+    const screenChangeHandler = () => {
+        const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
+        Store.setScreen(newValue);
+    };
 
     const LoginHandler = () => {
         navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
@@ -67,6 +74,11 @@ export default function LoginScreen() {
                     >
                         <Text style={{ color: Colors.primary, fontWeight: '600' }}>Forgot Password?</Text>
                     </Pressable>
+                    <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
+                        <Text style={styles.iotText}>Admin</Text>
+                        <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler} />
+                        <Text style={styles.iotText}>Dealer</Text>
+                    </View>
                     <View style={{ marginTop: 20 }}>
                         <Button
                             title="Login"
@@ -90,6 +102,7 @@ export default function LoginScreen() {
         </SafeAreaView>
     )
 }
+export default observer(LoginScreen);
 
 const styles = StyleSheet.create({
 
@@ -105,6 +118,20 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginHorizontal: 10,
         marginTop: -15
+    },
+    headingContainer: {
+        marginHorizontal: 15,
+        borderRadius: 15,
+        paddingHorizontal: 25,
+        paddingVertical: 25,
+        elevation: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    iotText: {
+        fontSize: wp('5'),
+        fontWeight: '500',
     },
 
 

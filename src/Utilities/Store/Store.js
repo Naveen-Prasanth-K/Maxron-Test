@@ -11,7 +11,7 @@ class Store {
     loginData = [];
     isLoggedIn = false;
     mainLoader = false;
-    screen = 'Dealer'
+    screen = 'Admin'
 
     constructor() {
         makeAutoObservable(
@@ -34,8 +34,7 @@ class Store {
 
     //Screen Admin or Dealer
     setScreen = (data) => {
-        // this.loginData = 'Dealer';
-        // this.loginData = data;
+        this.screen = data;
     }
 
     setLoginData = (data) => {
