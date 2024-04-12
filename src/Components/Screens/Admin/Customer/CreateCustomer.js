@@ -1,21 +1,45 @@
 
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Button, Input } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
+import { Dropdown } from 'react-native-element-dropdown';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
+import Store from '../../../../Utilities/store/Store';
 import Header from '../../../Others/Header';
 
 const CreateCustomer = ({ route }) => {
 
     const { item } = route.params
     const navigation = useNavigation();
+    const [bodyData, setBodyData] = useState({
+        customerName:"",
+        mobileNo:"",
+        location:"",         
+        bussinessName:"",
+        alternateMobile:"",
+        address:"",
+        district:"",
+        Pincode:"",
+        GSTNo:"",
+        mailId:"",
+        memberType:"65ff86df9a46960cfddc7646"
+   });
 
-    const sendHandler = () => {
-        navigation.goBack()
-    }
+   useEffect(()=>{
+      Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+   },[])
+   // on change
+   const onChange = (name, value) => {
+       setBodyData({ ...bodyData, [name]: value });
+   }
+   const sendHandler = () => {
+       Store?.postMemberData(bodyData?.memberType , bodyData)
+       navigation.goBack()
+   }
 
     return (
         <View style={CommonStyles.pageContainer}>
@@ -29,7 +53,9 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.customerName}
+                    maxLength={15}
+                    value={bodyData.customerName.toString()}
+                    onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
                     label='Mobile Number'
@@ -38,8 +64,10 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.alternateMobile}
+                    keyboardType="numeric"
                     maxLength={10}
+                    value={bodyData.mobileNo.toString()}
+                    onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
                     label='Alternative Mobile Number'
@@ -48,8 +76,10 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.alternateMobile}
+                    keyboardType="numeric"
                     maxLength={10}
+                    value={bodyData.alternateMobile.toString()}
+                    onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
                     label='Address'
@@ -58,17 +88,27 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.address}
+                    value={bodyData.address.toString()}
+                    onChangeText={(value) => { onChange("address", value) }}
                 />
-                <Input
-                    label='District'
-                    labelStyle={styles.labelStyle}
-                    placeholder='District *'
-                    inputContainerStyle={CommonStyles.inputContainerStyle}
-                    inputStyle={CommonStyles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    value={item?.District}
-                />
+                <Dropdown
+                    placeholder='District'
+                    style={CommonStyles.dropdown}
+                    search
+                    searchPlaceholder="Search..."
+                    placeholderStyle={CommonStyles.placeholderStyle}
+                    selectedTextStyle={CommonStyles.selectedTextStyle}
+                    containerStyle={CommonStyles.containerStyle}
+                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    activeColor={Colors.primary50}
+                    data={Store?.bindDistrict}
+                    labelField="cityName"
+                    valueField="_id"
+                    value={bodyData?.district}
+                    onChange={item => {
+                        onChange("district", item?._id) 
+                    }}
+                                    />
                 <Input
                     label='Pincode'
                     labelStyle={styles.labelStyle}
@@ -76,7 +116,8 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.Pincode}
+                    value={bodyData.Pincode.toString()}
+                    onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
                     label='Mail Id'
@@ -85,28 +126,8 @@ const CreateCustomer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.MailId}
-                />
-                <Input
-                    label='Change Password'
-                    labelStyle={styles.labelStyle}
-                    placeholder='Change Password *'
-                    inputContainerStyle={CommonStyles.inputContainerStyle}
-                    inputStyle={CommonStyles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    value={item?.password}
-                    secureTextEntry={true}
-                />
-                <Text style={styles.text1}>*If you want to reset password use this fields. Otherwise leave it empty</Text>
-                <Input
-                    label='Re Enter Password'
-                    labelStyle={styles.labelStyle}
-                    placeholder='Re Enter Password *'
-                    inputContainerStyle={CommonStyles.inputContainerStyle}
-                    inputStyle={CommonStyles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    value={item?.password}
-                    secureTextEntry={true}
+                    value={bodyData.mailId.toString()}
+                    onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <Button
                     title={item?.rfId ? 'Update Customer' : 'Create Customer'}
@@ -120,7 +141,7 @@ const CreateCustomer = ({ route }) => {
     )
 }
 
-export default CreateCustomer
+export default observer(CreateCustomer);
 
 const styles = StyleSheet.create({
     labelStyle: {

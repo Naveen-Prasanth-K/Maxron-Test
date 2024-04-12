@@ -40,11 +40,12 @@ class Store {
     // POst Member based data
     postMemberData = async (memberType, formData) => {      
         await axios.post(`${URL}member`, formData).then(async (response) => {
-            if (response?.data?.data?.length > 0 && response?.data?.data != "null") {    
+            if (response?.status == 200 ) {    
                 addAndUpdateAlert(200, "Member Data Added.")          
                 this.getMemberData(memberType);
             }
         }).catch((error) => {
+            // console.log(`error -${ JSON.stringify(error) }`)
             if(error?.response?.status == 404 || error?.response?.status == 500){
                 errorAlert(error?.response?.status, "Server Error")
             }else if(error?.message == "Network Error"){
@@ -85,11 +86,11 @@ class Store {
     }
 
     // POst Device based data
-    postDeviceData = async (memberType, formData) => {      
+    postDeviceData = async (formData) => {      
         await axios.post(`${URL}device`, formData).then(async (response) => {
-            if (response?.data?.data?.length > 0 && response?.data?.data != "null") {    
+            if (response?.status == 200 ) {  
                 addAndUpdateAlert(200, "Device Data Added.")          
-                this.getDeviceData(memberType);
+                this.getDeviceData();
             }
         }).catch((error) => {
             if(error?.response?.status == 404 || error?.response?.status == 500){

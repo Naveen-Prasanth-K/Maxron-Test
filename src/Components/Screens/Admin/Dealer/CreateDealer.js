@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Button, Input } from '@rneui/themed';
+import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
@@ -7,6 +8,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import Header from '../../../Others/Header';
+
 import Store from '../../../../Utilities/store/Store';
 
 const CreateDealer = ({ route }) => {
@@ -34,8 +36,8 @@ const CreateDealer = ({ route }) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        console.log(`body Data present -${ JSON.stringify(bodyData) }`)
-       //  navigation.goBack()
+        Store?.postMemberData(bodyData?.memberType , bodyData)
+        navigation.goBack()
     }
 
     return (
@@ -159,7 +161,7 @@ const CreateDealer = ({ route }) => {
     )
 }
 
-export default CreateDealer
+export default observer(CreateDealer)
 
 const styles = StyleSheet.create({
     labelStyle: {

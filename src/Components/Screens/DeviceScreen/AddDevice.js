@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { observer } from 'mobx-react';
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
 import Header from '../../Others/Header'
@@ -8,13 +9,23 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/store/Store';
 
-export default function AddDevice() {
-
+const  AddDevice = ()=> {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
+    const [bodyData, setBodyData] = useState({
+        scanQR : "",
+        controllerName : "",
+        masterMobileNo : ""
+   });
 
-    const AddDeviceHandler = () => {
+    // on change
+    const onChange = (name, value) => {
+        setBodyData({ ...bodyData, [name]: value });
+    }
+    const AddDeviceHandler =async () => {
+        await Store?.postDeviceData(bodyData);
         navigation.goBack()
     }
 
@@ -60,12 +71,16 @@ export default function AddDevice() {
                                 />
                             </Pressable>
                         }
+                        value={bodyData.scanQR.toString()}
+                        onChangeText={(value) => { onChange("scanQR", value) }}
                     />
                     <Input
                         placeholder='Controller Name *'
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
+                        value={bodyData.controllerName.toString()}
+                        onChangeText={(value) => { onChange("controllerName", value) }}
                     />
                     <Input
                         placeholder='Controller Mobile Number *'
@@ -73,6 +88,8 @@ export default function AddDevice() {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        value={bodyData.masterMobileNo.toString()}
+                        onChangeText={(value) => { onChange("masterMobileNo", value) }}
                     />
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
                         <Button
@@ -95,6 +112,8 @@ export default function AddDevice() {
         </View>
     )
 }
+
+export default observer(AddDevice);
 
 const styles = StyleSheet.create({
     pageHeading: {
