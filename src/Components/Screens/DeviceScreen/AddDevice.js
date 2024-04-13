@@ -28,11 +28,11 @@ const  AddDevice = ()=> {
         await Store?.postDeviceData(bodyData);
         navigation.goBack()
     }
-
+    // Cancel Handler
     const CancelHandler = () => {
         navigation.goBack()
     }
-
+    // Bar Code
     const BarCodeScanHandler = () => {
         setIsLoading(true);
         setTimeout(() => {
