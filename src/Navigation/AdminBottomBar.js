@@ -91,7 +91,7 @@ export default function AdminBottomBar() {
                                 textAlign: 'center',
                                 fontSize: wp('3'),
                             }}>
-                                Create
+                                Add
                             </Text>
                         ),
                         tabBarIcon: ({ color, focused }) => (

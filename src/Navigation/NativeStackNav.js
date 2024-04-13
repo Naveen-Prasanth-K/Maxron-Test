@@ -47,6 +47,7 @@ import PinReset from '../Components/Screens/Authentication/PinReset';
 import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer';
 import DealerBottomBar from './DealerBottomBar';
 import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
+import SellDevices from '../Components/Screens/Admin/Sell/SellDevices';
 
 const Stack = createNativeStackNavigator();
 
@@ -231,6 +232,10 @@ export default function NativeStackNav() {
                     name="DealerProfile"
                     options={{ headerShown: false }}
                     component={DealerProfile} />
+                <Stack.Screen
+                    name="SellDevices"
+                    options={{ headerShown: false }}
+                    component={SellDevices} />
             </Stack.Navigator>
         </NavigationContainer>
     )
