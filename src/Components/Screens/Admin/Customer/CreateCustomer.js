@@ -8,42 +8,42 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Store from '../../../../Utilities/store/Store';
-import Header from '../../../Others/Header';
+import Store from '../../../../Utilities/Store/Store';
+import HeaderCommon from '../../../Others/HeaderCommon';
 
 const CreateCustomer = ({ route }) => {
 
     const { item } = route.params
     const navigation = useNavigation();
     const [bodyData, setBodyData] = useState({
-        customerName:"",
-        mobileNo:"",
-        location:"",         
-        bussinessName:"",
-        alternateMobile:"",
-        address:"",
-        district:"",
-        Pincode:"",
-        GSTNo:"",
-        mailId:"",
-        memberType:"65ff86df9a46960cfddc7646"
-   });
+        customerName: "",
+        mobileNo: "",
+        location: "",
+        bussinessName: "",
+        alternateMobile: "",
+        address: "",
+        district: "",
+        Pincode: "",
+        GSTNo: "",
+        mailId: "",
+        memberType: "65ff86df9a46960cfddc7646"
+    });
 
-   useEffect(()=>{
-      Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
-   },[])
-   // on change
-   const onChange = (name, value) => {
-       setBodyData({ ...bodyData, [name]: value });
-   }
-   const sendHandler = () => {
-       Store?.postMemberData(bodyData?.memberType , bodyData)
-       navigation.goBack()
-   }
+    useEffect(() => {
+        Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+    }, [])
+    // on change
+    const onChange = (name, value) => {
+        setBodyData({ ...bodyData, [name]: value });
+    }
+    const sendHandler = () => {
+        Store?.postMemberData(bodyData?.memberType, bodyData)
+        navigation.goBack()
+    }
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update Customer Info' : 'Create Customer'}</Text>
                 <Input
@@ -92,23 +92,23 @@ const CreateCustomer = ({ route }) => {
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
-                    placeholder='District'
                     style={CommonStyles.dropdown}
-                    search
-                    searchPlaceholder="Search..."
                     placeholderStyle={CommonStyles.placeholderStyle}
                     selectedTextStyle={CommonStyles.selectedTextStyle}
-                    containerStyle={CommonStyles.containerStyle}
-                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    inputSearchStyle={CommonStyles.inputSearchStyle}
                     activeColor={Colors.primary50}
+                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    placeholder='District'
+                    search
+                    searchPlaceholder="Search..."
                     data={Store?.bindDistrict}
                     labelField="cityName"
                     valueField="_id"
                     value={bodyData?.district}
                     onChange={item => {
-                        onChange("district", item?._id) 
+                        onChange("district", item?._id)
                     }}
-                                    />
+                />
                 <Input
                     label='Pincode'
                     labelStyle={styles.labelStyle}

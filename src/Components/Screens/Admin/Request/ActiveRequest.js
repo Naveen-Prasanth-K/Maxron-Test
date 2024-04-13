@@ -11,7 +11,7 @@ import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 
 const ActiveRequest = () => {
     return (
-        <>
+        <View>
             {
                 DEALERDATA.length > 0 ?
                     DEALERDATA?.map((item, index) => {
@@ -71,7 +71,7 @@ const ActiveRequest = () => {
                         />
                     </View>
             }
-        </>
+        </View>
     )
 }
 

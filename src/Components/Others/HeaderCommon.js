@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../Utilities/GlobalStyles/CommonStyles';
 
-export default function Header() {
+export default function HeaderCommon() {
 
     const navigation = useNavigation();
 
@@ -23,7 +23,6 @@ export default function Header() {
                     style={{ marginHorizontal: 20, marginTop: 5, alignSelf: 'flex-start', borderWidth: 1, borderRadius: 5, borderColor: Colors.primary75 }}
                 />
             </Pressable>
-
         </SafeAreaView>
     )
 }

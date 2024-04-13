@@ -2,29 +2,29 @@ import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { observer } from 'mobx-react';
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
-import Header from '../../Others/Header'
+import HeaderCommon from '../../Others/HeaderCommon'
 import { ScrollView } from 'react-native'
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Store from '../../../Utilities/store/Store';
+import Store from '../../../Utilities/Store/Store';
 
-const  AddDevice = ()=> {
+const AddDevice = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [bodyData, setBodyData] = useState({
-        scanQR : "",
-        controllerName : "",
-        masterMobileNo : ""
-   });
+        scanQR: "",
+        controllerName: "",
+        masterMobileNo: ""
+    });
 
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
-    const AddDeviceHandler =async () => {
+    const AddDeviceHandler = async () => {
         await Store?.postDeviceData(bodyData);
         navigation.goBack()
     }
@@ -43,7 +43,7 @@ const  AddDevice = ()=> {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             {isLoading && (
                 <View style={styles.loaderContainer}>
                     <ActivityIndicator size="large" color={Colors.secondary} />

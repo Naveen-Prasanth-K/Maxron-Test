@@ -91,32 +91,36 @@ export const CommonStyles = {
     },
 
     dropdown: {
-        borderColor: '#CCCDD0',
+        borderColor: Colors.primary75,
         borderWidth: 1,
-        height: 52,
-        borderRadius: 5,
-        marginHorizontal: 10,
+        alignSelf: 'center',
+        height: hp('6%'),
+        width: '91%',
+        borderRadius: 8,
+        backgroundColor: Colors.primary60,
         paddingHorizontal: 15,
-        marginTop: -2,
-        marginBottom: 40,
-        backgroundColor: '#FFFFFF',
+        marginBottom: 30
     },
     placeholderStyle: {
         fontSize: 16,
-        color: '#CCCDD0',
     },
     selectedTextStyle: {
         fontSize: 16,
     },
-    containerStyle: {
-        marginTop: -40,
-        backgroundColor: '#FFFFFF',
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+    labelStyle: {
+        fontSize: wp(4.5),
+        fontWeight: '800',
+        color: Colors.primary,
+        marginHorizontal: 10
     },
     itemContainerStyle: {
-        padding: 0,
-        margin: -8,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.primary60,
     },
+
     //Overlay
     overlayContainer: {
         position: 'absolute',

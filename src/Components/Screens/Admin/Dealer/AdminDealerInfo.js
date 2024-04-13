@@ -1,20 +1,20 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button, Overlay } from '@rneui/themed';
 import Switch from '../../../../Utilities/UI/Switch';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { WinDimensions } from '../../../../Utilities/GlobalStyles/WinDimension';
-
+import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 
 const { width, height } = Dimensions.get('window');
 
-const DealerInfo = ({ route }) => {
+const AdminDealerInfo = ({ route }) => {
 
-    const { item } = route.params;
+    const { item } = route?.params;
     const navigation = useNavigation();
     const { screenWidth, screenHeight } = WinDimensions();
 
@@ -44,7 +44,7 @@ const DealerInfo = ({ route }) => {
     return (
         <>
             <View style={CommonStyles.pageContainer}>
-                <Header />
+                <HeaderCommon />
                 <ScrollView>
                     <Text style={CommonStyles.pageHeading}>Dealer Info</Text>
                     <View style={styles.headerItemContainer}>
@@ -161,7 +161,7 @@ const DealerInfo = ({ route }) => {
     )
 }
 
-export default DealerInfo
+export default AdminDealerInfo
 
 const styles = StyleSheet.create({
     uploadPic: {

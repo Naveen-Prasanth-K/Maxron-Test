@@ -3,7 +3,7 @@ import { Icon, Button, Input, CheckBox } from '@rneui/themed';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -29,7 +29,7 @@ const AddStock = () => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>Add Device Stock</Text>
                 <Text style={[styles.labelStyle, { marginHorizontal: 20 }]}>Device Type</Text>

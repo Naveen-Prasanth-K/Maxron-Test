@@ -11,7 +11,7 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 
 export default function OtpVerify({ route }) {
 
@@ -34,7 +34,7 @@ export default function OtpVerify({ route }) {
     return (
 
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View style={{ marginHorizontal: 20, marginTop: 70 }}>
                     <Text style={styles.ForgotTxt}>OTP Verification</Text>

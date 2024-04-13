@@ -11,7 +11,7 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 
 const PinReset = () => {
 
@@ -37,7 +37,7 @@ const PinReset = () => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View style={{ marginHorizontal: 20, marginTop: 20 }}>
                     <Text style={styles.ForgotTxt}>Reset Security PIN</Text>

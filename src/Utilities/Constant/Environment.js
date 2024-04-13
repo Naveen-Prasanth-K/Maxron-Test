@@ -1,0 +1,1 @@
+export const URL = "https://snapcodetech.com/maxron-develop/api/v1/";

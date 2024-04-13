@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Image, Overlay, Button } from '@rneui/themed';
+import { Icon, Image, Overlay, Button, Input } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -10,31 +10,33 @@ import Header1 from '../../../Others/Header1';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function AdminSettings() {
+export default function DealerSetting() {
 
     const navigation = useNavigation();
-    const [visible, setVisible] = useState(false);
+    const [logoutVisible, setLogoutVisible] = useState(false);
+    const [deviceVisible, setDeviceVisible] = useState(false);
 
-    const toggleOverlay = () => {
-        setVisible(!visible);
+    const toggleLogoutOverlay = () => {
+        setLogoutVisible(!logoutVisible);
+    };
+    const toggleDeviceOverlay = () => {
+        setDeviceVisible(!deviceVisible);
     };
     const LogoutHandler = () => {
-        toggleOverlay()
+        toggleLogoutOverlay()
     }
-
-    const CancelHandler = () => {
-        toggleOverlay()
+    const CancelLogoutHandler = () => {
+        toggleLogoutOverlay()
     }
-
-    const AccountManageHandler = () => {
-        navigation.navigate('AccountManage')
+    const CancelDeviceHandler = () => {
+        toggleDeviceOverlay()
     }
-    const AdminUserHandler = () => {
-        navigation.navigate('AdminUser')
+    const RequestHandler = () => {
+        toggleDeviceOverlay()
     }
-    const DeviceOrderHandler = () => {
-        navigation.navigate('DeviceOrder')
-    }
+    // const DeviceOrderHandler = () => {
+    //     navigation.navigate('DeviceOrder')
+    // }
     const DeviceStockHandler = () => {
         navigation.navigate('StockHome')
     }
@@ -57,57 +59,6 @@ export default function AdminSettings() {
                     </View>
                 </LinearGradient>
                 <Text style={CommonStyles.pageHeading}>Settings</Text>
-
-                <View style={styles.card}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image}
-                                source={require('../../../../Images/Settings/Profile.png')}
-                            />
-                        </View>
-                        <View style={{ marginLeft: 15 }}>
-                            <Text style={styles.mainText}>Account Manage</Text>
-                            <Text style={styles.subText}>Make changes to your account</Text>
-                        </View>
-                    </View>
-                    <Pressable
-                        style={({ pressed }) => pressed && CommonStyles.pressed}
-                        onPress={AccountManageHandler}
-                    >
-                        <Icon
-                            type='entypo'
-                            name='chevron-right'
-                            size={24}
-                            color={Colors.primary200}
-                            style={styles.rightIcon}
-                        />
-                    </Pressable>
-                </View>
-                <View style={styles.card}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image}
-                                source={require('../../../../Images/Settings/Heart.png')}
-                            />
-                        </View>
-                        <View style={{ marginLeft: 15 }}>
-                            <Text style={styles.mainText}>Manage Admin Users</Text>
-                            <Text style={styles.subText}>Manage employee's roles</Text>
-                        </View>
-                    </View>
-                    <Pressable
-                        style={({ pressed }) => pressed && CommonStyles.pressed}
-                        onPress={AdminUserHandler}
-                    >
-                        <Icon
-                            type='entypo'
-                            name='chevron-right'
-                            size={24}
-                            color={Colors.primary200}
-                            style={styles.rightIcon}
-                        />
-                    </Pressable>
-                </View>
                 <View style={styles.card}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.imageContainer}>
@@ -116,13 +67,13 @@ export default function AdminSettings() {
                             />
                         </View>
                         <View style={{ marginLeft: 15 }}>
-                            <Text style={styles.mainText}>Device Orders</Text>
-                            <Text style={styles.subText}>Manage Device Orders</Text>
+                            <Text style={styles.mainText}>Device Request</Text>
+                            <Text style={styles.subText}>Request Devices from Admin</Text>
                         </View>
                     </View>
                     <Pressable
                         style={({ pressed }) => pressed && CommonStyles.pressed}
-                        onPress={DeviceOrderHandler}
+                        onPress={toggleDeviceOverlay}
                     >
                         <Icon
                             type='entypo'
@@ -133,31 +84,6 @@ export default function AdminSettings() {
                         />
                     </Pressable>
                 </View>
-                {/* <View style={styles.card}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image}
-                                source={require('../../../../Images/Settings/Vector.png')}
-                            />
-                        </View>
-                        <View style={{ marginLeft: 15 }}>
-                            <Text style={styles.mainText}>Device Stock</Text>
-                            <Text style={styles.subText}>Manage Device Stock</Text>
-                        </View>
-                    </View>
-                    <Pressable
-                        style={({ pressed }) => pressed && CommonStyles.pressed}
-                        onPress={DeviceStockHandler}
-                    >
-                        <Icon
-                            type='entypo'
-                            name='chevron-right'
-                            size={24}
-                            color={Colors.primary200}
-                            style={styles.rightIcon}
-                        />
-                    </Pressable>
-                </View> */}
                 <View style={styles.card}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.imageContainer}>
@@ -197,7 +123,7 @@ export default function AdminSettings() {
                     </View>
                     <Pressable
                         style={({ pressed }) => pressed && CommonStyles.pressed}
-                        onPress={toggleOverlay}
+                        onPress={toggleLogoutOverlay}
                     >
                         <Icon
                             type='entypo'
@@ -210,7 +136,7 @@ export default function AdminSettings() {
                 </View>
                 <Text style={{ textAlign: 'center', marginTop: 25, fontSize: 12 }}>Version-1.0.0</Text>
             </ScrollView>
-            <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={CommonStyles.overlayContainer}>
+            <Overlay isVisible={logoutVisible} onBackdropPress={toggleLogoutOverlay} overlayStyle={CommonStyles.overlayContainer}>
                 <Text style={styles.deleteTxt}>Are sure want to logout from your account?</Text>
                 <View style={styles.buttonContainer}>
                     <Button
@@ -218,7 +144,7 @@ export default function AdminSettings() {
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.secondary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => CancelHandler()}
+                        onPress={() => CancelLogoutHandler()}
                     />
                     <Button
                         title="Logout"
@@ -226,6 +152,32 @@ export default function AdminSettings() {
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
                         containerStyle={styles.ContainerStyle}
                         onPress={() => LogoutHandler()}
+                    />
+                </View>
+            </Overlay>
+            <Overlay isVisible={deviceVisible} onBackdropPress={toggleDeviceOverlay} overlayStyle={CommonStyles.overlayContainer}>
+                <Text style={[styles.deleteTxt, { marginBottom: 10 }]}>Device Request</Text>
+                <Text style={styles.subText2}>Mention the no of devices & send a request to Admin</Text>
+                <Input
+                    placeholder='No of Devices*'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                />
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title="Cancel"
+                        titleStyle={CommonStyles.inputTitleStyle}
+                        buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.secondary }]}
+                        containerStyle={styles.ContainerStyle}
+                        onPress={() => CancelDeviceHandler()}
+                    />
+                    <Button
+                        title="Request"
+                        titleStyle={CommonStyles.inputTitleStyle}
+                        buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
+                        containerStyle={styles.ContainerStyle}
+                        onPress={() => RequestHandler()}
                     />
                 </View>
             </Overlay>
@@ -248,6 +200,13 @@ const styles = StyleSheet.create({
         fontSize: wp(3.3),
         fontWeight: '300',
         color: Colors.primary100
+    },
+    subText2: {
+        fontSize: wp(3.3),
+        fontWeight: '300',
+        color: Colors.primary100,
+        textAlign: 'center',
+        marginBottom: 20
     },
     mainText: {
         fontSize: wp(4.2),

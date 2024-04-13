@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, StatusBar, ScrollView, Pressable, FlatList } from 'react-native';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Icon } from '@rneui/themed';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function MotorRunHistory() {
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <FlatList
                 data={[1, 1, 1, 1]}
                 ListHeaderComponent={<Text style={CommonStyles.pageHeading}>Motor On/Off History</Text>}

@@ -29,8 +29,6 @@ export default function Header1() {
                 />
             </Pressable>
         </View>
-
-
     )
 }
 
