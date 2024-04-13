@@ -90,6 +90,33 @@ export const CommonStyles = {
         marginVertical: 10
     },
 
+    dropdown: {
+        borderColor: '#CCCDD0',
+        borderWidth: 1,
+        height: 52,
+        borderRadius: 5,
+        marginHorizontal: 10,
+        paddingHorizontal: 15,
+        marginTop: -2,
+        marginBottom: 40,
+        backgroundColor: '#FFFFFF',
+    },
+    placeholderStyle: {
+        fontSize: 16,
+        color: '#CCCDD0',
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    containerStyle: {
+        marginTop: -40,
+        backgroundColor: '#FFFFFF',
+    },
+    itemContainerStyle: {
+        padding: 0,
+        margin: -8,
+        backgroundColor: '#FFFFFF',
+    },
     //Overlay
     overlayContainer: {
         position: 'absolute',
