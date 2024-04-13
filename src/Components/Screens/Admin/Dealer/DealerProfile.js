@@ -24,8 +24,6 @@ const DealerProfile = () => {
     return (
         <SafeAreaView style={CommonStyles.pageContainer}>
             <ScrollView>
-
-
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
