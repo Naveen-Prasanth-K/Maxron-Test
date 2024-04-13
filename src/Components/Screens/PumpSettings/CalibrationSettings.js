@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 
 import React, { useState } from 'react'
 import Timer from '../../Others/Timer';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon, Image, Divider, Input, Button } from '@rneui/themed';
 import Switch from '../../../Utilities/UI/Switch';
@@ -33,7 +33,7 @@ export default function CalibrationSettings({ route }) {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>Calibration Settings</Text>
                 <View style={styles.actionContainer}>

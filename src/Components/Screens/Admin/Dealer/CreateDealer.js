@@ -7,42 +7,43 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
+import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 
-import Store from '../../../../Utilities/store/Store';
+import Store from '../../../../Utilities/Store/Store';
 
 const CreateDealer = ({ route }) => {
     const { item } = route.params
     const navigation = useNavigation();
     const [bodyData, setBodyData] = useState({
-         customerName:"",
-         mobileNo:"",
-         location:"",         
-         bussinessName:"",
-         alternateMobile:"",
-         address:"",
-         district:"",
-         Pincode:"",
-         GSTNo:"",
-         mailId:"",
-         memberType:"65ff86d39a46960cfddc7640"
+        customerName: "",
+        mobileNo: "",
+        location: "",
+        bussinessName: "",
+        alternateMobile: "",
+        address: "",
+        district: "",
+        Pincode: "",
+        GSTNo: "",
+        mailId: "",
+        memberType: "65ff86d39a46960cfddc7640"
     });
 
-    useEffect(()=>{
-       Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
-    },[])
+    useEffect(() => {
+        Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+    }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        Store?.postMemberData(bodyData?.memberType , bodyData)
+        Store?.postMemberData(bodyData?.memberType, bodyData)
         navigation.goBack()
     }
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update Dealer Info' : 'Create Dealer'}</Text>
                 <Input
@@ -116,9 +117,9 @@ const CreateDealer = ({ route }) => {
                     valueField="_id"
                     value={bodyData?.district}
                     onChange={item => {
-                        onChange("district", item?._id) 
+                        onChange("district", item?._id)
                     }}
-                                    />
+                />
                 <Input
                     label='Pincode'
                     labelStyle={styles.labelStyle}
@@ -148,7 +149,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     value={bodyData.mailId.toString()}
                     onChangeText={(value) => { onChange("mailId", value) }}
-                />             
+                />
                 <Button
                     title="Create Dealer"
                     titleStyle={CommonStyles.inputTitleStyle}

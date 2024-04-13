@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,7 +20,7 @@ export default function RegisterScreen() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View style={{ margin: 20 }}>
                     <Text style={styles.ForgotTxt}>Hello! Register to get started..</Text>

@@ -7,30 +7,8 @@ import { getOnboarding } from '../../../Utilities/Storage/Storage';
 
 export default function SplashScreen({ navigation }) {
 
-    const [showOnboarding, setShowOnboarding] = useState(null);
-
-    useEffect(() => {
-        checkIfAlreadyOnBoarded();
-    }, [])
-
-    const checkIfAlreadyOnBoarded = async () => {
-        let OnBoarded = await getOnboarding('OnBoarded');
-        console.log(OnBoarded)
-        if (OnBoarded == 1) {
-            // hide onboarding
-            setShowOnboarding(false);
-        } else {
-            // show onboarding
-            setShowOnboarding(true);
-        }
-    }
-
-    if (showOnboarding == null) {
-        return null;
-    }
-
     setTimeout(() => {
-        navigation.replace(showOnboarding ? 'OnboardingScreen' : 'LoginScreen');
+        navigation.replace('LoginScreen');
     }, 5000)
 
     return (

@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { Input, Divider, Button, Icon } from '@rneui/themed';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -43,7 +43,7 @@ export default function ModeSettings({ route }) {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>Mode Settings</Text>
                 <Text style={styles.pageHeading}>IOT / SMS</Text>

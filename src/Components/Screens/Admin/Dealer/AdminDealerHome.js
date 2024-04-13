@@ -12,12 +12,12 @@ import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
-const DealerHome = () => {
+const AdminDealerHome = () => {
 
     const navigation = useNavigation();
 
     const DealerInfoHandler = (item) => {
-        navigation.navigate('DealerInfo', { item: item })
+        navigation.navigate('AdminDealerInfo', { item: item })
     }
 
     const headerItem = () => (
@@ -83,7 +83,7 @@ const DealerHome = () => {
     )
 }
 
-export default DealerHome
+export default AdminDealerHome
 
 const styles = StyleSheet.create({
     foundCount: {

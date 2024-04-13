@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import ListDevice2 from '../../Others/ListDevice2';
 
 const DeviceDetails = ({ route }) => {
@@ -23,7 +23,7 @@ const DeviceDetails = ({ route }) => {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>{item?.deviceName} Details</Text>
                 <View style={styles.rowContainer}>

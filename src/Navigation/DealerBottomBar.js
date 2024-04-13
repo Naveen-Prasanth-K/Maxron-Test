@@ -6,9 +6,10 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../Utilities/GlobalStyles/Colors';
 import { WinDimensions } from '../Utilities/GlobalStyles/WinDimension';
 
-import HomeTab from '../Components/Screens/HomeScreen/HomeScreen';
-import ProfileTab from '../Components/Screens/ProfileScreen/ProfileScreen';
-// import SettingsTab from '../Components/Screens/SettingScreen/SettingsScreen';
+import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
+import DealerCustomerList from '../Components/Screens/Admin/Customer/DealerCustomerList';
+import DealerSetting from '../Components/Screens/Admin/Dealer/DealerSetting';
+import RequestHome from '../Components/Screens/Admin/Request/RequestHome';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -25,20 +26,20 @@ export default function DealerBottomBar() {
                     tabBarActiveTintColor: Colors.secondary,
                     tabBarInactiveTintColor: Colors.primary,
                     headerShown: false,
-                    tabBarStyle: { height: 75, borderTopEndRadius: 35, borderWidth: 1, borderColor: Colors.primary75, borderTopLeftRadius: 35, paddingVertical: 10, }
+                    tabBarStyle: { height: 75, borderWidth: 1, borderColor: Colors.primary75, paddingVertical: 20, }
                 }}
             >
                 <BottomTabs.Screen
-                    name="BottomHome"
-                    component={HomeTab}
+                    name="DealerCustomerList"
+                    component={DealerCustomerList}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{
                                 color: focused ? Colors.secondary : Colors.primary,
                                 marginBottom: isLandscape ? 0 : 13,
-                                marginHorizontal: isLandscape ? 25 : 30,
+                                marginHorizontal: isLandscape ? 20 : 10,
                                 textAlign: 'center',
-                                fontSize: focused ? wp('4.1') : wp('3.7'),
+                                fontSize: wp('3'),
                             }}>
                                 Home
                             </Text>
@@ -47,23 +48,48 @@ export default function DealerBottomBar() {
                             <Animated.View style={{
                             }}>
                                 <Image
-                                    style={{ tintColor: color, width: 21, height: 21, transform: [{ scale: focused ? 1.1 : 1, }], marginHorizontal: 8 }}
+                                    style={{ tintColor: color, width: 22, height: 22, transform: [{ scale: 1, }], marginHorizontal: 8 }}
                                     source={require("../Images/HomeScreen/Home.png")} />
                             </Animated.View>
                         )
                     }}
                 />
                 <BottomTabs.Screen
-                    name="BottomProfile"
-                    component={ProfileTab}
+                    name="RequestHome"
+                    component={RequestHome}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{
                                 color: focused ? Colors.secondary : Colors.primary,
                                 marginBottom: isLandscape ? 0 : 13,
-                                marginHorizontal: isLandscape ? 25 : 30,
+                                marginHorizontal: isLandscape ? 20 : 10,
                                 textAlign: 'center',
-                                fontSize: focused ? wp('4.1') : wp('3.7'),
+                                fontSize: wp('3'),
+                            }}>
+                                Request
+                            </Text>
+                        ),
+                        tabBarIcon: ({ color, focused }) => (
+                            <Animated.View style={{
+                            }}>
+                                <Image
+                                    style={{ tintColor: color, width: 22, height: 22, transform: [{ scale: 1, }], marginHorizontal: 8 }}
+                                    source={require("../Images/HomeScreen/Message.png")} />
+                            </Animated.View>
+                        )
+                    }}
+                />
+                <BottomTabs.Screen
+                    name="DealerProfile"
+                    component={DealerProfile}
+                    options={{
+                        tabBarLabel: ({ focused }) => (
+                            <Text style={{
+                                color: focused ? Colors.secondary : Colors.primary,
+                                marginBottom: isLandscape ? 0 : 13,
+                                marginHorizontal: isLandscape ? 20 : 10,
+                                textAlign: 'center',
+                                fontSize: wp('3'),
                             }}>
                                 Profile
                             </Text>
@@ -72,23 +98,24 @@ export default function DealerBottomBar() {
                             <Animated.View style={{
                             }}>
                                 <Image
-                                    style={{ tintColor: color, width: 21, height: 21, transform: [{ scale: focused ? 1.1 : 1, }], marginHorizontal: 8 }}
-                                    source={require("../Images/HomeScreen/Profile.png")} />
+                                    style={{ tintColor: color, width: 22, height: 22, transform: [{ scale: 1, }], marginHorizontal: 8 }}
+                                    source={require("../Images/HomeScreen/Dealer.png")} />
                             </Animated.View>
                         )
                     }}
                 />
-                {/* <BottomTabs.Screen
-                    name="BottomSettings"
-                    component={SettingsTab}
+
+                <BottomTabs.Screen
+                    name="DealerSetting"
+                    component={DealerSetting}
                     options={{
                         tabBarLabel: ({ focused }) => (
                             <Text style={{
                                 color: focused ? Colors.secondary : Colors.primary,
                                 marginBottom: isLandscape ? 0 : 13,
-                                marginHorizontal: isLandscape ? 25 : 30,
+                                marginHorizontal: isLandscape ? 20 : 10,
                                 textAlign: 'center',
-                                fontSize: focused ? wp('4.1') : wp('3.7'),
+                                fontSize: wp('3'),
                             }}>
                                 Settings
                             </Text>
@@ -97,13 +124,12 @@ export default function DealerBottomBar() {
                             <Animated.View style={{
                             }}>
                                 <Image
-                                    style={{ tintColor: color, width: 21, height: 21, transform: [{ scale: focused ? 1.1 : 1, }], marginHorizontal: 8 }}
+                                    style={{ tintColor: color, width: 22, height: 22, transform: [{ scale: 1, }], marginHorizontal: 8 }}
                                     source={require("../Images/HomeScreen/Setting.png")} />
                             </Animated.View>
                         )
                     }}
-                /> */}
-
+                />
             </BottomTabs.Navigator>
         </View>
 

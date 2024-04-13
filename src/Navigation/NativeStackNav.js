@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 //Screens
 import DevicePage from '../Components/Screens/DeviceScreen/DevicePage';
-import ForgotPass from '../Components/Screens/Athentication/ForgotPass';
-import LoginScreen from '../Components/Screens/Athentication/LoginScreen';
-import NewPassword from '../Components/Screens/Athentication/NewPassword';
-import OtpVerify from '../Components/Screens/Athentication/OtpVerify';
-import PassSuccess from '../Components/Screens/Athentication/PassSuccess';
-import RegisterScreen from '../Components/Screens/Athentication/RegisterScreen';
+import ForgotPass from '../Components/Screens/Authentication/ForgotPass';
+import LoginScreen from '../Components/Screens/Authentication/LoginScreen';
+import NewPassword from '../Components/Screens/Authentication/NewPassword';
+import OtpVerify from '../Components/Screens/Authentication/OtpVerify';
+import PassSuccess from '../Components/Screens/Authentication/PassSuccess';
+import RegisterScreen from '../Components/Screens/Authentication/RegisterScreen';
 import HomeScreen from '../Components/Screens/DeviceScreen/DeviceHome';
 import SplashScreen from '../Components/Screens/EntryScreen/SplashScreen';
 import ProfileScreen from '../Components/Screens/ProfileScreen/ProfileScreen';
 import AddDevice from '../Components/Screens/DeviceScreen/AddDevice';
-import BottomTabBar from './BottomTabBar';
 import DeviceReport from '../Components/Screens/Reports/DeviceReport';
 import PumpSettingHome from '../Components/Screens/PumpSettings/PumpSettingHome';
 import CalibrationSettings from '../Components/Screens/PumpSettings/CalibrationSettings';
@@ -37,29 +36,25 @@ import CustomerList from '../Components/Screens/Admin/Customer/CustomerList';
 import CustomerDetail from '../Components/Screens/Admin/Customer/CustomerDetail';
 import UnSoldDevices from '../Components/Screens/Admin/UnSoldDevices';
 import ActivateDevice from '../Components/Screens/DeviceScreen/ActivateDevice';
-import DealerInfo from '../Components/Screens/Admin/Dealer/DealerInfo';
+import AdminDealerInfo from '../Components/Screens/Admin/Dealer/AdminDealerInfo';
 import CreateDealer from '../Components/Screens/Admin/Dealer/CreateDealer';
 import AdminUser from '../Components/Screens/Admin/AdminSetting/AdminUser';
 import AddAdminUser from '../Components/Screens//Admin/AdminSetting/AddAdminUser';
 import DeviceOrder from '../Components/Screens/Admin/DeviceOrder/DeviceOrder';
 import StockHome from '../Components/Screens/Admin/Stock/StockHome';
 import AddStock from '../Components/Screens/Admin/Stock/AddStock';
-import PinReset from '../Components/Screens/Athentication/PinReset';
+import PinReset from '../Components/Screens/Authentication/PinReset';
 import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer';
-import OnboardingScreen from '../Components/Screens/EntryScreen/OnboardingScreen';
+import DealerBottomBar from './DealerBottomBar';
+import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
 
 const Stack = createNativeStackNavigator();
 
 export default function NativeStackNav() {
 
-
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                    name="OnboardingScreen"
-                    options={{ headerShown: false }}
-                    component={OnboardingScreen} />
                 <Stack.Screen
                     name="SplashScreen"
                     options={{ headerShown: false }}
@@ -89,9 +84,9 @@ export default function NativeStackNav() {
                     options={{ headerShown: false }}
                     component={RegisterScreen} />
                 <Stack.Screen
-                    name="BottomTabBar"
+                    name="DealerBottomBar"
                     options={{ headerShown: false }}
-                    component={BottomTabBar} />
+                    component={DealerBottomBar} />
                 <Stack.Screen
                     name="HomeScreen"
                     options={{ headerShown: false }}
@@ -197,9 +192,9 @@ export default function NativeStackNav() {
                     options={{ headerShown: false }}
                     component={ActivateDevice} />
                 <Stack.Screen
-                    name="DealerInfo"
+                    name="AdminDealerInfo"
                     options={{ headerShown: false }}
-                    component={DealerInfo} />
+                    component={AdminDealerInfo} />
                 <Stack.Screen
                     name="CreateDealer"
                     options={{ headerShown: false }}
@@ -232,6 +227,10 @@ export default function NativeStackNav() {
                     name="CreateCustomer"
                     options={{ headerShown: false }}
                     component={CreateCustomer} />
+                <Stack.Screen
+                    name="DealerProfile"
+                    options={{ headerShown: false }}
+                    component={DealerProfile} />
             </Stack.Navigator>
         </NavigationContainer>
     )

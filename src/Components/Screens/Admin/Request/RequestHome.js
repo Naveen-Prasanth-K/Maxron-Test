@@ -25,8 +25,7 @@ const RequestHome = () => {
 
     return (
         <SafeAreaView style={CommonStyles.pageContainer}>
-            <ScrollView >
-                <StatusBar translucent={true} backgroundColor={'transparent'} />
+            <ScrollView>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
@@ -78,7 +77,7 @@ export default RequestHome
 const styles = StyleSheet.create({
     tabItem: {
         width: '100%',
-        marginTop: 20
+        marginTop: 20,
     },
     TabText: {
         fontSize: wp(4.2),

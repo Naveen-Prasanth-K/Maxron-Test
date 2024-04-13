@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, StyleSheet, StatusBar, ScrollView, Pressable } from 'react-native';
 import HorizontalCalendar from './HorizontalCalendar';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Icon } from '@rneui/themed';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';

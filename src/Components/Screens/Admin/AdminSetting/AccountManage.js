@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import Header from '../../../Others/Header';
+import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -32,7 +32,7 @@ export default function AccountManage() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>Account Manage</Text>
                 <View style={styles.container}>

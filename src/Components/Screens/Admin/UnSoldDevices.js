@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import SearchBar from '../../Others/SearchBar';
 import ListDevice3 from '../../Others/ListDevice3';
 
@@ -28,7 +28,7 @@ export default function UnSoldDevices() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <FlatList
                 data={DEVICEDATA}
                 keyExtractor={(item) => item?.rfId}

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView, Pressable, Dimensions, TouchableOpacity } from 'react-native';
 import HorizontalCalendar from './HorizontalCalendar';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
-import Header from '../../Others/Header';
+import HeaderCommon from '../../Others/HeaderCommon';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Tab, Text, TabView } from '@rneui/themed';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -12,7 +12,7 @@ import LogGraph from './LogGraph';
 
 const screenHeight = Dimensions.get("window").height;
 
-export default function DeviceReport() {
+const DeviceReport = () => {
 
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -20,7 +20,7 @@ export default function DeviceReport() {
 
     return (
         <View style={CommonStyles.pageContainer}>
-            <Header />
+            <HeaderCommon />
             <ScrollView>
                 <View>
                     <Text style={CommonStyles.pageHeading}>Reports</Text>
@@ -50,9 +50,9 @@ export default function DeviceReport() {
                             </TouchableOpacity>
                         </View>
                         <TabView value={index} onChange={setIndex} animationType="spring">
-                            {/* <TabView.Item style={styles.tabItem} >
+                            <TabView.Item style={styles.tabItem} >
                                 <LogGraph />
-                            </TabView.Item> */}
+                            </TabView.Item>
                             <TabView.Item style={styles.tabItem}>
                                 <Activities />
                             </TabView.Item>
@@ -63,6 +63,8 @@ export default function DeviceReport() {
         </View>
     );
 }
+
+export default DeviceReport
 
 const styles = StyleSheet.create({
     container: {
