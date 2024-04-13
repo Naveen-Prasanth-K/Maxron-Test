@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import Store from '../../../Utilities/Store/Store';
 import { observer } from 'mobx-react';
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
@@ -9,7 +10,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Store from '../../../Utilities/Store/Store';
+
 
 const AddDevice = () => {
     const navigation = useNavigation();
