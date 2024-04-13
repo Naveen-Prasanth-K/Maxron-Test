@@ -33,6 +33,9 @@ const AddHome = () => {
     const CreateCustomerHandler = () => {
         navigation.navigate('CreateCustomer', { item: "" })
     }
+    const SellDeviceHandler = () => {
+        navigation.navigate('SellDevices')
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -89,6 +92,20 @@ const AddHome = () => {
                                 color={Colors.secondary}
                             />
                             <Text style={styles.deviceName}>Add Device</Text>
+                        </Pressable>
+                    </View>
+                    <View style={[styles.cardHomeContainer, { width: cardWidth }]}>
+                        <Pressable
+                            style={({ pressed }) => [pressed && CommonStyles.pressed, styles.deviceContainer]}
+                            onPress={() => SellDeviceHandler()}
+                        >
+                            <Icon
+                                type='material'
+                                name='on-device-training'
+                                size={50}
+                                color={Colors.secondary}
+                            />
+                            <Text style={styles.deviceName}>Sell Devices</Text>
                         </Pressable>
                     </View>
                 </View>
