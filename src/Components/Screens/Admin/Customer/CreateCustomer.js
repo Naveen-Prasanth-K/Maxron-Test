@@ -8,8 +8,8 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
-import Store from '../../../../Utilities/store/Store';
-import Header from '../../../Others/Header';
+import Store from '../../../../Utilities/Store/Store';
+import HeaderCommon from '../../../Others/HeaderCommon';
 
 const CreateCustomer = ({ route }) => {
 
@@ -92,15 +92,15 @@ const CreateCustomer = ({ route }) => {
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
-                    placeholder='District'
                     style={CommonStyles.dropdown}
-                    search
-                    searchPlaceholder="Search..."
                     placeholderStyle={CommonStyles.placeholderStyle}
                     selectedTextStyle={CommonStyles.selectedTextStyle}
-                    containerStyle={CommonStyles.containerStyle}
-                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    inputSearchStyle={CommonStyles.inputSearchStyle}
                     activeColor={Colors.primary50}
+                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    placeholder='District'
+                    search
+                    searchPlaceholder="Search..."
                     data={Store?.bindDistrict}
                     labelField="cityName"
                     valueField="_id"

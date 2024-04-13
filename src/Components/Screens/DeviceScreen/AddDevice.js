@@ -9,22 +9,22 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Store from '../../../Utilities/store/Store';
+import Store from '../../../Utilities/Store/Store';
 
-const  AddDevice = ()=> {
+const AddDevice = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [bodyData, setBodyData] = useState({
-        scanQR : "",
-        controllerName : "",
-        masterMobileNo : ""
-   });
+        scanQR: "",
+        controllerName: "",
+        masterMobileNo: ""
+    });
 
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
-    const AddDeviceHandler =async () => {
+    const AddDeviceHandler = async () => {
         await Store?.postDeviceData(bodyData);
         navigation.goBack()
     }

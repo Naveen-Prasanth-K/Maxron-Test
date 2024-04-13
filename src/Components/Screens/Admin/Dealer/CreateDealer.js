@@ -10,7 +10,7 @@ import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../../Others/HeaderCommon';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 
-import Store from '../../../../Utilities/store/Store';
+import Store from '../../../../Utilities/Store/Store';
 
 const CreateDealer = ({ route }) => {
     const { item } = route.params
