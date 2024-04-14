@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Divider, Button } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
@@ -8,12 +9,16 @@ import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import SearchBar from '../../../Others/SearchBar';
 import HeaderCommon from '../../../Others/HeaderCommon';
-
+import Store from '../../../../Utilities/Store/Store';
 const { width, height } = Dimensions.get('window');
 
 const CustomerList = () => {
 
     const navigation = useNavigation();
+
+    useEffect(()=>{
+        Store?.getFilterMemberData(0,0,0, "User");
+    },[])
 
     const headerItem = () => (
         <View style={styles.headerItemContainer}>
@@ -21,7 +26,7 @@ const CustomerList = () => {
             <Text style={styles.foundCount}>180 found</Text>
             <View>
                 <View style={{ marginTop: 20 }}>
-                    <SearchBar />
+                    <SearchBar  soldStatus={false} type="User" />
                 </View>
             </View>
         </View>
@@ -35,7 +40,8 @@ const CustomerList = () => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <FlatList
-                data={CUSTOMERDATA}
+                data={Store?.customerData?.length > 0 && Store?.customerData}
+                //  data={CUSTOMERDATA}
                 keyExtractor={(item) => item?.rfId}
                 ListHeaderComponent={headerItem}
                 renderItem={({ item }) => (
@@ -71,7 +77,7 @@ const CustomerList = () => {
     )
 }
 
-export default CustomerList
+export default observer(CustomerList)
 
 const styles = StyleSheet.create({
     foundCount: {

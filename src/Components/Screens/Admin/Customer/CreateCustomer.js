@@ -26,7 +26,7 @@ const CreateCustomer = ({ route }) => {
         Pincode: "",
         GSTNo: "",
         mailId: "",
-        memberType: "65ff86df9a46960cfddc7646"
+        registerType: "User"
     });
 
     useEffect(() => {

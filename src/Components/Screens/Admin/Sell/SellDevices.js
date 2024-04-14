@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Divider, Button, Overlay } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../../Utilities/Data/DummyData'
@@ -15,15 +16,64 @@ import Store from '../../../../Utilities/Store/Store';
 const { width, height } = Dimensions.get('window');
 
 const SellDevices = () => {
-
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
+    const [saleDevice, setSaleDevice] = useState([]);
+    const [buyerId, setBuyerId] = useState("")
+
+    useEffect(()=>{
+       const fetchData = async () =>{
+        await Store?.filterGetDeviceData(0,0,0,0,0, false);
+        await Store?.getFilterMemberData(0,0,0,"Dealer")
+       }
+       fetchData()
+    },[])
 
     const toggleOverlay = () => {
         setVisible(!visible);
     };
-    const sendHandler = () => {
+    const sendHandler = async() => {
+            if(saleDevice?.length > 0){
+                const data = await saleDevice?.map((value, i)=>{
+                    value.buyerId = buyerId
+                    return value;
+            });
+            const formData = {
+                data : data,
+                "registerType":"Dealer"
+            }
+        await Store?.postSaleDeviceData(formData?.registerType ,formData );
         setVisible(!visible);
+        }
+    }
+
+    const selectedDevice =async (deviceId , status) =>{
+        if(status == true){
+            await   setSaleDevice(saleDevice =>[...saleDevice ,{ 
+                sellerId: "661a1bc046408479fc5eaba3",
+                buyerId : "",
+                deviceId : deviceId
+            }])
+        }else{
+            if(saleDevice?.length > 1){
+                const filterData = await saleDevice?.filter((data,i) => data?.deviceId != deviceId );
+                setSaleDevice(filterData)
+            }else{
+                setSaleDevice([]);
+            }
+            // setSaleDevice(saleDevice =>[...saleDevice ,{ 
+            //     sellerId: "661a1bc046408479fc5eaba3",
+            //     buyerId : "",
+            //     deviceId : deviceId
+            // }])
+        }  
+    }
+
+    const onChange =async (_id) =>{
+        setBuyerId(_id);
+        console.log(`dealer id -${ _id }`)
+        console.log(`Sale Device  id -${ JSON.stringify(saleDevice) }`)
+
     }
 
     const headerItem = () => (
@@ -32,7 +82,7 @@ const SellDevices = () => {
             <Text style={styles.foundCount}>180 Devices found</Text>
             <View>
                 <View style={{ marginTop: 20 }}>
-                    <SearchBar />
+                    <SearchBar soldStatus={false} type="Device" />
                 </View>
             </View>
         </View>
@@ -42,12 +92,13 @@ const SellDevices = () => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <FlatList
-                data={DEVICEDATA}
+                 data={Store?.unsoldDeviceData?.length > 0 && Store?.unsoldDeviceData }
+                // data={DEVICEDATA}
                 keyExtractor={(item) => item?.rfId}
                 ListHeaderComponent={headerItem}
                 renderItem={({ item }) => (
                     <>
-                        <ListDevice3 item={item} />
+                        <ListDevice3 item={item} selectedDevice={selectedDevice} />
                     </>
                 )}
                 ListFooterComponent={
@@ -73,13 +124,13 @@ const SellDevices = () => {
                                 placeholder='Select Dealer'
                                 search
                                 searchPlaceholder="Search..."
-                                data={Store?.bindDistrict}
-                                labelField="cityName"
+                                data={ Store?.dealerData?.length > 0 && Store?.dealerData }
+                                labelField="customerName"
                                 valueField="_id"
-                            //value={bodyData?.district}
-                            // onChange={item => {
-                            //     onChange("district", item?._id)
-                            // }}
+                                //value={bodyData?.district}
+                                onChange={item => {
+                                    onChange(item?._id)
+                                }}
                             />
                             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                 <Button
@@ -107,7 +158,7 @@ const SellDevices = () => {
     )
 }
 
-export default SellDevices
+export default observer(SellDevices);
 
 const styles = StyleSheet.create({
     foundCount: {

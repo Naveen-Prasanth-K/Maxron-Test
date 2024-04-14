@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
@@ -11,14 +12,19 @@ import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Store from '../../../../Utilities/Store/Store';
 
 const AdminDealerHome = () => {
 
     const navigation = useNavigation();
-
-    const DealerInfoHandler = (item) => {
+    const DealerInfoHandler =async (item) => {
+        await Store?.getDashboardMemberData(item?._id , "Dealer" )
         navigation.navigate('AdminDealerInfo', { item: item })
     }
+
+    useEffect(()=>{
+        Store?.getFilterMemberData(0,0,0,"Dealer")
+    },[])
 
     const headerItem = () => (
         <>
@@ -32,7 +38,7 @@ const AdminDealerHome = () => {
                 <View style={CommonStyles.adminHeader}>
                     <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                     <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
-                    <SearchBar />
+                    <SearchBar soldStatus={false} type="Dealer"/>
                 </View>
             </LinearGradient>
             <Text style={CommonStyles.dealerTxt}>DEALERS</Text>
@@ -44,7 +50,8 @@ const AdminDealerHome = () => {
             <View style={CommonStyles.pageContainer}>
                 <SafeAreaView>
                     <FlatList
-                        data={DEALERDATA}
+                        // data={DEALERDATA}
+                        data={ Store?.dealerData?.length > 0 && Store?.dealerData }
                         keyExtractor={(item) => item?.rfId}
                         ListHeaderComponent={headerItem}
                         renderItem={({ item }) => (
@@ -83,7 +90,7 @@ const AdminDealerHome = () => {
     )
 }
 
-export default AdminDealerHome
+export default  observer(AdminDealerHome);
 
 const styles = StyleSheet.create({
     foundCount: {

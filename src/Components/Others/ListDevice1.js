@@ -15,9 +15,9 @@ export default function ListDevice1({ item }) {
     return (
         <View>
             <View style={styles.cardContainer}>
-                <Text style={styles.devicenameTxt}>{item?.deviceName}</Text>
+                <Text style={styles.devicenameTxt}>{item?.scanQR}</Text>
                 <View style={styles.nameContainer}>
-                    <Text style={styles.nameTxt} >{item?.ownerName}</Text>
+                    <Text style={styles.nameTxt} >{item?.ownerId?.customerName}</Text>
                     <Divider orientation="vertical" width={1} style={{ marginHorizontal: 10 }} />
                     <Text style={styles.nameTxt} >{item?.masterMobileNo}</Text>
                 </View>
@@ -29,7 +29,7 @@ export default function ListDevice1({ item }) {
                         style={{ marginRight: 5 }}
                         color={Colors.secondary}
                     />
-                    <Text style={styles.nameTxt}>{item?.location}</Text>
+                    <Text style={styles.nameTxt}>{item?.ownerId?.location}</Text>
                 </View>
                 <View>
                     <Button
