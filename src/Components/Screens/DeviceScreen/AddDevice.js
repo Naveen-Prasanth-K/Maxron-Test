@@ -18,7 +18,8 @@ const AddDevice = () => {
     const [bodyData, setBodyData] = useState({
         scanQR: "",
         controllerName: "",
-        masterMobileNo: ""
+        masterMobileNo: "",
+        ownerId: "661a1bc046408479fc5eaba3"
     });
 
     // on change

@@ -25,10 +25,10 @@ const DeviceDetails = ({ route }) => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <ScrollView>
-                <Text style={CommonStyles.pageHeading}>{item?.deviceName} Details</Text>
+                <Text style={CommonStyles.pageHeading}>{item?.scanQR} Details</Text>
                 <View style={styles.rowContainer}>
                     <Text style={styles.text1}>Location</Text>
-                    <Text style={styles.text2}>{item?.location}</Text>
+                    <Text style={styles.text2}>{item?.ownerId?.location}</Text>
                 </View>
                 <View style={styles.rowContainer}>
                     <Text style={styles.text1}>IMEI</Text>

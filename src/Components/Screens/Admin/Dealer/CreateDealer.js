@@ -15,29 +15,37 @@ import Store from '../../../../Utilities/Store/Store';
 const CreateDealer = ({ route }) => {
     const { item } = route.params
     const navigation = useNavigation();
+    console.log(`item -${ JSON.stringify(item) }`)
     const [bodyData, setBodyData] = useState({
-        customerName: "",
-        mobileNo: "",
-        location: "",
-        bussinessName: "",
-        alternateMobile: "",
-        address: "",
-        district: "",
-        Pincode: "",
-        GSTNo: "",
-        mailId: "",
-        memberType: "65ff86d39a46960cfddc7640"
+        customerName: item?.customerName != "" ? item?.customerName :  "",
+        // mobileNo: "",
+        mobileNo: item?.mobileNo != "" ? item?.mobileNo :  "",
+        location: item?.location != "" ? item?.location :  "",
+        bussinessName: item?.bussinessName != "" ? item?.bussinessName :  "",
+        // alternateMobile: "",
+        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile :  "",
+        address: item?.address != "" ? item?.address :  "",
+        district: item?.district?._id != "" ? item?.district?._id :  "",
+        Pincode: item?.Pincode != "" ? item?.Pincode :  "",
+        // Pincode: "",
+        GSTNo: item?.GSTNo != "" ? item?.GSTNo :  "",
+        mailId: item?.mailId != "" ? item?.mailId :  "",
+        registerType: "Dealer",
+        _id: item?._id != "" ? item?._id :  ""
     });
 
     useEffect(() => {
-        Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+        const fetchData = async() =>{
+            Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
+        }
+        fetchData()
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        Store?.postMemberData(bodyData?.memberType, bodyData)
+        item?._id == "" ? Store?.postMemberData(bodyData?.memberType, bodyData) : Store?.putMemberData(bodyData?.memberType, bodyData)
         navigation.goBack()
     }
 
@@ -45,7 +53,7 @@ const CreateDealer = ({ route }) => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <ScrollView>
-                <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update Dealer Info' : 'Create Dealer'}</Text>
+                <Text style={CommonStyles.pageHeading}>{item?._id ? 'Update Dealer Info' : 'Create Dealer'}</Text>
                 <Input
                     label='Business Name'
                     labelStyle={styles.labelStyle}
@@ -77,7 +85,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.mobileNo.toString()}
+                    value={bodyData?.mobileNo?.toString()}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -89,7 +97,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.alternateMobile.toString()}
+                    value={bodyData?.alternateMobile?.toString()}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -127,7 +135,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.Pincode.toString()}
+                    value={bodyData?.Pincode?.toString()}
                     onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
@@ -151,7 +159,7 @@ const CreateDealer = ({ route }) => {
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <Button
-                    title="Create Dealer"
+                    title={ bodyData?._id != "" ? "Update Dealer" : "Create Dealer" }
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}

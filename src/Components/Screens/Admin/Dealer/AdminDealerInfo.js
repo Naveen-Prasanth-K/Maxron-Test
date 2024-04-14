@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Dimensions } from 'react-native';
+import { observer } from 'mobx-react';
 import React, { useState } from 'react'
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../../Others/HeaderCommon';
@@ -9,6 +10,7 @@ import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { WinDimensions } from '../../../../Utilities/GlobalStyles/WinDimension';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
+import Store from '../../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,7 +42,6 @@ const AdminDealerInfo = ({ route }) => {
     const CancelHandler = () => {
         toggleOverlay()
     }
-
     return (
         <>
             <View style={CommonStyles.pageContainer}>
@@ -115,21 +116,21 @@ const AdminDealerInfo = ({ route }) => {
                     <View style={styles.bottomContainer}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={styles.bottomSubCon}>
-                                <Text style={styles.bigTxt}>{item?.totalPurchased}</Text>
+                                <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.totalPurchased != "" ? Store?.dealerDashBoard?.totalPurchased : 0}</Text>
                                 <Text style={styles.smallTxt}>Total Purchased</Text>
                             </View>
                             <View style={styles.bottomSubCon}>
-                                <Text style={styles.bigTxt}>{item?.soldDevices}</Text>
+                                <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.soldDevices != "" ? Store?.dealerDashBoard?.soldDevices : 0 }</Text>
                                 <Text style={styles.smallTxt}>Sold Devices</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 40 }}>
                             <View style={styles.bottomSubCon}>
-                                <Text style={styles.bigTxt}>{item?.replacedDevices}</Text>
+                                <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.replacedDevices != "" ? Store?.dealerDashBoard?.replacedDevices : 0}</Text>
                                 <Text style={styles.smallTxt}>Replaced Devices</Text>
                             </View>
                             <View style={styles.bottomSubCon}>
-                                <Text style={styles.bigTxt}>{item?.unsoldDevices}</Text>
+                                <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.unsoldDevices != "" ? Store?.dealerDashBoard?.unsoldDevices : 0}</Text>
                                 <Text style={styles.smallTxt}>Unsold Devices</Text>
                             </View>
                         </View>
@@ -161,7 +162,7 @@ const AdminDealerInfo = ({ route }) => {
     )
 }
 
-export default AdminDealerInfo
+export default observer(AdminDealerInfo);
 
 const styles = StyleSheet.create({
     uploadPic: {

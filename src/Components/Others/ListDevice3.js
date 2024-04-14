@@ -8,7 +8,7 @@ import { Colors } from '../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../Utilities/GlobalStyles/CommonStyles';
 import CheckBox from 'react-native-check-box'
 
-export default function ListDevice3({ item }) {
+export default function ListDevice3({ item , selectedDevice }) {
 
     const navigation = useNavigation();
 
@@ -17,6 +17,10 @@ export default function ListDevice3({ item }) {
     }
 
     const [isChecked, setIsChecked] = useState(false);
+    const checkBoxStatusUpdate = (_id, status) =>{
+        setIsChecked(status);
+        selectedDevice(_id, status)
+    }
 
     return (
         <Pressable
@@ -24,7 +28,7 @@ export default function ListDevice3({ item }) {
             onPress={() => ActivateHandler()}
         >
             <View style={{ justifyContent: 'space-between' }}>
-                <Text style={styles.devicenameTxt}>{item?.deviceName}
+                <Text style={styles.devicenameTxt}>{item?.scanQR}
                 </Text>
                 <Text style={styles.nameTxt} >{item?.IMEI}</Text>
             </View>
@@ -33,7 +37,7 @@ export default function ListDevice3({ item }) {
             />
             <CheckBox
                 style={{ alignSelf: 'center' }}
-                onClick={() => setIsChecked(!isChecked)}
+                onClick={() => checkBoxStatusUpdate(item?._id, !isChecked)}
                 isChecked={isChecked}
                 checkBoxColor={Colors.secondary}
             />
