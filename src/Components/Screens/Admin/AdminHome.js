@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
 import { observer } from 'mobx-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
@@ -17,12 +17,15 @@ import Store from '../../../Utilities/Store/Store';
 
 const AdminHome = () => {
     const navigation = useNavigation();
+    const [name, setName] = useState("")
 
     useEffect(()=>{
     
         const fetchData =async () =>{
             console.log(`**************use Effct triggers **************`)
             let id = await Store.getLocalDataUserDetails("_id");
+            let customerName = await Store.getLocalDataUserDetails("customerName");
+            setName(customerName)
             console.log(`rfId -${ id }`)
         }
 
@@ -41,7 +44,7 @@ const AdminHome = () => {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{ name }</Text>
                     </View>
                 </LinearGradient>
 
