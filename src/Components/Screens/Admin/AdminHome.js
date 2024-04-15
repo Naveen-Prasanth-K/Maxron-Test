@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
@@ -11,10 +12,27 @@ import Header1 from '../../Others/Header1';
 import { LinearGradient } from 'expo-linear-gradient';
 import SearchBar from '../../Others/SearchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { localStorageGetSingleItem, getLocalDataUserDetails } from '../../../Utilities/Storage/Storage';
 import Store from '../../../Utilities/Store/Store';
 
-export default function AdminHome() {
+const AdminHome = () => {
     const navigation = useNavigation();
+    const [name, setName] = useState("")
+
+    useEffect(()=>{
+    
+        const fetchData =async () =>{
+            console.log(`**************use Effct triggers **************`)
+            let id = await Store.getLocalDataUserDetails("_id");
+            let customerName = await Store.getLocalDataUserDetails("customerName");
+            setName(customerName)
+            console.log(`rfId -${ id }`)
+        }
+
+        fetchData()
+
+
+    },[])
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={CommonStyles.pageContainer}>
@@ -26,7 +44,7 @@ export default function AdminHome() {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{ name }</Text>
                     </View>
                 </LinearGradient>
 
@@ -37,7 +55,7 @@ export default function AdminHome() {
                         />
                         <Text style={styles.text1}>Available Devices</Text>
                     </View>
-                    <Text style={styles.text2}>605</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : 0 }</Text>
                 </Pressable>
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => navigation.navigate('SoldDevices')}>
                     <View>
@@ -46,7 +64,7 @@ export default function AdminHome() {
                         />
                         <Text style={styles.text1}>Sold Devices</Text>
                     </View>
-                    <Text style={styles.text2}>6558</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : "" }</Text>
                 </Pressable>
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => navigation.navigate('UnSoldDevices')}>
                     <View>
@@ -55,7 +73,7 @@ export default function AdminHome() {
                         />
                         <Text style={styles.text1}>Unsold Devices From Dealers</Text>
                     </View>
-                    <Text style={styles.text2}>68</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.unsoldDevices != "" ? Store?.adminDashBoard?.unsoldDevices : 0 }</Text>
                 </Pressable>
                 {
                     Store?.screen == 'Admin' ?
@@ -68,7 +86,7 @@ export default function AdminHome() {
                                 />
                                 <Text style={styles.text1}>Dealers</Text>
                             </View>
-                            <Text style={styles.text2}>68</Text>
+                            <Text style={styles.text2}>{Store?.adminDashBoard?.dealerCount != "" ? Store?.adminDashBoard?.dealerCount : 0 }</Text>
                         </Pressable> : ''
                 }
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer, { marginBottom: 100 }]} onPress={() => navigation.navigate('CustomerList')}>
@@ -78,14 +96,14 @@ export default function AdminHome() {
                         />
                         <Text style={styles.text1}>Customers</Text>
                     </View>
-                    <Text style={styles.text2}>68</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.userCount != "" ? Store?.adminDashBoard?.userCount : 0 }</Text>
                 </Pressable>
             </ScrollView>
         </SafeAreaView>
 
     )
 }
-
+export default observer(AdminHome);
 const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
