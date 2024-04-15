@@ -15,27 +15,27 @@ import Store from '../../../../Utilities/Store/Store';
 const CreateDealer = ({ route }) => {
     const { item } = route.params
     const navigation = useNavigation();
-    console.log(`item -${ JSON.stringify(item) }`)
+    console.log(`item -${JSON.stringify(item)}`)
     const [bodyData, setBodyData] = useState({
-        customerName: item?.customerName != "" ? item?.customerName :  "",
+        customerName: item?.customerName != "" ? item?.customerName : "",
         // mobileNo: "",
-        mobileNo: item?.mobileNo != "" ? item?.mobileNo :  "",
-        location: item?.location != "" ? item?.location :  "",
-        bussinessName: item?.bussinessName != "" ? item?.bussinessName :  "",
+        mobileNo: item?.mobileNo != "" ? item?.mobileNo : "",
+        location: item?.location != "" ? item?.location : "",
+        bussinessName: item?.bussinessName != "" ? item?.bussinessName : "",
         // alternateMobile: "",
-        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile :  "",
-        address: item?.address != "" ? item?.address :  "",
-        district: item?.district?._id != "" ? item?.district?._id :  "",
-        Pincode: item?.Pincode != "" ? item?.Pincode :  "",
+        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile : "",
+        address: item?.address != "" ? item?.address : "",
+        district: item?.district?._id != "" ? item?.district?._id : "",
+        Pincode: item?.Pincode != "" ? item?.Pincode : "",
         // Pincode: "",
-        GSTNo: item?.GSTNo != "" ? item?.GSTNo :  "",
-        mailId: item?.mailId != "" ? item?.mailId :  "",
+        GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
+        mailId: item?.mailId != "" ? item?.mailId : "",
         registerType: "Dealer",
-        _id: item?._id != "" ? item?._id :  ""
+        _id: item?._id != "" ? item?._id : ""
     });
 
     useEffect(() => {
-        const fetchData = async() =>{
+        const fetchData = async () => {
             Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
         }
         fetchData()
@@ -62,7 +62,7 @@ const CreateDealer = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={25}
-                    value={bodyData.bussinessName.toString()}
+                    value={bodyData.bussinessName}
                     onChangeText={(value) => { onChange("bussinessName", value) }}
                 />
                 <Input
@@ -73,7 +73,7 @@ const CreateDealer = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={15}
-                    value={bodyData.customerName.toString()}
+                    value={bodyData.customerName}
                     onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
@@ -85,7 +85,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.mobileNo?.toString()}
+                    value={bodyData?.mobileNo}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -97,7 +97,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.alternateMobile?.toString()}
+                    value={bodyData?.alternateMobile}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -107,7 +107,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.address.toString()}
+                    value={bodyData.address}
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
@@ -135,7 +135,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData?.Pincode?.toString()}
+                    value={bodyData?.Pincode}
                     onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
@@ -145,7 +145,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.GSTNo.toString()}
+                    value={bodyData.GSTNo}
                     onChangeText={(value) => { onChange("GSTNo", value) }}
                 />
                 <Input
@@ -155,11 +155,11 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.mailId.toString()}
+                    value={bodyData.mailId}
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <Button
-                    title={ bodyData?._id != "" ? "Update Dealer" : "Create Dealer" }
+                    title={bodyData?._id != "" ? "Update Dealer" : "Create Dealer"}
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
