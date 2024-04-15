@@ -58,6 +58,7 @@ class Store {
             //Bind Table
             getDistrictData: action,
             setDistrictData: action,
+            getLocalDataUserDetails: action,
 
             memberRegister: observable,
             adminDashBoard :observable,
@@ -168,8 +169,10 @@ class Store {
             "_id" : id,
             "registerType" : registerType
         }
+        console.log(`form Data -${ JSON.stringify(formData) }`)
         await axios.post(`${URL}dashboard` ,formData ).then(async (response) => {
             if (response?.data?.message  == "Success") {
+                console.log(`response?.data -${ JSON.stringify(response?.data) }`)
                 registerType == "Admin" ?  this.setAdminDashboardData(response?.data?.data) :  this.setDealerDashboardData(response?.data?.data)
             }
         }).catch((error) => {
@@ -341,6 +344,12 @@ class Store {
 
             this.setDistrictData([]);
         })
+    }
+
+    getLocalDataUserDetails = async (key, tableName = "memberData") => {
+        let data = await localStorageGetSingleItem(tableName);
+        console.log(`localstorage data data -${ JSON.stringify(data) }`)
+        return data == null ? "null" : data[key];
     }
 
     setMemberRegisterData = (data) => {

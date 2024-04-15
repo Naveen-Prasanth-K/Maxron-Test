@@ -10,23 +10,58 @@ import { WinDimensions } from '../../../Utilities/GlobalStyles/WinDimension';
 import Store from '../../../Utilities/Store/Store';
 import Switch from '../../../Utilities/UI/Switch';
 import { observer } from 'mobx-react';
-
+import axios from 'axios';
+import { URL } from '../../../Utilities/Constant/Environment';
+import { localStorageGetSingleItem, localStorageStoreItem } from '../../../Utilities/Storage/Storage';
 const { width, height } = Dimensions.get('window');
-
 const LoginScreen = () => {
-
     const navigation = useNavigation();
+    const [bodyData, setBodyData] = useState({
+            mobileNo : "",
+            registerType : Store.screen,
+            otp: ""
+    });
+    const [otpStatus, setOtpStatus] = useState(false)
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const isTablet = Dimensions.get('window').width >= 600;
 
-    const screenChangeHandler = () => {
+    const screenChangeHandler =async () => {
         const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
-        Store.setScreen(newValue);
+        await setBodyData( bodyData => ({ ...bodyData , registerType : newValue }))
+        await Store.setScreen(newValue);
     };
 
-    const LoginHandler = () => {
-        navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
+    // Send Otp
+    const sendOtpHandler =async () =>{     
+        console.log(`bodyData -${ JSON.stringify(bodyData) }`)  
+        await axios.post(`${URL}otp-sent`,bodyData).then((response)=>{
+            console.log(`response -${ JSON.stringify(response?.data) }`)
+            setOtpStatus(true);
+        }).catch((error)=>{
+            console.log(error)
+        });
+    }
+    // login handler
+    const LoginHandler = async () => {
+        await axios.post(`${URL}otp-verify`, bodyData).then(async (response)=>{
+            // console.log(`response -${ JSON.stringify(response?.data) }`)
+            if (response?.data?.message == "Success") {
+                await Store?.getDashboardMemberData(response?.data?.data?._id ,Store.screen )
+                await localStorageStoreItem('memberData', JSON.stringify(response?.data?.data));
+                navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
+            }else{
+
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+       // setOtpStatus(true)
+         // navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
+    }
+    // On Change
+    const onChange = (name, value) =>{
+        setBodyData( bodyData => ({ ...bodyData , [name] : value }))
     }
 
     return (
@@ -50,8 +85,43 @@ const LoginScreen = () => {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        disabled={ otpStatus }
+                        value={bodyData?.mobileNo?.toString()}
+                        onChangeText={(value) => { onChange("mobileNo", value) }}
                     />
-                    <Input
+                   { otpStatus == true && <Input
+                        placeholder='Enter your Otp Number *'
+                        inputContainerStyle={CommonStyles.inputContainerStyle}
+                        inputStyle={CommonStyles.inputStyle}
+                        placeholderTextColor={Colors.primary100}
+                        keyboardType='numeric'
+                        value={bodyData?.otp?.toString()}
+                        onChangeText={(value) => { onChange("otp", value) }}
+                    />}
+                      <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
+                        <Text style={styles.iotText}>Admin</Text>
+                        <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler}  disabled={true} />
+                        <Text style={styles.iotText}>Dealer</Text>
+                    </View>
+                    <View style={{ marginTop: 20 }}>
+                      { otpStatus == false ?  <Button
+                            title="Send Otp"
+                            titleStyle={CommonStyles.inputTitleStyle}
+                            buttonStyle={CommonStyles.loginButtonStyle}
+                            containerStyle={CommonStyles.loginContainerStyle}
+                            onPress={sendOtpHandler}
+                        /> : 
+                            <Button
+                                title="Login"
+                                titleStyle={CommonStyles.inputTitleStyle}
+                                buttonStyle={CommonStyles.loginButtonStyle}
+                                containerStyle={CommonStyles.loginContainerStyle}
+                                onPress={LoginHandler}
+                            />                    
+                    }
+                    </View>
+
+                    {/* <Input
                         placeholder='Enter your Password *'
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}
@@ -67,28 +137,15 @@ const LoginScreen = () => {
                                 />
                             </Pressable>
                         }
-                    />
-                    <Pressable
+                    /> */}
+                    {/* <Pressable
                         style={({ pressed }) => [pressed && CommonStyles.pressed, styles.forgetContainer]}
                         onPress={() => navigation.navigate("ForgotPass")}
                     >
                         <Text style={{ color: Colors.primary, fontWeight: '600' }}>Forgot Password?</Text>
-                    </Pressable>
-                    <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
-                        <Text style={styles.iotText}>Admin</Text>
-                        <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler} />
-                        <Text style={styles.iotText}>Dealer</Text>
-                    </View>
-                    <View style={{ marginTop: 20 }}>
-                        <Button
-                            title="Login"
-                            titleStyle={CommonStyles.inputTitleStyle}
-                            buttonStyle={CommonStyles.loginButtonStyle}
-                            containerStyle={CommonStyles.loginContainerStyle}
-                            onPress={LoginHandler}
-                        />
-                    </View>
-
+                    </Pressable> */}
+                  
+                    
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 5 }}>
                         <Text>Don’t have an account?</Text>
                         <Pressable
