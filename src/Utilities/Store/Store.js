@@ -83,8 +83,10 @@ class Store {
 
     // POst Member based data
     postMemberData = async (registerType, formData) => {
+        console.log(`postMemberData triggered`)
+        console.log(`formData -${JSON.stringify(formData)}`)
         await axios.post(`${URL}member`, formData).then(async (response) => {
-            console.log(`postMemberData response = ${response}`)
+            console.log(`postMemberData response = ${JSON.stringify(response)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Member Data Added.")
                 this.getFilterMemberData(0, 0, 0, registerType);
@@ -100,9 +102,10 @@ class Store {
     }
     // PUT Member based data
     putMemberData = async (registerType, formData) => {
+        console.log(`putMemberData triggered`)
         console.log(`formData -${JSON.stringify(formData)}`)
         await axios.put(`${URL}member`, formData).then(async (response) => {
-            console.log(`putMemberData response = ${response}`)
+            console.log(`putMemberData response = ${JSON.stringify(response?.data?.data)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Dealer Data Updated .")
                 this.getFilterMemberData(0, 0, 0, registerType);
@@ -128,7 +131,6 @@ class Store {
             } else if (error?.message == "Network Error") {
                 errorAlert(error?.message, "Please check network connectivity")
             }
-
             this.setMemberRegisterData([]);
         })
     }
@@ -361,7 +363,7 @@ class Store {
 
     getLocalDataUserDetails = async (key, tableName = "memberData") => {
         let data = await localStorageGetSingleItem(tableName);
-        console.log(`localstorage data data -${JSON.stringify(data)}`)
+        // console.log(`localstorage data data -${JSON.stringify(data)}`)
         return data == null ? "null" : data[key];
     }
 

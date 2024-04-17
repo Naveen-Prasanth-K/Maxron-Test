@@ -16,9 +16,9 @@ const CustomerList = () => {
 
     const navigation = useNavigation();
 
-    useEffect(()=>{
-        Store?.getFilterMemberData(0,0,0, "User");
-    },[])
+    useEffect(() => {
+        Store?.getFilterMemberData(0, 0, 0, "User");
+    }, [])
 
     const headerItem = () => (
         <View style={styles.headerItemContainer}>
@@ -26,7 +26,7 @@ const CustomerList = () => {
             <Text style={styles.foundCount}>180 found</Text>
             <View>
                 <View style={{ marginTop: 20 }}>
-                    <SearchBar  soldStatus={false} type="User" />
+                    <SearchBar soldStatus={false} type="User" />
                 </View>
             </View>
         </View>
@@ -36,13 +36,14 @@ const CustomerList = () => {
         navigation.navigate('CustomerDetail', { item: item })
     }
 
+    console.log(`Store?.customerData = ${JSON.stringify(Store?.customerData)}`)
+
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <FlatList
                 data={Store?.customerData?.length > 0 && Store?.customerData}
-                //  data={CUSTOMERDATA}
-                keyExtractor={(item) => item?.rfId}
+                keyExtractor={(item) => item?._id}
                 ListHeaderComponent={headerItem}
                 renderItem={({ item }) => (
                     <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => DetailPageHandler(item)}>
@@ -57,7 +58,7 @@ const CustomerList = () => {
                                     style={{ marginRight: 5 }}
                                     color={Colors.secondary}
                                 />
-                                <Text style={styles.nameTxt}>{item?.location}</Text>
+                                <Text style={styles.nameTxt}>{item?.district?.cityName}</Text>
                             </View>
                             <Text style={styles.nameTxt}>{item?.joinedDate}</Text>
                         </View>
