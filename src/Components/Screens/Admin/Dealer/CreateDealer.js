@@ -15,7 +15,6 @@ import Store from '../../../../Utilities/Store/Store';
 const CreateDealer = ({ route }) => {
     const { item } = route.params
     const navigation = useNavigation();
-    console.log(`item -${JSON.stringify(item)}`)
     const [bodyData, setBodyData] = useState({
         customerName: item?.customerName != "" ? item?.customerName : "",
         // mobileNo: "",

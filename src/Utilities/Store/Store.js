@@ -84,6 +84,7 @@ class Store {
     // POst Member based data
     postMemberData = async (registerType, formData) => {
         await axios.post(`${URL}member`, formData).then(async (response) => {
+            console.log(`postMemberData response = ${response}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Member Data Added.")
                 this.getFilterMemberData(0, 0, 0, registerType);
@@ -101,6 +102,7 @@ class Store {
     putMemberData = async (registerType, formData) => {
         console.log(`formData -${JSON.stringify(formData)}`)
         await axios.put(`${URL}member`, formData).then(async (response) => {
+            console.log(`putMemberData response = ${response}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Dealer Data Updated .")
                 this.getFilterMemberData(0, 0, 0, registerType);
