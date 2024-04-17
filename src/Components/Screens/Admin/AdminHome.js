@@ -19,20 +19,20 @@ const AdminHome = () => {
     const navigation = useNavigation();
     const [name, setName] = useState("")
 
-    useEffect(()=>{
-    
-        const fetchData =async () =>{
-            console.log(`**************use Effct triggers **************`)
+    useEffect(() => {
+
+        const fetchData = async () => {
+            // console.log(`**************use Effct triggers **************`)
             let id = await Store.getLocalDataUserDetails("_id");
             let customerName = await Store.getLocalDataUserDetails("customerName");
             setName(customerName)
-            console.log(`rfId -${ id }`)
+            // console.log(`rfId -${ id }`)
         }
-
         fetchData()
+    }, [])
 
+    console.log(Store?.adminDashBoard?.unsoldDevices)
 
-    },[])
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={CommonStyles.pageContainer}>
@@ -44,7 +44,7 @@ const AdminHome = () => {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{ name }</Text>
+                        <Text style={CommonStyles.adminTxt}>{name}</Text>
                     </View>
                 </LinearGradient>
 
@@ -55,7 +55,7 @@ const AdminHome = () => {
                         />
                         <Text style={styles.text1}>Available Devices</Text>
                     </View>
-                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : 0 }</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : 0}</Text>
                 </Pressable>
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => navigation.navigate('SoldDevices')}>
                     <View>
@@ -64,7 +64,7 @@ const AdminHome = () => {
                         />
                         <Text style={styles.text1}>Sold Devices</Text>
                     </View>
-                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : "" }</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.soldDevices != "" ? Store?.adminDashBoard?.soldDevices : ""}</Text>
                 </Pressable>
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]} onPress={() => navigation.navigate('UnSoldDevices')}>
                     <View>
@@ -73,7 +73,7 @@ const AdminHome = () => {
                         />
                         <Text style={styles.text1}>Unsold Devices From Dealers</Text>
                     </View>
-                    <Text style={styles.text2}>{Store?.adminDashBoard?.unsoldDevices != "" ? Store?.adminDashBoard?.unsoldDevices : 0 }</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.unsoldDevices != "" ? Store?.adminDashBoard?.unsoldDevices : 0}</Text>
                 </Pressable>
                 {
                     Store?.screen == 'Admin' ?
@@ -86,7 +86,7 @@ const AdminHome = () => {
                                 />
                                 <Text style={styles.text1}>Dealers</Text>
                             </View>
-                            <Text style={styles.text2}>{Store?.adminDashBoard?.dealerCount != "" ? Store?.adminDashBoard?.dealerCount : 0 }</Text>
+                            <Text style={styles.text2}>{Store?.adminDashBoard?.dealerCount != "" ? Store?.adminDashBoard?.dealerCount : 0}</Text>
                         </Pressable> : ''
                 }
                 <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer, { marginBottom: 100 }]} onPress={() => navigation.navigate('CustomerList')}>
@@ -96,7 +96,7 @@ const AdminHome = () => {
                         />
                         <Text style={styles.text1}>Customers</Text>
                     </View>
-                    <Text style={styles.text2}>{Store?.adminDashBoard?.userCount != "" ? Store?.adminDashBoard?.userCount : 0 }</Text>
+                    <Text style={styles.text2}>{Store?.adminDashBoard?.userCount != "" ? Store?.adminDashBoard?.userCount : 0}</Text>
                 </Pressable>
             </ScrollView>
         </SafeAreaView>

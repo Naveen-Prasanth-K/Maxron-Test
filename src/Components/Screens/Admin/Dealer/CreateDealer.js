@@ -13,25 +13,22 @@ import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import Store from '../../../../Utilities/Store/Store';
 
 const CreateDealer = ({ route }) => {
+
     const { item } = route.params
     const navigation = useNavigation();
-    console.log(`item -${JSON.stringify(item)}`)
     const [bodyData, setBodyData] = useState({
+        _id: item?._id != "" ? item?._id : "",
         customerName: item?.customerName != "" ? item?.customerName : "",
-        // mobileNo: "",
         mobileNo: item?.mobileNo != "" ? item?.mobileNo : "",
         location: item?.location != "" ? item?.location : "",
         bussinessName: item?.bussinessName != "" ? item?.bussinessName : "",
-        // alternateMobile: "",
         alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile : "",
         address: item?.address != "" ? item?.address : "",
         district: item?.district?._id != "" ? item?.district?._id : "",
         Pincode: item?.Pincode != "" ? item?.Pincode : "",
-        // Pincode: "",
         GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
         mailId: item?.mailId != "" ? item?.mailId : "",
-        registerType: "Dealer",
-        _id: item?._id != "" ? item?._id : ""
+        registerType: "Dealer"
     });
 
     useEffect(() => {
