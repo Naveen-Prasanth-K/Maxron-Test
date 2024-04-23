@@ -11,7 +11,6 @@ import OtpVerify from '../Components/Screens/Authentication/OtpVerify';
 import PassSuccess from '../Components/Screens/Authentication/PassSuccess';
 import RegisterScreen from '../Components/Screens/Authentication/RegisterScreen';
 import HomeScreen from '../Components/Screens/DeviceScreen/DeviceHome';
-import SplashScreen from '../Components/Screens/EntryScreen/SplashScreen';
 import ProfileScreen from '../Components/Screens/ProfileScreen/ProfileScreen';
 import AddDevice from '../Components/Screens/DeviceScreen/AddDevice';
 import DeviceReport from '../Components/Screens/Reports/DeviceReport';
@@ -56,10 +55,6 @@ export default function NativeStackNav() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                    name="SplashScreen"
-                    options={{ headerShown: false }}
-                    component={SplashScreen} />
                 <Stack.Screen
                     name="LoginScreen"
                     options={{ headerShown: false }}

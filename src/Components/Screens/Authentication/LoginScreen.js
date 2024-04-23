@@ -14,12 +14,14 @@ import axios from 'axios';
 import { URL } from '../../../Utilities/Constant/Environment';
 import { localStorageGetSingleItem, localStorageStoreItem } from '../../../Utilities/Storage/Storage';
 const { width, height } = Dimensions.get('window');
+
 const LoginScreen = () => {
+
     const navigation = useNavigation();
     const [bodyData, setBodyData] = useState({
-            mobileNo : "",
-            registerType : Store.screen,
-            otp: ""
+        mobileNo: "",
+        registerType: Store.screen,
+        otp: ""
     });
     const [otpStatus, setOtpStatus] = useState(false)
     const { screenWidth, screenHeight } = WinDimensions();
@@ -43,40 +45,40 @@ const LoginScreen = () => {
 
     const screenChangeHandler =async () => {
         const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
-        await setBodyData( bodyData => ({ ...bodyData , registerType : newValue }))
+        await setBodyData(bodyData => ({ ...bodyData, registerType: newValue }))
         await Store.setScreen(newValue);
     };
 
     // Send Otp
-    const sendOtpHandler =async () =>{     
-        console.log(`bodyData -${ JSON.stringify(bodyData) }`)  
-        await axios.post(`${URL}otp-sent`,bodyData).then((response)=>{
-            console.log(`response -${ JSON.stringify(response?.data) }`)
+    const sendOtpHandler = async () => {
+        console.log(`bodyData -${JSON.stringify(bodyData)}`)
+        await axios.post(`${URL}otp-sent`, bodyData).then((response) => {
+            console.log(`response -${JSON.stringify(response?.data)}`)
             setOtpStatus(true);
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         });
     }
     // login handler
     const LoginHandler = async () => {
-        await axios.post(`${URL}otp-verify`, bodyData).then(async (response)=>{
+        await axios.post(`${URL}otp-verify`, bodyData).then(async (response) => {
             // console.log(`response -${ JSON.stringify(response?.data) }`)
             if (response?.data?.message == "Success") {
-                await Store?.getDashboardMemberData(response?.data?.data?._id ,Store.screen )
+                await Store?.getDashboardMemberData(response?.data?.data?._id, Store.screen)
                 await localStorageStoreItem('memberData', JSON.stringify(response?.data?.data));
                 navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
-            }else{
+            } else {
 
             }
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
-       // setOtpStatus(true)
-         // navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
+        // setOtpStatus(true)
+        // navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
     }
     // On Change
-    const onChange = (name, value) =>{
-        setBodyData( bodyData => ({ ...bodyData , [name] : value }))
+    const onChange = (name, value) => {
+        setBodyData(bodyData => ({ ...bodyData, [name]: value }))
     }
 
     return (
@@ -100,11 +102,11 @@ const LoginScreen = () => {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
-                        disabled={ otpStatus }
+                        disabled={otpStatus}
                         value={bodyData?.mobileNo?.toString()}
                         onChangeText={(value) => { onChange("mobileNo", value) }}
                     />
-                   { otpStatus == true && <Input
+                    {otpStatus == true && <Input
                         placeholder='Enter your Otp Number *'
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}
@@ -113,27 +115,27 @@ const LoginScreen = () => {
                         value={bodyData?.otp?.toString()}
                         onChangeText={(value) => { onChange("otp", value) }}
                     />}
-                      <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
+                    <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
                         <Text style={styles.iotText}>Admin</Text>
-                        <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler}  disabled={true} />
+                        <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler} disabled={true} />
                         <Text style={styles.iotText}>Dealer</Text>
                     </View>
                     <View style={{ marginTop: 20 }}>
-                      { otpStatus == false ?  <Button
-                            title="Send Otp"
+                        {otpStatus == false ? <Button
+                            title="Send OTP"
                             titleStyle={CommonStyles.inputTitleStyle}
                             buttonStyle={CommonStyles.loginButtonStyle}
                             containerStyle={CommonStyles.loginContainerStyle}
                             onPress={sendOtpHandler}
-                        /> : 
+                        /> :
                             <Button
                                 title="Login"
                                 titleStyle={CommonStyles.inputTitleStyle}
                                 buttonStyle={CommonStyles.loginButtonStyle}
                                 containerStyle={CommonStyles.loginContainerStyle}
                                 onPress={LoginHandler}
-                            />                    
-                    }
+                            />
+                        }
                     </View>
 
                     {/* <Input
@@ -159,8 +161,8 @@ const LoginScreen = () => {
                     >
                         <Text style={{ color: Colors.primary, fontWeight: '600' }}>Forgot Password?</Text>
                     </Pressable> */}
-                  
-                    
+
+
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 5 }}>
                         <Text>Don’t have an account?</Text>
                         <Pressable

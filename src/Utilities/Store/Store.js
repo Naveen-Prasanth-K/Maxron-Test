@@ -41,7 +41,7 @@ class Store {
 
             // Member regsiter Dealer, user
             getMemberData: action,
-            getFilterMemberData : action,
+            getFilterMemberData: action,
             getDashboardMemberData: action,
             postMemberData: action,
             postSaleDeviceData: action,
@@ -61,12 +61,12 @@ class Store {
             getLocalDataUserDetails: action,
 
             memberRegister: observable,
-            adminDashBoard :observable,
-            dealerDashBoard : observable,
-            customerData : observable,
-            dealerData : observable ,
+            adminDashBoard: observable,
+            dealerDashBoard: observable,
+            customerData: observable,
+            dealerData: observable,
             deviceRegister: observable,
-            soldDeviceData : observable,
+            soldDeviceData: observable,
             unsoldDeviceData: observable,
             saleDeviceData: observable,
             bindDistrict: observable,
@@ -83,10 +83,13 @@ class Store {
 
     // POst Member based data
     postMemberData = async (registerType, formData) => {
+        console.log(`postMemberData triggered`)
+        console.log(`formData -${JSON.stringify(formData)}`)
         await axios.post(`${URL}member`, formData).then(async (response) => {
+            console.log(`postMemberData response = ${JSON.stringify(response)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Member Data Added.")
-                this.getFilterMemberData(0, 0 , 0, registerType);
+                this.getFilterMemberData(0, 0, 0, registerType);
             }
         }).catch((error) => {
             // console.log(`error -${ JSON.stringify(error) }`)
@@ -99,11 +102,13 @@ class Store {
     }
     // PUT Member based data
     putMemberData = async (registerType, formData) => {
-        console.log(`formData -${ JSON.stringify(formData) }`)
+        console.log(`putMemberData triggered`)
+        console.log(`formData -${JSON.stringify(formData)}`)
         await axios.put(`${URL}member`, formData).then(async (response) => {
+            console.log(`putMemberData response = ${JSON.stringify(response?.data?.data)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Dealer Data Updated .")
-                this.getFilterMemberData(0, 0 , 0, registerType);
+                this.getFilterMemberData(0, 0, 0, registerType);
             }
         }).catch((error) => {
             // console.log(`error -${ JSON.stringify(error) }`)
@@ -126,23 +131,27 @@ class Store {
             } else if (error?.message == "Network Error") {
                 errorAlert(error?.message, "Please check network connectivity")
             }
-
             this.setMemberRegisterData([]);
         })
     }
+    setMemberRegisterData = (data) => {
+        this.memberRegister = [];
+        this.memberRegister = data != "null" ? data : [];
+    }
+
     // Get Member based data
-    getFilterMemberData = async (fromDate = 0 , toDate = 0, search = 0 , registerType = 0  ) => {
+    getFilterMemberData = async (fromDate = 0, toDate = 0, search = 0, registerType = 0) => {
         const formData = {
-            "fromDate" : fromDate == 0 ? "" : fromDate,
-            "toDate" : toDate == 0 ?  "" : toDate,
-            "pageNumber" : "",
-            "limit" : "",
-            "search" : search == 0 ? "" : search,
+            "fromDate": fromDate == 0 ? "" : fromDate,
+            "toDate": toDate == 0 ? "" : toDate,
+            "pageNumber": "",
+            "limit": "",
+            "search": search == 0 ? "" : search,
             "registerType": registerType == 0 ? "" : registerType
         }
-        await axios.post(`${URL}member/filter` ,formData ).then(async (response) => {
+        await axios.post(`${URL}member/filter`, formData).then(async (response) => {
             if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
-                registerType == "Dealer" ?  this.setDealerData(response?.data?.data) :  this.setCustomerData(response?.data?.data)
+                registerType == "Dealer" ? this.setDealerData(response?.data?.data) : this.setCustomerData(response?.data?.data)
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {
@@ -150,30 +159,30 @@ class Store {
             } else if (error?.message == "Network Error") {
                 errorAlert(error?.message, "Please check network connectivity")
             }
-            registerType == "Dealer" ?  this.setDealerData([]) :  this.customerData([])
+            registerType == "Dealer" ? this.setDealerData([]) : this.customerData([])
         })
     }
-     // Customer Data Set
-    setCustomerData = async (data) =>{
+    // Customer Data Set
+    setCustomerData = async (data) => {
         this.customerData = [];
         this.customerData = data != "null" ? data : [];
     }
     // Set dealer data
-    setDealerData = async (data) =>{
+    setDealerData = async (data) => {
         this.dealerData = [];
         this.dealerData = data != "null" ? data : [];
     }
-     // Get Member Dashboard
-     getDashboardMemberData = async (id , registerType ) => {
+    // Get Member Dashboard
+    getDashboardMemberData = async (id, registerType) => {
         const formData = {
-            "_id" : id,
-            "registerType" : registerType
+            "_id": id,
+            "registerType": registerType
         }
-        console.log(`form Data -${ JSON.stringify(formData) }`)
-        await axios.post(`${URL}dashboard` ,formData ).then(async (response) => {
-            if (response?.data?.message  == "Success") {
-                console.log(`response?.data -${ JSON.stringify(response?.data) }`)
-                registerType == "Admin" ?  this.setAdminDashboardData(response?.data?.data) :  this.setDealerDashboardData(response?.data?.data)
+        console.log(`form Data -${JSON.stringify(formData)}`)
+        await axios.post(`${URL}dashboard`, formData).then(async (response) => {
+            if (response?.data?.message == "Success") {
+                console.log(`response?.data -${JSON.stringify(response?.data)}`)
+                registerType == "Admin" ? this.setAdminDashboardData(response?.data?.data) : this.setDealerDashboardData(response?.data?.data)
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {
@@ -181,20 +190,20 @@ class Store {
             } else if (error?.message == "Network Error") {
                 errorAlert(error?.message, "Please check network connectivity")
             }
-            registerType == "Admin" ?  this.setAdminDashboardData([]) :  this.setDealerDashboardData([])
+            registerType == "Admin" ? this.setAdminDashboardData([]) : this.setDealerDashboardData([])
         })
     }
-      // Customer Data Set
-    setAdminDashboardData = async (data) =>{
+    // Customer Data Set
+    setAdminDashboardData = async (data) => {
         this.adminDashBoard = [];
         this.adminDashBoard = data != "null" ? data : [];
     }
     // Set dealer data
-    setDealerDashboardData = async (data) =>{
+    setDealerDashboardData = async (data) => {
         this.dealerDashBoard = [];
         this.dealerDashBoard = data != "null" ? data : [];
     }
-    
+
     // Delete Member based data
     deleteMemberData = async (memberId, formData) => {
         await axios.delete(`${URL}member/${memberId}`).then(async (response) => {
@@ -257,23 +266,29 @@ class Store {
             this.setDeviceRegisterData([]);
         })
     }
+
+    setDeviceRegisterData = (data) => {
+        this.deviceRegister = [];
+        this.deviceRegister = data != "null" ? data : [];
+    }
+
     // Filter Device based data
-    filterGetDeviceData = async (_id = 0 ,fromDate = 0 ,toDate = 0 ,search = 0 , ownerId = 0,soldStatus    ) => {
+    filterGetDeviceData = async (_id = 0, fromDate = 0, toDate = 0, search = 0, ownerId = 0, soldStatus) => {
 
         const formData = {
-            "_id" : "", 
-            "fromDate" : "", 
-            "toDate": "" , 
-            "pageNumber" : ""  , 
-            "limit" : "", 
-            "search" : search == 0 ? "" : search ,
-            "ownerId" : ownerId == 0 ? "" : ownerId, 
-            "soldStatus" : soldStatus == false ? false :  true
+            "_id": "",
+            "fromDate": "",
+            "toDate": "",
+            "pageNumber": "",
+            "limit": "",
+            "search": search == 0 ? "" : search,
+            "ownerId": ownerId == 0 ? "" : ownerId,
+            "soldStatus": soldStatus == false ? false : true
         }
-        await axios.post(`${URL}device-filter` , formData).then(async (response) => {
+        await axios.post(`${URL}device-filter`, formData).then(async (response) => {
             if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
                 soldStatus == false ? this.setUnSoldDeviceData(response?.data?.data) :
-                                      this.setSoldDeviceData(response?.data?.data)
+                    this.setSoldDeviceData(response?.data?.data)
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {
@@ -282,17 +297,17 @@ class Store {
                 errorAlert(error?.message, "Please check network connectivity")
             }
             soldStatus == false ? this.setUnSoldDeviceData([]) :
-                                  this.setSoldDeviceData([])
+                this.setSoldDeviceData([])
         })
     }
     // Sold Device Data Set
-    setSoldDeviceData = async (data) =>{
+    setSoldDeviceData = async (data) => {
         this.soldDeviceData = [];
         this.soldDeviceData = data != "null" ? data : [];
     }
 
     // Unsold Device Data Set
-    setUnSoldDeviceData = async (data) =>{
+    setUnSoldDeviceData = async (data) => {
         this.unsoldDeviceData = [];
         this.unsoldDeviceData = data != "null" ? data : [];
     }
@@ -313,13 +328,13 @@ class Store {
             }
         })
     }
-     // Sale Device Data
-     postSaleDeviceData = async (registerType, formData) => {
+    // Sale Device Data
+    postSaleDeviceData = async (registerType, formData) => {
         await axios.post(`${URL}sale`, formData).then(async (response) => {
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Device Sale Data Added.");
-                await this.filterGetDeviceData(0,0,0,0,0, true);
-                await this.filterGetDeviceData(0,0,0,0,0, false);
+                await this.filterGetDeviceData(0, 0, 0, 0, 0, true);
+                await this.filterGetDeviceData(0, 0, 0, 0, 0, false);
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {
@@ -348,7 +363,7 @@ class Store {
 
     getLocalDataUserDetails = async (key, tableName = "memberData") => {
         let data = await localStorageGetSingleItem(tableName);
-        console.log(`localstorage data data -${ JSON.stringify(data) }`)
+        // console.log(`localstorage data data -${JSON.stringify(data)}`)
         return data == null ? "null" : data[key];
     }
 

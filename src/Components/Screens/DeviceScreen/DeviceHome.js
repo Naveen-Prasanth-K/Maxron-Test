@@ -45,7 +45,7 @@ export default function DeviceHome({ data }) {
                             style={{ marginRight: 5 }}
                             color={Colors.secondary}
                         />
-                        <Text style={styles.nameTxt}>{data?.location}</Text>
+                        <Text style={styles.nameTxt}>{data?.district?.cityName}</Text>
                     </View>
                 </View>
 
