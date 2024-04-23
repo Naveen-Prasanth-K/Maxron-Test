@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input } from '@rneui/themed';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,6 +25,21 @@ const LoginScreen = () => {
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const isTablet = Dimensions.get('window').width >= 600;
+
+    useEffect(()=>{
+        const fetchData =async () =>{
+             // console.log(`**************use Effct triggers **************`)
+            let id = await Store.getLocalDataUserDetails("_id");
+            let memberType = await Store.getLocalDataUserDetails("memberType");
+            if(id && memberType?.dataName){
+                await Store?.getDashboardMemberData(id ,memberType?.dataName )
+                await navigation.navigate(memberType?.dataName == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
+            }
+        }
+
+        fetchData()
+
+    },[])
 
     const screenChangeHandler =async () => {
         const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
