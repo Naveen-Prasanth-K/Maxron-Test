@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import Store from '../../../Utilities/Store/Store';
 import { observer } from 'mobx-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
 import HeaderCommon from '../../Others/HeaderCommon'
 import { ScrollView } from 'react-native'
@@ -19,8 +19,21 @@ const AddDevice = () => {
         scanQR: "",
         controllerName: "",
         masterMobileNo: "",
-        ownerId: "661a1bc046408479fc5eaba3"
+        ownerId: "",
+        IMEI : ""
     });
+
+    useEffect(()=>{
+        const fetchData =async () =>{
+            let id = await Store.getLocalDataUserDetails("_id");
+            if(id ){
+                setBodyData({ ...bodyData, ownerId : id });
+            }
+        }
+
+        fetchData()
+
+    },[])
 
     // on change
     const onChange = (name, value) => {
@@ -75,6 +88,14 @@ const AddDevice = () => {
                         }
                         value={bodyData.scanQR.toString()}
                         onChangeText={(value) => { onChange("scanQR", value) }}
+                    />
+                     <Input
+                        placeholder='IMEI *'
+                        inputContainerStyle={CommonStyles.inputContainerStyle}
+                        inputStyle={CommonStyles.inputStyle}
+                        placeholderTextColor={Colors.primary100}
+                        value={bodyData.IMEI.toString()}
+                        onChangeText={(value) => { onChange("IMEI", value) }}
                     />
                     <Input
                         placeholder='Controller Name *'

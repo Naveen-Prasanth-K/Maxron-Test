@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
@@ -11,15 +11,27 @@ import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Store from '../../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
 const DealerProfile = () => {
-
+    const [dealer, setDealer] = useState({})
     const navigation = useNavigation()
     const CreateDealerHandler = () => {
         navigation.navigate('CreateDealer')
     }
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            // console.log(`**************use Effct triggers **************`)
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            setDealer(dealerData)
+           
+        }
+        fetchData()
+    }, [])
 
     return (
         <SafeAreaView style={CommonStyles.pageContainer}>
@@ -32,7 +44,7 @@ const DealerProfile = () => {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
                     </View>
                 </LinearGradient>
                 <View style={styles.container}>
@@ -43,7 +55,7 @@ const DealerProfile = () => {
                         />
                     </View>
                     <View style={{ marginLeft: 30 }}>
-                        <Text style={styles.userID}>Naveen Prasanth</Text>
+                        <Text style={styles.userID}>{ dealer?.bussinessName != "" ? dealer?.bussinessName : "" }</Text>
                         <View style={styles.locationContainer}>
                             <Icon
                                 type='entypo'

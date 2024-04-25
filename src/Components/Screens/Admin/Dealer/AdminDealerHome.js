@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
 import { observer } from 'mobx-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
@@ -16,7 +16,7 @@ import Store from '../../../../Utilities/Store/Store';
 
 const AdminDealerHome = () => {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation();   
 
     const DealerInfoHandler = async (item) => {
         await Store?.getDashboardMemberData(item?._id, "Dealer")
