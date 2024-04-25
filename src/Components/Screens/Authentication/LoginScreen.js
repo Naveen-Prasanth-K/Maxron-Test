@@ -30,7 +30,7 @@ const LoginScreen = () => {
 
     useEffect(()=>{
         const fetchData =async () =>{
-             // console.log(`**************use Effct triggers **************`)
+            // console.log(`**************use Effct triggers **************`)
             let id = await Store.getLocalDataUserDetails("_id");
             let memberType = await Store.getLocalDataUserDetails("memberType");
             if(id && memberType?.dataName){
@@ -38,7 +38,6 @@ const LoginScreen = () => {
                 await navigation.navigate(memberType?.dataName == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
             }
         }
-
         fetchData()
 
     },[])
