@@ -97,6 +97,8 @@ const RegisterScreen = () => {
     //     navigation.navigate('OtpVerify', { pageMove: 'VerifyRegister' })
     // }
 
+
+
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />

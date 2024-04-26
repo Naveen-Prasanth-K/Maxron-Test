@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, TabView } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../../Utilities/Data/DummyData';
@@ -15,13 +16,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import ActiveRequest from './ActiveRequest';
 import CompletedRequest from './CompletedRequest';
+import Store from '../../../../Utilities/Store/Store';
 
 const screenHeight = Dimensions.get("window").height;
 
-const RequestHome = () => {
-
+const RequestHome = () => {    
     const navigation = useNavigation();
     const [index, setIndex] = useState(0);
+    const [dealer, setDealer] = useState({});
+    useEffect(() => {
+        const fetchData = async () => {
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            setDealer(dealerData)           
+        }
+        fetchData()
+    }, [])
+
 
     return (
         <SafeAreaView style={CommonStyles.pageContainer}>
@@ -34,7 +44,7 @@ const RequestHome = () => {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
                         <SearchBar />
                     </View>
                 </LinearGradient>
@@ -72,7 +82,7 @@ const RequestHome = () => {
     )
 }
 
-export default RequestHome
+export default observer(RequestHome);
 
 const styles = StyleSheet.create({
     tabItem: {

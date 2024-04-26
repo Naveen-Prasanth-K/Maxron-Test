@@ -15,6 +15,7 @@ const CreateCustomer = ({ route }) => {
 
     const { item } = route.params
     const navigation = useNavigation();
+    const [userId, setUserId] = useState("")
     const [bodyData, setBodyData] = useState({
         customerName: "",
         mobileNo: "",
@@ -30,15 +31,27 @@ const CreateCustomer = ({ route }) => {
     });
 
     useEffect(() => {
-        Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+        const fetchData = async () => {
+            let id = await Store.getLocalDataUserDetails("_id");
+            if (id) {
+                setUserId(id)
+            }
+            Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+        }
+
+        fetchData()
+
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
-    const sendHandler = () => {
-        Store?.postMemberData(bodyData?.registerType, bodyData)
-        navigation.goBack()
+    const sendHandler = async () => {
+        Store?.setMainLoader(true);
+        await Store?.postMemberData(bodyData?.registerType, bodyData);
+        await Store?.getDashboardMemberData(userId, "Admin")
+        navigation.goBack();
+        Store?.setMainLoader(false);
     }
 
     return (
@@ -108,6 +121,16 @@ const CreateCustomer = ({ route }) => {
                     onChange={item => {
                         onChange("district", item?._id)
                     }}
+                />
+                <Input
+                    label='Location'
+                    labelStyle={styles.labelStyle}
+                    placeholder='Location *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData.location.toString()}
+                    onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
                     label='Pincode'

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Overlay, Button } from '@rneui/themed';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import HeaderCommon from '../../../Others/HeaderCommon';
@@ -11,10 +11,25 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Store from '../../../../Utilities/Store/Store'
 
-export default function AdminSettings() {
+const AdminSettings = () => {
 
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
+
+    const [dealer, setDealer] = useState({});
+    useEffect(() => {
+        const fetchData = async () => {
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            // console.log(`dealerData -${  JSON.stringify(dealerData)}`)
+            // if(dealerData?.memberType?.dataName == "Admin"){
+            //     await Store?.getFilterDeviceServiceData(0,0,0,0,"Pending",0 )
+            // }else{
+            //     await Store?.getFilterDeviceServiceData(0,0,0,0,"Pending",dealerData._id )
+            // }
+            setDealer(dealerData)
+        }
+        fetchData()
+    }, [])
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -54,7 +69,7 @@ export default function AdminSettings() {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                     </View>
                 </LinearGradient>
                 <Text style={CommonStyles.pageHeading}>Settings</Text>
@@ -233,7 +248,7 @@ export default function AdminSettings() {
         </SafeAreaView>
     )
 }
-
+export default AdminSettings;
 const styles = StyleSheet.create({
     card: {
         borderRadius: 10,

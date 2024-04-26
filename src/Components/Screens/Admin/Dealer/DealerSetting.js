@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Overlay, Button, Input } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import HeaderCommon from '../../../Others/HeaderCommon';
@@ -9,12 +10,40 @@ import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import Header1 from '../../../Others/Header1';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Store from '../../../../Utilities/Store/Store';
 
-export default function DealerSetting() {
-
+const DealerSetting = () => {
+    const [dealer, setDealer] = useState({})
     const navigation = useNavigation();
     const [logoutVisible, setLogoutVisible] = useState(false);
     const [deviceVisible, setDeviceVisible] = useState(false);
+    const [formData, setFormData] = useState({
+        "buyerId" : "",             
+        "noOfOrderDevice" : "",
+        "status" : "Pending",
+        "registerType" : "Dealer"
+    });
+
+    const [updateData, setUpdateData] = useState({
+        "_id" : "",
+        "pin" : ""
+    })
+    useEffect(() => {
+        const fetchData = async () => {
+           
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            if(dealerData._id != null){
+                setFormData(formData => ({ ...formData ,buyerId :  dealerData._id  }))
+                setUpdateData(updateData => ({ ...updateData ,_id :  dealerData._id  }))
+                setDealer(dealerData);   
+            }   
+        }
+        fetchData()
+    }, [])
+
+    const onChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+    }
 
     const toggleLogoutOverlay = () => {
         setLogoutVisible(!logoutVisible);
@@ -32,6 +61,9 @@ export default function DealerSetting() {
         toggleDeviceOverlay()
     }
     const RequestHandler = () => {
+
+        console.log("form Data  ", JSON.stringify(formData));
+        Store?.postDeviceOrderData(formData?.registerType , formData)
         toggleDeviceOverlay()
     }
     // const DeviceOrderHandler = () => {
@@ -55,7 +87,7 @@ export default function DealerSetting() {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
                     </View>
                 </LinearGradient>
                 <Text style={CommonStyles.pageHeading}>Settings</Text>
@@ -163,6 +195,9 @@ export default function DealerSetting() {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
+                    keyboardType="numeric"
+                    value={formData?.noOfOrderDevice}
+                    onChangeText={(value) => { onChange("noOfOrderDevice", value) }}
                 />
                 <View style={styles.buttonContainer}>
                     <Button
@@ -184,7 +219,7 @@ export default function DealerSetting() {
         </SafeAreaView>
     )
 }
-
+export default observer(DealerSetting);
 const styles = StyleSheet.create({
     card: {
         borderRadius: 10,

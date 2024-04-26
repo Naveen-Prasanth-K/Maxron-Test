@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Button } from '@rneui/themed';
+import { observer } from 'mobx-react';
 import React from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -13,23 +14,26 @@ import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Store from '../../../../Utilities/Store/Store';
+import { commonDateFormat } from '../../../../Utilities/Constant/Common';
 
 const DeviceOrderActive = () => {
+    console.log(`Store?.deviceOrderData?.length -${ Store?.deviceOrderData?.length }`)
     return (
         <View>
             <FlatList
-                data={DEALERDATA}
-                keyExtractor={(item) => item?.rfId}
+                data={Store?.deviceOrderData?.length > 0 && Store?.deviceOrderData }
+                keyExtractor={(item) => item?._id}
                 renderItem={({ item }) => (
                     <View style={styles.cardContainer}
                     >
                         <View style={styles.locationContainer}>
                             <View>
-                                <Text style={styles.devicenameTxt}>{item?.customerName}</Text>
-                                <Text style={styles.nameTxt}>{item?.mobileNo}</Text>
+                                <Text style={styles.devicenameTxt}>{item?.buyerId?.customerName}</Text>
+                                <Text style={styles.nameTxt}>{item?.buyerId?.mobileNo}</Text>
                             </View>
                             <View>
-                                <Text style={styles.orderCount}>{item?.soldDevices}</Text>
+                                <Text style={styles.orderCount}>{item?.noOfOrderDevice}</Text>
                             </View>
                         </View>
                         <View style={styles.locationContainer1}>
@@ -41,9 +45,9 @@ const DeviceOrderActive = () => {
                                     style={{ marginRight: 5 }}
                                     color={Colors.secondary}
                                 />
-                                <Text style={styles.nameTxt}>{item?.location}</Text>
+                                <Text style={styles.nameTxt}>{item?.buyerId?.location}</Text>
                             </View>
-                            <Text style={styles.nameTxt}>{item?.joinedDate}</Text>
+                            <Text style={styles.nameTxt}>{ commonDateFormat(item?.buyerId?.joinedDate) }</Text>
                         </View>
                     </View>
                 )}
@@ -61,7 +65,7 @@ const DeviceOrderActive = () => {
     )
 }
 
-export default DeviceOrderActive
+export default observer(DeviceOrderActive);
 
 const styles = StyleSheet.create({
 

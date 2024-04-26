@@ -22,7 +22,7 @@ const AdminHome = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-            // console.log(`**************use Effct triggers **************`)
+           
             let id = await Store.getLocalDataUserDetails("_id");
             let customerName = await Store.getLocalDataUserDetails("customerName");
             setName(customerName)
