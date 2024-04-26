@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../Others/HeaderCommon';
+import Store from '../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,6 +18,8 @@ export default function RegisterScreen() {
     const VerifyOtpHandler = () => {
         navigation.navigate('OtpVerify', { pageMove: 'VerifyRegister' })
     }
+
+
 
     return (
         <View style={CommonStyles.pageContainer}>

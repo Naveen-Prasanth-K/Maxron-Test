@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Button } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
@@ -12,10 +13,18 @@ import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-
+import Store from '../../../../Utilities/Store/Store';
+import { commonDateFormat } from '../../../../Utilities/Constant/Common';
 const AdminUser = () => {
 
     const navigation = useNavigation();
+
+    useEffect(()=>{
+            const fetchData =async () =>{
+                await Store?.getFilterMemberData(0,0,0,"Staff")
+            }
+            fetchData()
+    },[])
 
     const InfoHandler = (item) => {
         navigation.navigate('AddAdminUser', { item: item })
@@ -48,8 +57,8 @@ const AdminUser = () => {
             <View style={CommonStyles.pageContainer}>
                 <HeaderCommon />
                 <FlatList
-                    data={DEALERDATA}
-                    keyExtractor={(item) => item?.rfId}
+                    data={Store?.staffData?.length > 0 && Store?.staffData}
+                    keyExtractor={(item) => item?._id}
                     ListHeaderComponent={headerItem}
                     renderItem={({ item }) => (
                         <View style={styles.cardContainer}
@@ -82,7 +91,7 @@ const AdminUser = () => {
                                     />
                                     <Text style={styles.nameTxt}>{item?.location}</Text>
                                 </View>
-                                <Text style={styles.nameTxt}>{item?.joinedDate}</Text>
+                                <Text style={styles.nameTxt}>{commonDateFormat(item?.joinedDate)}</Text>
                             </View>
                         </View>
                     )}
@@ -100,7 +109,7 @@ const AdminUser = () => {
     )
 }
 
-export default AdminUser
+export default observer(AdminUser);
 
 const styles = StyleSheet.create({
     foundCount: {

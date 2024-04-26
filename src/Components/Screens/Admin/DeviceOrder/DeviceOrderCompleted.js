@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Button } from '@rneui/themed';
+import { observer } from 'mobx-react';
 import React from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -13,23 +14,25 @@ import SearchBar from '../../../Others/SearchBar';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Store from '../../../../Utilities/Store/Store';
 
 const DeviceOrderCompleted = () => {
+    
     return (
         <View>
             <FlatList
-                data={DEALERDATA}
+                 data={Store?.deviceOrderCompleteData?.length > 0 && Store?.deviceOrderCompleteData }
                 keyExtractor={(item) => item?.rfId}
                 renderItem={({ item }) => (
                     <View style={styles.cardContainer}
                     >
                         <View style={styles.locationContainer}>
                             <View>
-                                <Text style={styles.devicenameTxt}>{item?.customerName}</Text>
-                                <Text style={styles.nameTxt}>{item?.mobileNo}</Text>
+                            <Text style={styles.devicenameTxt}>{item?.buyerId?.customerName}</Text>
+                                <Text style={styles.nameTxt}>{item?.buyerId?.mobileNo}</Text>
                             </View>
                             <View>
-                                <Text style={styles.orderCount}>{item?.soldDevices}</Text>
+                            <Text style={styles.orderCount}>{item?.noOfOrderDevice}</Text>
                             </View>
                         </View>
                     </View>
@@ -48,7 +51,7 @@ const DeviceOrderCompleted = () => {
     )
 }
 
-export default DeviceOrderCompleted
+export default observer(DeviceOrderCompleted);
 
 const styles = StyleSheet.create({
 

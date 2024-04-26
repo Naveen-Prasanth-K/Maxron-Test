@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/themed';
+import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -19,13 +20,13 @@ const DealerProfile = () => {
     const [dealer, setDealer] = useState({})
     const navigation = useNavigation()
     const CreateDealerHandler = () => {
-        navigation.navigate('CreateDealer')
+        navigation.navigate('CreateDealer', { item: dealer })
     }
 
     useEffect(() => {
 
         const fetchData = async () => {
-            // console.log(`**************use Effct triggers **************`)
+           
             let dealerData = await Store.getLocalDataUserFullDetails();
             setDealer(dealerData)
            
@@ -64,7 +65,7 @@ const DealerProfile = () => {
                                 style={{ marginRight: 5 }}
                                 color={Colors.secondary}
                             />
-                            <Text style={styles.nameTxt}>Erode</Text>
+                            <Text style={styles.nameTxt}>{dealer?.location != "" ? dealer?.location : "" }</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <Icon
@@ -74,7 +75,7 @@ const DealerProfile = () => {
                                 style={{ marginRight: 5 }}
                                 color={Colors.secondary}
                             />
-                            <Text style={styles.nameTxt}>8940352877</Text>
+                            <Text style={styles.nameTxt}>{ dealer?.mobileNo != "" ? dealer?.mobileNo : "" }</Text>
                         </View>
 
                     </View>
@@ -96,21 +97,21 @@ const DealerProfile = () => {
                 <View style={styles.bottomContainer}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>35</Text>
+                            <Text style={styles.bigTxt}>{ Store?.dealerDashBoard?.totalPurchased != "" ? Store?.dealerDashBoard?.totalPurchased : 0 } </Text>
                             <Text style={styles.smallTxt}>Total Purchased</Text>
                         </View>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>25</Text>
+                            <Text style={styles.bigTxt}>{ Store?.dealerDashBoard?.soldDevices != "" ? Store?.dealerDashBoard?.soldDevices : 0 }</Text>
                             <Text style={styles.smallTxt}>Sold Devices</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 40 }}>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>15</Text>
+                            <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.replacedDevices != "" ? Store?.dealerDashBoard?.replacedDevices : 0}</Text>
                             <Text style={styles.smallTxt}>Replaced Devices</Text>
                         </View>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>28</Text>
+                            <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.unsoldDevices != "" ? Store?.dealerDashBoard?.unsoldDevices : 0}</Text>
                             <Text style={styles.smallTxt}>Unsold Devices</Text>
                         </View>
                     </View>
@@ -120,7 +121,7 @@ const DealerProfile = () => {
     )
 }
 
-export default DealerProfile
+export default observer(DealerProfile);
 
 const styles = StyleSheet.create({
     uploadPic: {

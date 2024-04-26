@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView, Pressable, Dimensions, TouchableOpacity } from 'react-native';
+import { observer } from 'mobx-react';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../../Others/HeaderCommon';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
@@ -8,13 +9,31 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 import DeviceOrderActive from './DeviceOrderActive';
 import DeviceOrderCompleted from './DeviceOrderCompleted';
+import Store from '../../../../Utilities/Store/Store';
 
 const screenHeight = Dimensions.get("window").height;
 
-export default function DeviceOrder() {
+const DeviceOrder = () =>{
 
     const navigation = useNavigation();
     const [index, setIndex] = useState(0);
+
+    const [dealer, setDealer] = useState({});
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            if(dealerData?.memberType?.dataName == "Admin"){
+                await Store?.getFilterDeviceOrderData(0,0,0,0,"Pending",0 )
+                await Store?.getFilterDeviceOrderData(0,0,0,0,"Completed",0 )
+            }
+            setDealer(dealerData)           
+        }
+        fetchData()
+    }, [])
+
+
+
 
     return (
         <View style={CommonStyles.pageContainer}>
@@ -51,7 +70,7 @@ export default function DeviceOrder() {
         </View>
     );
 }
-
+export default observer(DeviceOrder);
 const styles = StyleSheet.create({
     container: {
         padding: 8,

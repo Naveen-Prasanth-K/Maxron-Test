@@ -37,7 +37,7 @@ const CreateCustomer = ({ route }) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        Store?.postMemberData(bodyData?.memberType, bodyData)
+        Store?.postMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -108,6 +108,16 @@ const CreateCustomer = ({ route }) => {
                     onChange={item => {
                         onChange("district", item?._id)
                     }}
+                />
+                   <Input
+                    label='Location'
+                    labelStyle={styles.labelStyle}
+                    placeholder='Location *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData.location.toString()}
+                    onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
                     label='Pincode'
