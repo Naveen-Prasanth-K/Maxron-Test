@@ -59,7 +59,7 @@ const AddAdminUser = ({ route }) => {
     }
     const sendHandler = () => {
         // console.log(`body data -${ JSON.stringify(bodyData) }`)
-        bodyData?._id == ""  ? Store?.postMemberData(bodyData?.registerType, bodyData) :
+        bodyData?._id == "" || bodyData?._id == undefined ?  Store?.postMemberData(bodyData?.registerType, bodyData) :
                                     Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
@@ -183,7 +183,7 @@ const AddAdminUser = ({ route }) => {
                     }
                 </View>
                 <Button
-                    title={item?._id ? 'Update' : 'Create'}
+                    title={bodyData?._id == "" || bodyData?._id == undefined ? 'Update' : 'Create'}
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
