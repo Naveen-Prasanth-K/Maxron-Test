@@ -113,10 +113,7 @@ class Store {
 
     // POst Member based data
     postMemberData = async (registerType, formData) => {
-        console.log(`postMemberData triggered`)
-        console.log(`formData -${JSON.stringify(formData)}`)
         await axios.post(`${URL}member`, formData).then(async (response) => {
-            console.log(`postMemberData response = ${JSON.stringify(response)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200,  `${registerType} Data Added.`)
                 this.getFilterMemberData(0, 0, 0, registerType);
@@ -132,10 +129,7 @@ class Store {
     }
     // PUT Member based data
     putMemberData = async (registerType, formData) => {
-        console.log(`putMemberData triggered`)
-        console.log(`formData -${JSON.stringify(formData)}`)
         await axios.put(`${URL}member`, formData).then(async (response) => {
-            console.log(`putMemberData response = ${JSON.stringify(response?.data?.data)}`)
             if (response?.status == 200) {
                 addAndUpdateAlert(200, `${registerType} Data Updated .`)
                 this.getFilterMemberData(0, 0, 0, registerType);
@@ -178,7 +172,6 @@ class Store {
             "search": search == 0 ? "" : search,
             "registerType": registerType == 0 ? "" : registerType
         }
-        console.log(`form data -${ JSON.stringify(formData) }`)
         await axios.post(`${URL}member/filter`, formData).then(async (response) => {
             if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
                 registerType == "Dealer" ? this.setDealerData(response?.data?.data) : registerType == "Staff" ? this.setStaffData(response?.data?.data) : this.setCustomerData(response?.data?.data)
@@ -275,7 +268,8 @@ class Store {
         await axios.post(`${URL}device`, formData).then(async (response) => {
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Device Data Added.")
-                this.getDeviceData();
+                await this.getDeviceData();
+                await this.getDashboardMemberData(formData?.ownerId, "Admin");
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {

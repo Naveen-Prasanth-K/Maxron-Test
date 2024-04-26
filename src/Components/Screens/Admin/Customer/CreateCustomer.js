@@ -15,6 +15,7 @@ const CreateCustomer = ({ route }) => {
 
     const { item } = route.params
     const navigation = useNavigation();
+    const [userId, setUserId] = useState("")
     const [bodyData, setBodyData] = useState({
         customerName: "",
         mobileNo: "",
@@ -30,14 +31,24 @@ const CreateCustomer = ({ route }) => {
     });
 
     useEffect(() => {
-        Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+        const fetchData =async () =>{
+            let id = await Store.getLocalDataUserDetails("_id");
+            if(id ){
+                setUserId(id)
+            }
+            Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+        }
+
+        fetchData()
+       
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
-    const sendHandler = () => {
-        Store?.postMemberData(bodyData?.registerType, bodyData)
+    const sendHandler =async () => {
+        await Store?.postMemberData(bodyData?.registerType, bodyData);
+        await Store?.getDashboardMemberData(userId, "Admin")
         navigation.goBack()
     }
 
