@@ -1,24 +1,66 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Button, Input, CheckBox } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useState, useEffect } from 'react';
+import { Dropdown } from 'react-native-element-dropdown';
 import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
+import Store from '../../../../Utilities/Store/Store';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 
 
 const AddAdminUser = ({ route }) => {
-
     const { item } = route.params;
     const navigation = useNavigation();
+    const [bodyData, setBodyData] = useState({
+        _id: item?._id != "" ? item?._id : "",
+        customerName: item?.customerName != "" ? item?.customerName : "",
+        mobileNo: item?.mobileNo != "" ? item?.mobileNo : "",
+        location: item?.location != "" ? item?.location : "",
+        bussinessName: item?.bussinessName != "" ? item?.bussinessName : "",
+        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile : "",
+        address: item?.address != "" ? item?.address : "",
+        district: item?.district?._id != "" ? item?.district?._id : "",
+        Pincode: item?.Pincode != "" ? item?.Pincode : "",
+        GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
+        mailId: item?.mailId != "" ? item?.mailId : "",
+        registerType: "Staff",
+        permissions: item?.permissions?.length == 0  ? [] : item?.permissions?.map(data=> data?._id)
+    });
 
-    const [check1, setCheck1] = useState(false);
-    const [check2, setCheck2] = useState(false);
-    const [check3, setCheck3] = useState(false);
-    const [check4, setCheck4] = useState(false);
+    useEffect(() => {
+       const fetchData =async () =>{
+        Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
+        Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
+       }
 
+       fetchData()
+    }, [])
+    // on change
+    const onChange = (name, value) => {
+        setBodyData({ ...bodyData, [name]: value });
+    }
+    // on press Handler
+    const onPressHandler = ( value) => {
+        let permission = bodyData?.permissions;
+
+        if(permission?.length > 0 ){
+            if(permission?.filter(data => data == value)?.length == 0) {
+                permission.push(value)
+            }else{
+                permission =   permission?.filter(data => data != value);
+            }
+        }else{
+            permission.push(value)
+        }
+        setBodyData(bodyData => ({ ...bodyData, permissions : permission }));
+    }
     const sendHandler = () => {
+        // console.log(`body data -${ JSON.stringify(bodyData) }`)
+        bodyData?._id == ""  ? Store?.postMemberData(bodyData?.registerType, bodyData) :
+                                    Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -35,7 +77,9 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.customerName}
+                    maxLength={15}
+                    value={bodyData.customerName.toString()}
+                    onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
                     label='Mobile Number'
@@ -44,7 +88,50 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.alternateMobile}
+                    keyboardType="numeric"
+                    maxLength={10}
+                    value={bodyData.mobileNo.toString()}
+                    onChangeText={(value) => { onChange("mobileNo", value) }}
+                />
+                <Input
+                    label='Alternative Mobile Number'
+                    labelStyle={styles.labelStyle}
+                    placeholder='Alternative Mobile Number *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    keyboardType="numeric"
+                    maxLength={10}
+                    value={bodyData.alternateMobile.toString()}
+                    onChangeText={(value) => { onChange("alternateMobile", value) }}
+                />
+                <Input
+                    label='Address'
+                    labelStyle={styles.labelStyle}
+                    placeholder='Address *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData.address.toString()}
+                    onChangeText={(value) => { onChange("address", value) }}
+                />
+                <Dropdown
+                    style={CommonStyles.dropdown}
+                    placeholderStyle={CommonStyles.placeholderStyle}
+                    selectedTextStyle={CommonStyles.selectedTextStyle}
+                    inputSearchStyle={CommonStyles.inputSearchStyle}
+                    activeColor={Colors.primary50}
+                    itemContainerStyle={CommonStyles.itemContainerStyle}
+                    placeholder='District'
+                    search
+                    searchPlaceholder="Search..."
+                    data={Store?.bindDistrict}
+                    labelField="cityName"
+                    valueField="_id"
+                    value={bodyData?.district}
+                    onChange={item => {
+                        onChange("district", item?._id)
+                    }}
                 />
                 <Input
                     label='Location'
@@ -53,71 +140,50 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.alternateMobile}
+                    value={bodyData.location.toString()}
+                    onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
-                    label={item?.rfId ? 'Change Password' : 'New Password'}
+                    label='Pincode'
                     labelStyle={styles.labelStyle}
-                    placeholder='Change Password *'
+                    placeholder='Pincode *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.password}
-                    secureTextEntry={true}
+                    value={bodyData.Pincode.toString()}
+                    onChangeText={(value) => { onChange("Pincode", value) }}
                 />
-                <Text style={styles.text1}>*If you want to reset password use this fields. Otherwise leave it empty</Text>
                 <Input
-                    label='Re Enter Password'
+                    label='Mail Id'
                     labelStyle={styles.labelStyle}
-                    placeholder='Re Enter Password *'
+                    placeholder='Mail Id *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={item?.password}
-                    secureTextEntry={true}
+                    value={bodyData.mailId.toString()}
+                    onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <View style={{ marginHorizontal: 15, }}>
                     <Text style={[styles.labelStyle, { marginBottom: 25 }]}>Select Permissions</Text>
-                    <View style={styles.checkBoxContainer}>
-                        <CheckBox
-                            center
-                            title="Create Dealer"
-                            containerStyle={{ backgroundColor: 'transparent' }}
-                            checked={check1}
-                            onPress={() => setCheck1(!check1)}
-                            textStyle={{ fontSize: 13, fontWeight: '400' }}
-                        />
-                        <CheckBox
-                            center
-                            title="Create Customers"
-                            containerStyle={{ backgroundColor: 'transparent' }}
-                            checked={check2}
-                            onPress={() => setCheck2(!check2)}
-                            textStyle={{ fontSize: 13, fontWeight: '400' }}
-                        />
-                    </View>
-                    <View style={styles.checkBoxContainer}>
-                        <CheckBox
-                            center
-                            title="Manage Dealer"
-
-                            containerStyle={{ backgroundColor: 'transparent' }}
-                            checked={check3}
-                            onPress={() => setCheck3(!check3)}
-                            textStyle={{ fontSize: 13, fontWeight: '400' }}
-                        />
-                        <CheckBox
-                            center
-                            title="Manage Customers"
-                            containerStyle={{ backgroundColor: 'transparent' }}
-                            checked={check4}
-                            onPress={() => setCheck4(!check4)}
-                            textStyle={{ fontSize: 13, fontWeight: '400' }}
-                        />
-                    </View>
+                    {
+                        Store?.bindPermission?.length > 0 &&
+                        Store?.bindPermission?.map((data, index)=>{                           
+                           const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter( check => check == data?._id)?.length == 1 ? true : false : false
+                           return <View style={styles.checkBoxContainer}>
+                                    <CheckBox
+                                        center
+                                        title={ data?.dataName }
+                                        containerStyle={{ backgroundColor: 'transparent' }}
+                                        checked={ checked }
+                                        onPress={() => onPressHandler(data?._id)}
+                                        textStyle={{ fontSize: 13, fontWeight: '400' }}
+                                    />
+                                </View>
+                        })
+                    }
                 </View>
                 <Button
-                    title={item?.rfId ? 'Update' : 'Create'}
+                    title={item?._id ? 'Update' : 'Create'}
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
@@ -128,7 +194,7 @@ const AddAdminUser = ({ route }) => {
     )
 }
 
-export default AddAdminUser
+export default observer(AddAdminUser);
 
 const styles = StyleSheet.create({
     labelStyle: {

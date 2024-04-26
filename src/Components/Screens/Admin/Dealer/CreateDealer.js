@@ -42,7 +42,7 @@ const CreateDealer = ({ route }) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        item?._id == "" ? Store?.postMemberData(bodyData?.memberType, bodyData) : Store?.putMemberData(bodyData?.memberType, bodyData)
+        bodyData?._id == "" ? Store?.postMemberData(bodyData?.registerType, bodyData) : Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -59,7 +59,7 @@ const CreateDealer = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={25}
-                    value={bodyData.bussinessName}
+                    value={bodyData?.bussinessName}
                     onChangeText={(value) => { onChange("bussinessName", value) }}
                 />
                 <Input
@@ -70,7 +70,7 @@ const CreateDealer = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={15}
-                    value={bodyData.customerName}
+                    value={bodyData?.customerName}
                     onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
@@ -82,7 +82,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.mobileNo}
+                    value={bodyData?.mobileNo.toString()}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -94,7 +94,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.alternateMobile}
+                    value={bodyData?.alternateMobile?.toString()}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -104,7 +104,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.address}
+                    value={bodyData?.address}
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
@@ -125,6 +125,16 @@ const CreateDealer = ({ route }) => {
                         onChange("district", item?._id)
                     }}
                 />
+                  <Input
+                    label='Location'
+                    labelStyle={styles.labelStyle}
+                    placeholder='Location *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData.location.toString()}
+                    onChangeText={(value) => { onChange("location", value) }}
+                />
                 <Input
                     label='Pincode'
                     labelStyle={styles.labelStyle}
@@ -142,7 +152,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.GSTNo}
+                    value={bodyData?.GSTNo}
                     onChangeText={(value) => { onChange("GSTNo", value) }}
                 />
                 <Input
@@ -152,7 +162,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.mailId}
+                    value={bodyData?.mailId}
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <Button

@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Input } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useState, useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
     CodeField,
@@ -8,10 +9,12 @@ import {
     useBlurOnFulfill,
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import Store from '../../../Utilities/Store/Store';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../Others/HeaderCommon';
+
 
 const PinReset = () => {
 
@@ -19,11 +22,15 @@ const PinReset = () => {
     const OTP_COUNT = 4;
     const [newValue, setNewValue] = useState('');
     const [reEnterValue, setReEnterValue] = useState('');
-
     const refNew = useBlurOnFulfill({ value: newValue, cellCount: OTP_COUNT });
     const [propsNew, getCellOnLayoutHandlerNew] = useClearByFocusCell({
         value: newValue,
         setValue: setNewValue,
+    });
+    const [formData, setFormData] = useState({
+        "_id" : "",
+        "pin" : "", // ReEnter Pin
+        "newPin": "" // New Pin
     });
 
     const refReEnter = useBlurOnFulfill({ value: reEnterValue, cellCount: OTP_COUNT });
@@ -31,7 +38,28 @@ const PinReset = () => {
         value: reEnterValue,
         setValue: setReEnterValue,
     });
-    const sendHandler = () => {
+    
+    useEffect(() => {
+        const fetchData = async () => {
+        
+           
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            if(dealerData._id != null){
+                setFormData(formData => ({ ...formData ,_id :  dealerData._id  }))
+            }   
+        }
+        fetchData()
+    }, [])
+
+    const onChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+    }
+    const sendHandler =async () => {
+        if(formData?.pin == formData?.newPin){
+            console.log(`refNew -${ JSON.stringify(formData) }`);
+            await  Store?.updateResetPinData(formData)
+        }
+       
         navigation.goBack()
     }
 
@@ -46,8 +74,8 @@ const PinReset = () => {
                 <CodeField
                     ref={refNew}
                     {...propsNew}
-                    value={newValue}
-                    onChangeText={setNewValue}
+                    value={formData?.newPin?.toString()}
+                    onChangeText={(value) => { onChange("newPin", value) }}
                     cellCount={OTP_COUNT}
                     rootStyle={styles.codeFieldRoot}
                     keyboardType="number-pad"
@@ -67,8 +95,8 @@ const PinReset = () => {
                 <CodeField
                     ref={refReEnter}
                     {...propsReEnter}
-                    value={reEnterValue}
-                    onChangeText={setReEnterValue}
+                    value={formData?.pin?.toString()}
+                    onChangeText={(value) => { onChange("pin", value) }}
                     cellCount={OTP_COUNT}
                     rootStyle={styles.codeFieldRoot}
                     keyboardType="number-pad"
@@ -94,7 +122,7 @@ const PinReset = () => {
     )
 }
 
-export default PinReset
+export default observer(PinReset);
 
 const styles = StyleSheet.create({
     codeFieldRoot: {

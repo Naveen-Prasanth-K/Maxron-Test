@@ -1,28 +1,46 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Button } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../../Utilities/Data/DummyData';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
-
-
+import Store from '../../../../Utilities/Store/Store';
+import { commonDateFormat } from '../../../../Utilities/Constant/Common';
 const ActiveRequest = () => {
+
+    const [dealer, setDealer] = useState({});
+    useEffect(() => {
+        const fetchData = async () => {
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            console.log(`dealerData -${  JSON.stringify(dealerData)}`)
+            if(dealerData?.memberType?.dataName == "Admin"){
+                await Store?.getFilterDeviceServiceData(0,0,0,0,"Pending",0 )
+            }else{
+                await Store?.getFilterDeviceServiceData(0,0,0,0,"Pending",dealerData._id )
+            }
+            setDealer(dealerData)           
+        }
+        fetchData()
+    }, [])
+
+
     return (
         <View>
             {
-                DEALERDATA.length > 0 ?
-                    DEALERDATA?.map((item, index) => {
+                Store?.deviceServiceData.length > 0 ?
+                    Store?.deviceServiceData?.map((item, index) => {
                         return (
-                            <View key={item?.rfId} style={styles.cardContainer}>
+                            <View key={item?._id} style={styles.cardContainer}>
                                 <View style={styles.subContainer}>
                                     <View>
-                                        <Text style={styles.devicenameTxt}>{item.customerName}</Text>
-                                        <Text style={styles.nameTxt}>{item?.mobileNo}</Text>
+                                        <Text style={styles.devicenameTxt}>{item?.deviceId?.ownerId?.customerName}</Text>
+                                        <Text style={styles.nameTxt}>{item?.deviceId?.ownerId?.mobileNo}</Text>
                                         <Text style={styles.nameTxt}>Service Request</Text>
-                                        <Text style={styles.nameTxt}>8-12-2023</Text>
+                                        <Text style={styles.nameTxt}>{commonDateFormat(item?.requestedDate)}</Text>
                                     </View>
                                     <View style={styles.locationContainer}>
                                         <Icon
@@ -32,7 +50,7 @@ const ActiveRequest = () => {
                                             style={{ marginRight: 5 }}
                                             color={Colors.secondary}
                                         />
-                                        <Text style={styles.nameTxt}>{item?.location}</Text>
+                                        <Text style={styles.nameTxt}>{item?.deviceId?.location}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.subContainer2}>
@@ -75,7 +93,7 @@ const ActiveRequest = () => {
     )
 }
 
-export default ActiveRequest
+export default observer(ActiveRequest);
 
 const styles = StyleSheet.create({
     noDeviceImgContainer: {

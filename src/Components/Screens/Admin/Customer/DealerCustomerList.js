@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Divider, Button } from '@rneui/themed';
-import React from 'react';
+import { observer } from 'mobx-react';
+import React , { useState, useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
@@ -11,12 +12,23 @@ import HeaderCommon from '../../../Others/HeaderCommon';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header1 from '../../../Others/Header1';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Store from '../../../../Utilities/Store/Store';
 
 const { width, height } = Dimensions.get('window');
 
 const DealerCustomerList = () => {
-
     const navigation = useNavigation();
+    const [dealer, setDealer] = useState({});
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+           
+            let dealerData = await Store.getLocalDataUserFullDetails();
+            setDealer(dealerData) 
+        }
+        fetchData()
+    }, [])
 
     const headerItem = () => (
         <>
@@ -28,7 +40,7 @@ const DealerCustomerList = () => {
                 <Header1 />
                 <View style={CommonStyles.adminHeader}>
                     <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                    <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
+                    <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
                     <SearchBar />
                 </View>
             </LinearGradient>
@@ -78,7 +90,7 @@ const DealerCustomerList = () => {
     )
 }
 
-export default DealerCustomerList
+export default observer(DealerCustomerList);
 
 const styles = StyleSheet.create({
     foundCount: {
