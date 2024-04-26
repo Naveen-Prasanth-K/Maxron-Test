@@ -31,6 +31,8 @@ const CreateDealer = ({ route }) => {
         registerType: "Dealer"
     });
 
+    console.log(`body data ***********-${ JSON.stringify(bodyData) }`)
+
     useEffect(() => {
         const fetchData = async () => {
             Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
@@ -42,7 +44,7 @@ const CreateDealer = ({ route }) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        bodyData?._id == "" ? Store?.postMemberData(bodyData?.registerType, bodyData) : Store?.putMemberData(bodyData?.registerType, bodyData)
+        bodyData?._id == "" || bodyData?._id == undefined ? Store?.postMemberData(bodyData?.registerType, bodyData) : Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -82,7 +84,7 @@ const CreateDealer = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.mobileNo.toString()}
+                    value={bodyData?.mobileNo?.toString()}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -132,7 +134,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.location.toString()}
+                    value={bodyData?.location?.toString()}
                     onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
@@ -142,7 +144,7 @@ const CreateDealer = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData?.Pincode}
+                    value={bodyData?.Pincode?.toString()}
                     onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
@@ -166,7 +168,7 @@ const CreateDealer = ({ route }) => {
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <Button
-                    title={bodyData?._id != "" ? "Update Dealer" : "Create Dealer"}
+                    title={bodyData?._id == "" || bodyData?._id == undefined ? "Create Dealer" : "Update Dealer"  }
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
