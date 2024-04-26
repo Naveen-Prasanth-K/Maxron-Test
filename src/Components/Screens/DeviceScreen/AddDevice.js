@@ -11,7 +11,6 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
 const AddDevice = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
@@ -20,20 +19,20 @@ const AddDevice = () => {
         controllerName: "",
         masterMobileNo: "",
         ownerId: "",
-        IMEI : ""
+        IMEI: ""
     });
 
-    useEffect(()=>{
-        const fetchData =async () =>{
+    useEffect(() => {
+        const fetchData = async () => {
             let id = await Store.getLocalDataUserDetails("_id");
-            if(id ){
-                setBodyData({ ...bodyData, ownerId : id });
+            if (id) {
+                setBodyData({ ...bodyData, ownerId: id });
             }
         }
 
         fetchData()
 
-    },[])
+    }, [])
 
     // on change
     const onChange = (name, value) => {
@@ -89,7 +88,7 @@ const AddDevice = () => {
                         value={bodyData.scanQR.toString()}
                         onChangeText={(value) => { onChange("scanQR", value) }}
                     />
-                     <Input
+                    <Input
                         placeholder='IMEI *'
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}

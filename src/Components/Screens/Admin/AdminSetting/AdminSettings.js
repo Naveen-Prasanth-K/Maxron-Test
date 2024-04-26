@@ -9,9 +9,9 @@ import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import Header1 from '../../../Others/Header1';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Store from '../../../../Utilities/Store/Store';
+import Store from '../../../../Utilities/Store/Store'
 
-const AdminSettings= ()=> {
+const AdminSettings = () => {
 
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
@@ -26,7 +26,7 @@ const AdminSettings= ()=> {
             // }else{
             //     await Store?.getFilterDeviceServiceData(0,0,0,0,"Pending",dealerData._id )
             // }
-            setDealer(dealerData)           
+            setDealer(dealerData)
         }
         fetchData()
     }, [])
@@ -34,13 +34,13 @@ const AdminSettings= ()=> {
     const toggleOverlay = () => {
         setVisible(!visible);
     };
-    const LogoutHandler = () => {
-        toggleOverlay()
-    }
 
-    const CancelHandler = () => {
-        toggleOverlay()
-    }
+    const logoutHandler = async () => {
+        Store?.setMainLoader(true);
+        await Store?.deleteLocalStorageData();
+        navigation.navigate('LoginScreen');
+        Store?.setMainLoader(false);
+    };
 
     const AccountManageHandler = () => {
         navigation.navigate('AccountManage')
@@ -69,7 +69,7 @@ const AdminSettings= ()=> {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
+                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                     </View>
                 </LinearGradient>
                 <Text style={CommonStyles.pageHeading}>Settings</Text>
@@ -234,14 +234,14 @@ const AdminSettings= ()=> {
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.secondary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => CancelHandler()}
+                        onPress={() => toggleOverlay()}
                     />
                     <Button
                         title="Logout"
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => LogoutHandler()}
+                        onPress={() => logoutHandler()}
                     />
                 </View>
             </Overlay>

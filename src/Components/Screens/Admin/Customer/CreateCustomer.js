@@ -31,25 +31,27 @@ const CreateCustomer = ({ route }) => {
     });
 
     useEffect(() => {
-        const fetchData =async () =>{
+        const fetchData = async () => {
             let id = await Store.getLocalDataUserDetails("_id");
-            if(id ){
+            if (id) {
                 setUserId(id)
             }
             Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
         }
 
         fetchData()
-       
+
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
-    const sendHandler =async () => {
+    const sendHandler = async () => {
+        Store?.setMainLoader(true);
         await Store?.postMemberData(bodyData?.registerType, bodyData);
         await Store?.getDashboardMemberData(userId, "Admin")
-        navigation.goBack()
+        navigation.goBack();
+        Store?.setMainLoader(false);
     }
 
     return (
@@ -120,7 +122,7 @@ const CreateCustomer = ({ route }) => {
                         onChange("district", item?._id)
                     }}
                 />
-                   <Input
+                <Input
                     label='Location'
                     labelStyle={styles.labelStyle}
                     placeholder='Location *'

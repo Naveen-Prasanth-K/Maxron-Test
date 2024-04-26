@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
 import Header1 from '../../Others/Header1';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
@@ -11,19 +11,18 @@ export default function BarCodeScan() {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [type, setType] = useState(Camera.Constants.Type.back);
 
     useEffect(() => {
-        const getBarCodeScannerPermissions = async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
+        const getCameraPermissions = async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
         };
-
-        getBarCodeScannerPermissions();
+        getCameraPermissions();
     }, []);
 
     const handleBarCodeScanned = ({ data }) => {
         setScanned(true);
-        // alert(`You have Scanned a device with Serial No ${data}`);
         Alert.alert(
             'Message', `You have Scanned a device with Serial No ${data}`,
             [
@@ -34,27 +33,30 @@ export default function BarCodeScan() {
         );
     };
 
-    if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
-    }
-    if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
-    }
+    // if (hasPermission === null) {
+    //     return <Text>Requesting for camera permission</Text>;
+    // }
+    // if (hasPermission === false) {
+    //     return <Text>No access to camera</Text>;
+    // }
 
     return (
         <View style={CommonStyles.pageContainer}>
             <Header1 />
-            <BarCodeScanner
+            <Camera
+                style={styles.camera}
+                type={type}
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={StyleSheet.absoluteFillObject}
             />
         </View>
-
     );
 }
 
 const styles = StyleSheet.create({
     container: {
 
+    },
+    camera: {
+        flex: 1,
     },
 });
