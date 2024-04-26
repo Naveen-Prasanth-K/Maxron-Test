@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+import { Dimensions, Pressable, Keyboard, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
@@ -13,24 +13,23 @@ import { observer } from 'mobx-react';
 import axios from 'axios';
 import { URL } from '../../../Utilities/Constant/Environment';
 import { localStorageGetSingleItem, localStorageStoreItem } from '../../../Utilities/Storage/Storage';
+import { errorAlert, addAndUpdateAlert } from '../../../Utilities/Error/ErrorAlert';
+
 const { width, height } = Dimensions.get('window');
 
 const LoginScreen = () => {
 
     const navigation = useNavigation();
+    const [errors, setErrors] = useState({});
     const [bodyData, setBodyData] = useState({
         mobileNo: "",
         registerType: Store.screen,
         otp: ""
     });
     const [otpStatus, setOtpStatus] = useState(false)
-    const { screenWidth, screenHeight } = WinDimensions();
-    const isLandscape = screenWidth > screenHeight;
-    const isTablet = Dimensions.get('window').width >= 600;
 
     useEffect(() => {
         const fetchData = async () => {
-            // console.log(`**************use Effct triggers **************`)
             let id = await Store.getLocalDataUserDetails("_id");
             let memberType = await Store.getLocalDataUserDetails("memberType");
             if (id && memberType?.dataName) {
@@ -39,7 +38,6 @@ const LoginScreen = () => {
             }
         }
         fetchData()
-
     }, [])
 
     const screenChangeHandler = async () => {
@@ -50,34 +48,95 @@ const LoginScreen = () => {
 
     // Send Otp
     const sendOtpHandler = async () => {
-        console.log(`bodyData -${JSON.stringify(bodyData)}`)
+        Store?.setMainLoader(true)
         await axios.post(`${URL}otp-sent`, bodyData).then((response) => {
-            console.log(`response -${JSON.stringify(response?.data)}`)
+            //console.log(`sendOtpHandler -${JSON.stringify(response?.data)}`)
+            addAndUpdateAlert(200, "OTP sent successfully")
             setOtpStatus(true);
         }).catch((error) => {
-            console.log(error)
+            if (error?.response?.status == 400) {
+                errorAlert(error?.response?.status, "You are not a registered user. So please register yourself.")
+            } else if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
         });
+        Store?.setMainLoader(false)
     }
+
     // login handler
     const LoginHandler = async () => {
+        Store?.setMainLoader(true)
         await axios.post(`${URL}otp-verify`, bodyData).then(async (response) => {
             // console.log(`response -${ JSON.stringify(response?.data) }`)
             if (response?.data?.message == "Success") {
                 await Store?.getDashboardMemberData(response?.data?.data?._id, Store.screen)
                 await localStorageStoreItem('memberData', JSON.stringify(response?.data?.data));
-                navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
+                await navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
+                setBodyData({
+                    mobileNo: "",
+                    registerType: Store.screen,
+                    otp: ""
+                })
+                setOtpStatus(false);
             } else {
 
             }
         }).catch((error) => {
-            console.log(error)
+            if (error?.response?.status == 400) {
+                errorAlert(error?.response?.status, "Check your OTP.")
+            } else if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
         })
-        // setOtpStatus(true)
-        // navigation.navigate(Store.screen == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar')
+        Store?.setMainLoader(false);
     }
     // On Change
     const onChange = (name, value) => {
         setBodyData(bodyData => ({ ...bodyData, [name]: value }))
+    }
+
+    const handleError = (error, input) => {
+        setErrors(prevState => ({ ...prevState, [input]: error }));
+    };
+
+    const validateMobile = () => {
+        Keyboard.dismiss();
+        let isValid = true;
+
+        if (
+            !bodyData.mobileNo ||
+            isNaN(bodyData.mobileNo) ||
+            (bodyData.mobileNo.toString().length !== 10 ||
+                bodyData.mobileNo.toString().includes('.'))
+        ) {
+            handleError('Please provide a valid 10-digit number', 'mobileNo');
+            isValid = false;
+        }
+        if (isValid) {
+            sendOtpHandler();
+        }
+    }
+    const validateOtp = () => {
+        Keyboard.dismiss();
+        let isValid = true;
+
+        if (
+            !bodyData?.otp ||
+            isNaN(bodyData?.otp) ||
+            (bodyData?.otp.toString().length !== 6 ||
+                bodyData?.otp.toString().includes('.'))
+        ) {
+            handleError('Please provide a valid OTP', 'otp');
+            isValid = false;
+        }
+
+        if (isValid) {
+            LoginHandler();
+        }
     }
 
     return (
@@ -102,12 +161,17 @@ const LoginScreen = () => {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         disabled={otpStatus}
+                        maxLength={10}
                         value={bodyData?.mobileNo?.toString()}
                         onChangeText={(value) => { onChange("mobileNo", value) }}
+                        errorStyle={errors.mobileNo ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                        errorMessage={errors.mobileNo}
+                        onFocus={() => handleError(null, 'mobileNo')}
                     />
                     {
-                        otpStatus == true && <Input
-                            placeholder='Enter your Otp Number *'
+                        otpStatus == true &&
+                        <Input
+                            placeholder='Enter OTP *'
                             inputContainerStyle={CommonStyles.inputContainerStyle}
                             inputStyle={CommonStyles.inputStyle}
                             placeholderTextColor={Colors.primary100}
@@ -115,6 +179,9 @@ const LoginScreen = () => {
                             maxLength={6}
                             value={bodyData?.otp?.toString()}
                             onChangeText={(value) => { onChange("otp", value) }}
+                            errorStyle={errors.otp ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                            errorMessage={errors.otp}
+                            onFocus={() => handleError(null, 'otp')}
                         />
                     }
                     <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
@@ -122,23 +189,13 @@ const LoginScreen = () => {
                         <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler} disabled={true} />
                         <Text style={styles.iotText}>Dealer</Text>
                     </View>
-                    <View style={{ marginTop: 20 }}>
-                        {otpStatus == false ? <Button
-                            title="Send OTP"
-                            titleStyle={CommonStyles.inputTitleStyle}
-                            buttonStyle={CommonStyles.loginButtonStyle}
-                            containerStyle={CommonStyles.loginContainerStyle}
-                            onPress={sendOtpHandler}
-                        /> :
-                            <Button
-                                title="Login"
-                                titleStyle={CommonStyles.inputTitleStyle}
-                                buttonStyle={CommonStyles.loginButtonStyle}
-                                containerStyle={CommonStyles.loginContainerStyle}
-                                onPress={LoginHandler}
-                            />
-                        }
-                    </View>
+                    <Button
+                        title={otpStatus == false ? "Get OTP" : "Login"}
+                        titleStyle={CommonStyles.inputTitleStyle}
+                        buttonStyle={CommonStyles.loginButtonStyle}
+                        containerStyle={CommonStyles.loginContainerStyle}
+                        onPress={otpStatus == false ? validateMobile : validateOtp}
+                    />
 
                     {/* <Input
                         placeholder='Enter your Password *'

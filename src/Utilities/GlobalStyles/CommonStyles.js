@@ -80,6 +80,17 @@ export const CommonStyles = {
         color: 'black',
         marginHorizontal: 15
     },
+    baseErrorStyle: {
+        color: 'red',
+        paddingTop: -5
+    },
+    errorStyle: {
+        color: 'red',
+        position: 'relative',
+        top: -5,
+        paddingBottom: 15,
+        marginHorizontal: 20
+    },
 
     // ActionContainer
     actionContainer: {
@@ -90,11 +101,13 @@ export const CommonStyles = {
         marginVertical: 10
     },
 
+    // Dropdown
+
     dropdown: {
         borderColor: Colors.primary75,
         borderWidth: 1,
         alignSelf: 'center',
-        height: hp('6%'),
+        height: hp('6.5%'),
         width: '91%',
         borderRadius: 8,
         backgroundColor: Colors.primary60,
@@ -103,6 +116,7 @@ export const CommonStyles = {
     },
     placeholderStyle: {
         fontSize: 16,
+        color: Colors.primary100
     },
     selectedTextStyle: {
         fontSize: 16,
@@ -119,6 +133,13 @@ export const CommonStyles = {
     },
     itemContainerStyle: {
         backgroundColor: Colors.primary60,
+    },
+    errorDistrict: {
+        color: 'red',
+        fontSize: 12,
+        position: 'relative',
+        top: -30,
+        marginHorizontal: 30
     },
 
     //Overlay
