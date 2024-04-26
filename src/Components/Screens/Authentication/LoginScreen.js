@@ -28,21 +28,21 @@ const LoginScreen = () => {
     const isLandscape = screenWidth > screenHeight;
     const isTablet = Dimensions.get('window').width >= 600;
 
-    useEffect(()=>{
-        const fetchData =async () =>{
+    useEffect(() => {
+        const fetchData = async () => {
             // console.log(`**************use Effct triggers **************`)
             let id = await Store.getLocalDataUserDetails("_id");
             let memberType = await Store.getLocalDataUserDetails("memberType");
-            if(id && memberType?.dataName){
-                await Store?.getDashboardMemberData(id ,memberType?.dataName )
+            if (id && memberType?.dataName) {
+                await Store?.getDashboardMemberData(id, memberType?.dataName)
                 await navigation.navigate(memberType?.dataName == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
             }
         }
         fetchData()
 
-    },[])
+    }, [])
 
-    const screenChangeHandler =async () => {
+    const screenChangeHandler = async () => {
         const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
         await setBodyData(bodyData => ({ ...bodyData, registerType: newValue }))
         await Store.setScreen(newValue);
@@ -105,15 +105,18 @@ const LoginScreen = () => {
                         value={bodyData?.mobileNo?.toString()}
                         onChangeText={(value) => { onChange("mobileNo", value) }}
                     />
-                    {otpStatus == true && <Input
-                        placeholder='Enter your Otp Number *'
-                        inputContainerStyle={CommonStyles.inputContainerStyle}
-                        inputStyle={CommonStyles.inputStyle}
-                        placeholderTextColor={Colors.primary100}
-                        keyboardType='numeric'
-                        value={bodyData?.otp?.toString()}
-                        onChangeText={(value) => { onChange("otp", value) }}
-                    />}
+                    {
+                        otpStatus == true && <Input
+                            placeholder='Enter your Otp Number *'
+                            inputContainerStyle={CommonStyles.inputContainerStyle}
+                            inputStyle={CommonStyles.inputStyle}
+                            placeholderTextColor={Colors.primary100}
+                            keyboardType='numeric'
+                            maxLength={6}
+                            value={bodyData?.otp?.toString()}
+                            onChangeText={(value) => { onChange("otp", value) }}
+                        />
+                    }
                     <View style={[styles.headingContainer, { backgroundColor: Store.screen === 'Admin' ? '#EBF3FF' : '#ffe6df' }]}>
                         <Text style={styles.iotText}>Admin</Text>
                         <Switch value={Store.screen == 'Dealer'} dualType={true} onToggle={screenChangeHandler} disabled={true} />

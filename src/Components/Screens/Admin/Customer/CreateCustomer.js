@@ -37,7 +37,7 @@ const CreateCustomer = ({ route }) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     const sendHandler = () => {
-        Store?.postMemberData(bodyData?.memberType, bodyData)
+        Store?.postMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
