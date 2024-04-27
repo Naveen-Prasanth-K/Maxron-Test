@@ -63,6 +63,8 @@ class Store {
             updateDeviceData: action,
             deleteDeviceData: action,
             setDeviceRegisterData: action,
+            //Active Device
+            postActiveDeviceData: action,
             //Device Order
             postDeviceOrderData: action,
             putDeviceOrderData: action,
@@ -374,6 +376,24 @@ class Store {
             }
         })
     }
+
+    // POst Active Device based data
+    postActiveDeviceData = async (formData) => {
+        await axios.post(`${URL}active-device`, formData).then(async (response) => {
+            if (response?.status == 200) {
+                addAndUpdateAlert(200, "Active Device Data Added.")
+                await this.getDeviceData();
+                await this.filterGetDeviceData(0,0,0,0,0, false);
+                await this.getDashboardMemberData(formData?.ownerId, "Admin");
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
     // POst Device Order
     postDeviceOrderData = async (registerType, formData) => {
         await axios.post(`${URL}device-order`, formData).then(async (response) => {
@@ -601,7 +621,7 @@ class Store {
         // console.log(`localstorage data data -${JSON.stringify(data)}`)
         return data == null ? "null" : data[key];
     }
-
+  
     deleteLocalStorageData = async (key) => {
         let memberData = await localStorageDelete("memberData");
         let toten = await localStorageDelete("ownerToken");

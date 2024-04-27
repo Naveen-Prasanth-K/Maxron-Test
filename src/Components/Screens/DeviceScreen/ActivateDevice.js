@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { observer } from 'mobx-react';
+import { Dropdown } from 'react-native-element-dropdown';
+import React, { useEffect, useState } from 'react'
 import { Button, Icon, Input } from '@rneui/themed';
 import HeaderCommon from '../../Others/HeaderCommon'
 import { ScrollView } from 'react-native'
@@ -8,14 +10,44 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/Store/Store';
 
-export default function ActivateDevice() {
-
+const  ActivateDevice = ({ route }) => {
+    const { item } = route.params
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
+    const [bodyData, setBodyData] = useState({
+        scanQR: item.scanQR != "" ? item.scanQR :  "",
+        controllerName: item.controllerName != "" ? item.controllerName :  "",
+        masterMobileNo: item.masterMobileNo != "" ? item.masterMobileNo :  "",
+        ownerId:  "",
+        IMEI: item.IMEI != "" ? item.IMEI :  "",
+        customerId : "",
+        deviceId : item._id != "" ? item._id : ""
+    });
 
-    const ActiveDeviceHandler = () => {
-        navigation.goBack()
+    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let id = await Store.getLocalDataUserDetails("_id");
+            if (id) {
+                setBodyData({ ...bodyData, ownerId: id });
+            }
+            Store?.getFilterMemberData(0, 0, 0, "User");
+        }
+        fetchData()
+
+    }, [])
+
+      // on change
+      const onChange = (name, value) => {
+        setBodyData({ ...bodyData, [name]: value });
+    }
+    // Active Device Handler
+    const ActiveDeviceHandler = async () => {
+     await Store?.postActiveDeviceData(bodyData);
+     navigation.goBack()
     }
 
     const CancelHandler = () => {
@@ -47,6 +79,8 @@ export default function ActivateDevice() {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        value={bodyData.scanQR.toString()}
+                        onChangeText={(value) => { onChange("scanQR", value) }}
                         rightIcon={
                             <Pressable
                                 style={({ pressed }) => pressed && CommonStyles.pressed}
@@ -66,6 +100,8 @@ export default function ActivateDevice() {
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
+                        value={bodyData.controllerName.toString()}
+                        onChangeText={(value) => { onChange("controllerName", value) }}
                     />
                     <Input
                         placeholder='Controller Mobile Number *'
@@ -73,6 +109,26 @@ export default function ActivateDevice() {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        value={bodyData.masterMobileNo.toString()}
+                        onChangeText={(value) => { onChange("masterMobileNo", value) }}
+                    />
+                     <Dropdown
+                        style={CommonStyles.dropdown}
+                        placeholderStyle={CommonStyles.placeholderStyle}
+                        selectedTextStyle={CommonStyles.selectedTextStyle}
+                        inputSearchStyle={CommonStyles.inputSearchStyle}
+                        activeColor={Colors.primary50}
+                        itemContainerStyle={CommonStyles.itemContainerStyle}
+                        placeholder='Customer Name'
+                        search
+                        searchPlaceholder="Search..."
+                        data={Store?.customerData}
+                        labelField="customerName"
+                        valueField="_id"
+                        value={bodyData?.customerId}
+                        onChange={item => {
+                            onChange("customerId", item?._id)
+                        }}
                     />
                     <Input
                         placeholder='Enter 4 digit Security PIN *'
@@ -103,7 +159,7 @@ export default function ActivateDevice() {
         </View>
     )
 }
-
+export default observer(ActivateDevice);
 const styles = StyleSheet.create({
     pageHeading: {
         fontSize: wp('6.5'),

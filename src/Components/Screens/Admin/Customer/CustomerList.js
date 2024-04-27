@@ -35,9 +35,6 @@ const CustomerList = () => {
     const DetailPageHandler = (item) => {
         navigation.navigate('CustomerDetail', { item: item })
     }
-
-    console.log(`Store?.customerData = ${JSON.stringify(Store?.customerData)}`)
-
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
