@@ -23,7 +23,7 @@ const UnSoldDevices = () => {
     const headerItem = () => (
         <View style={styles.headerItemContainer}>
             <Text style={CommonStyles.pageHeading}>Unsold Devices</Text>
-            <Text style={styles.foundCount}>180 Devices found</Text>
+            <Text style={styles.foundCount}>{Store?.unsoldDeviceData?.length} Devices found</Text>
             <View>
                 <View style={{ marginTop: 20 }}>
                     <SearchBar  soldStatus={false} type="Device"/>

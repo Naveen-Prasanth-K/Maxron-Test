@@ -152,7 +152,7 @@ const AddAdminUser = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData?.alternateMobile}
+                    value={bodyData?.alternateMobile?.toString()}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -160,7 +160,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.address}
+                    value={bodyData?.address}
                     onChangeText={(value) => { onChange("address", value) }}
                     errorStyle={errors.address ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
                     errorMessage={errors.address}
@@ -188,13 +188,23 @@ const AddAdminUser = ({ route }) => {
                 {errors.district &&
                     <Text style={CommonStyles.errorDistrict}>{errors.district}</Text>}
                 <Input
+                    placeholder='Location'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData?.location}
+                    onChangeText={(value) => { onChange("location", value) }}
+                />
+                <Input
+                    label='Pincode'
+                    labelStyle={styles.labelStyle}
                     placeholder='Pincode *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={6}
                     keyboardType='numeric'
-                    value={bodyData.Pincode}
+                    value={bodyData?.Pincode?.toString()}
                     onChangeText={(value) => { onChange("Pincode", value) }}
                     errorStyle={errors.Pincode ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
                     errorMessage={errors.Pincode}
@@ -205,7 +215,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.mailId}
+                    value={bodyData?.mailId}
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <View style={{ marginHorizontal: 15, }}>
