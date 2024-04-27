@@ -37,12 +37,11 @@ const CreateCustomer = ({ route }) => {
             if (id) {
                 setUserId(id)
             }
-            Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
+            await Store?.bindDistrict?.length == 0 && Store?.getDistrictData();
         }
-
         fetchData()
+    }, []);
 
-    }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
