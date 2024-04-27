@@ -22,7 +22,7 @@ const AdminHome = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-           
+
             let id = await Store.getLocalDataUserDetails("_id");
             let customerName = await Store.getLocalDataUserDetails("customerName");
             setName(customerName)
@@ -34,14 +34,15 @@ const AdminHome = () => {
     console.log(Store?.adminDashBoard?.unsoldDevices)
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <>
+            <Header1 />
             <ScrollView style={CommonStyles.pageContainer}>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
+
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                         <Text style={CommonStyles.adminTxt}>{name}</Text>
@@ -99,11 +100,12 @@ const AdminHome = () => {
                     <Text style={styles.text2}>{Store?.adminDashBoard?.userCount != "" ? Store?.adminDashBoard?.userCount : 0}</Text>
                 </Pressable>
             </ScrollView>
-        </SafeAreaView>
+        </>
 
     )
 }
 export default observer(AdminHome);
+
 const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',

@@ -20,31 +20,31 @@ import Store from '../../../../Utilities/Store/Store';
 
 const screenHeight = Dimensions.get("window").height;
 
-const RequestHome = () => {    
+const RequestHome = () => {
     const navigation = useNavigation();
     const [index, setIndex] = useState(0);
     const [dealer, setDealer] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             let dealerData = await Store.getLocalDataUserFullDetails();
-            setDealer(dealerData)           
+            setDealer(dealerData)
         }
         fetchData()
     }, [])
 
-
     return (
-        <SafeAreaView style={CommonStyles.pageContainer}>
-            <ScrollView>
+        <>
+            <Header1 />
+            <ScrollView style={CommonStyles.pageContainer}>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
+
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
+                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                         <SearchBar />
                     </View>
                 </LinearGradient>
@@ -78,7 +78,7 @@ const RequestHome = () => {
                     </TabView>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 

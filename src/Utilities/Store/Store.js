@@ -115,7 +115,7 @@ class Store {
     postMemberData = async (registerType, formData) => {
         await axios.post(`${URL}member`, formData).then(async (response) => {
             if (response?.status == 200) {
-                addAndUpdateAlert(200, `${registerType} Data Added.`)
+                addAndUpdateAlert(200, `You have successfully registered as a ${registerType}`)
                 this.getFilterMemberData(0, 0, 0, registerType);
             }
         }).catch((error) => {

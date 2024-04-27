@@ -16,7 +16,7 @@ import Store from '../../../../Utilities/Store/Store';
 
 const AdminDealerHome = () => {
 
-    const navigation = useNavigation();   
+    const navigation = useNavigation();
 
     const DealerInfoHandler = async (item) => {
         await Store?.getDashboardMemberData(item?._id, "Dealer")
@@ -35,7 +35,6 @@ const AdminDealerHome = () => {
                 start={{ x: 0.5, y: 1 }}
                 end={{ x: 1, y: 0.5 }}
             >
-                <Header1 />
                 <View style={CommonStyles.adminHeader}>
                     <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                     <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
@@ -51,7 +50,8 @@ const AdminDealerHome = () => {
     return (
         <>
             <View style={CommonStyles.pageContainer}>
-                <SafeAreaView>
+                <>
+                    <Header1 />
                     <FlatList
                         // data={DEALERDATA}
                         data={Store?.dealerData?.length > 0 && Store?.dealerData}
@@ -87,7 +87,7 @@ const AdminDealerHome = () => {
                                 />
                             </View>
                         } />
-                </SafeAreaView>
+                </>
             </View>
         </>
     )

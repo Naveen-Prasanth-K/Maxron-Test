@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Divider, Button } from '@rneui/themed';
 import { observer } from 'mobx-react';
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
@@ -23,9 +23,9 @@ const DealerCustomerList = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-           
+
             let dealerData = await Store.getLocalDataUserFullDetails();
-            setDealer(dealerData) 
+            setDealer(dealerData)
         }
         fetchData()
     }, [])
@@ -37,10 +37,9 @@ const DealerCustomerList = () => {
                 start={{ x: 0.5, y: 1 }}
                 end={{ x: 1, y: 0.5 }}
             >
-                <Header1 />
                 <View style={CommonStyles.adminHeader}>
                     <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                    <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
+                    <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                     <SearchBar />
                 </View>
             </LinearGradient>
@@ -53,7 +52,8 @@ const DealerCustomerList = () => {
     }
 
     return (
-        <SafeAreaView style={CommonStyles.pageContainer}>
+        <>
+            <Header1 />
             <FlatList
                 data={CUSTOMERDATA}
                 keyExtractor={(item) => item?.rfId}
@@ -86,7 +86,7 @@ const DealerCustomerList = () => {
                         />
                     </View>
                 } />
-        </SafeAreaView>
+        </>
     )
 }
 

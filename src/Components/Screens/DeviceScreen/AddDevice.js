@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Keyboard } from 'react-native';
 import Store from '../../../Utilities/Store/Store';
 import { observer } from 'mobx-react';
 import React, { useEffect, useState } from 'react'
@@ -11,15 +11,18 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 const AddDevice = () => {
+
     const navigation = useNavigation();
-    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState({});
     const [bodyData, setBodyData] = useState({
         scanQR: "",
+        IMEI: "",
         controllerName: "",
         masterMobileNo: "",
         ownerId: "",
-        IMEI: ""
+
     });
 
     useEffect(() => {
@@ -29,17 +32,21 @@ const AddDevice = () => {
                 setBodyData({ ...bodyData, ownerId: id });
             }
         }
-
         fetchData()
-
     }, [])
 
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
-    }
+    };
+    const handleError = (error, input) => {
+        setErrors(prevState => ({ ...prevState, [input]: error }));
+    };
+
     const AddDeviceHandler = async () => {
+        Store?.setMainLoader(true);
         await Store?.postDeviceData(bodyData);
+        Store?.setMainLoader(false);
         navigation.goBack()
     }
     // Cancel Handler
@@ -48,30 +55,57 @@ const AddDevice = () => {
     }
     // Bar Code
     const BarCodeScanHandler = () => {
-        setIsLoading(true);
+        Store?.setMainLoader(true);
         setTimeout(() => {
             navigation.navigate('BarCodeScan');
-            setIsLoading(false);
+            Store?.setMainLoader(false);
         }, 1000);
+    }
+
+    const validate = async () => {
+        Keyboard.dismiss();
+
+        let isValid = true;
+
+        if (!bodyData?.scanQR) {
+            handleError('Enter or Scan the QR Detail', 'scanQR');
+            isValid = false;
+        }
+        if (!bodyData?.IMEI) {
+            handleError('Enter or Scan IMEI No', 'IMEI');
+            isValid = false;
+        }
+
+        if (
+            !bodyData?.masterMobileNo ||
+            isNaN(bodyData.masterMobileNo) ||
+            bodyData.masterMobileNo.toString().length !== 10 ||
+            bodyData.masterMobileNo.toString().includes('.')
+        ) {
+            handleError('Enter correct Mobile no', 'masterMobileNo');
+            isValid = false;
+        }
+        if (!bodyData?.controllerName || bodyData?.controllerName.length < 3) {
+            handleError('Controller Name must be min 3 Characters', 'controllerName');
+            isValid = false;
+        }
+
+        if (isValid) {
+            AddDeviceHandler();
+        }
     }
 
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
-            {isLoading && (
-                <View style={styles.loaderContainer}>
-                    <ActivityIndicator size="large" color={Colors.secondary} />
-                </View>
-            )}
             <ScrollView>
                 <Text style={CommonStyles.pageHeading}>Add Device</Text>
                 <View>
                     <Input
-                        placeholder='Enter or Scan QR *'
+                        placeholder='Enter QR code or Scan *'
                         inputContainerStyle={CommonStyles.inputContainerStyle}
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
-                        keyboardType='numeric'
                         rightIcon={
                             <Pressable
                                 style={({ pressed }) => pressed && CommonStyles.pressed}
@@ -87,6 +121,9 @@ const AddDevice = () => {
                         }
                         value={bodyData.scanQR.toString()}
                         onChangeText={(value) => { onChange("scanQR", value) }}
+                        errorStyle={errors.scanQR ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                        errorMessage={errors.scanQR}
+                        onFocus={() => handleError(null, 'scanQR')}
                     />
                     <Input
                         placeholder='IMEI *'
@@ -95,6 +132,9 @@ const AddDevice = () => {
                         placeholderTextColor={Colors.primary100}
                         value={bodyData.IMEI.toString()}
                         onChangeText={(value) => { onChange("IMEI", value) }}
+                        errorStyle={errors.IMEI ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                        errorMessage={errors.IMEI}
+                        onFocus={() => handleError(null, 'IMEI')}
                     />
                     <Input
                         placeholder='Controller Name *'
@@ -103,6 +143,9 @@ const AddDevice = () => {
                         placeholderTextColor={Colors.primary100}
                         value={bodyData.controllerName.toString()}
                         onChangeText={(value) => { onChange("controllerName", value) }}
+                        errorStyle={errors.controllerName ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                        errorMessage={errors.controllerName}
+                        onFocus={() => handleError(null, 'controllerName')}
                     />
                     <Input
                         placeholder='Controller Mobile Number *'
@@ -110,8 +153,12 @@ const AddDevice = () => {
                         inputStyle={CommonStyles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        maxLength={10}
                         value={bodyData.masterMobileNo.toString()}
                         onChangeText={(value) => { onChange("masterMobileNo", value) }}
+                        errorStyle={errors.masterMobileNo ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                        errorMessage={errors.masterMobileNo}
+                        onFocus={() => handleError(null, 'masterMobileNo')}
                     />
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
                         <Button
@@ -126,7 +173,7 @@ const AddDevice = () => {
                             titleStyle={CommonStyles.inputTitleStyle}
                             buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
                             containerStyle={styles.ContainerStyle}
-                            onPress={() => AddDeviceHandler()}
+                            onPress={validate}
                         />
                     </View>
                 </View>
@@ -134,9 +181,7 @@ const AddDevice = () => {
         </View>
     )
 }
-
 export default observer(AddDevice);
-
 const styles = StyleSheet.create({
     pageHeading: {
         fontSize: wp('6.5'),
@@ -153,14 +198,5 @@ const styles = StyleSheet.create({
     ButtonStyle: {
         borderRadius: 8,
         height: hp('6%'),
-    },
-    loaderContainer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        zIndex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 })

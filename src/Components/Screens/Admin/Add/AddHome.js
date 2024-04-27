@@ -38,14 +38,14 @@ const AddHome = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <>
+            <Header1 />
             <ScrollView style={CommonStyles.pageContainer}>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                         <Text style={CommonStyles.adminTxt}>Naveen Prasanth</Text>
@@ -110,7 +110,7 @@ const AddHome = () => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 
