@@ -13,30 +13,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Store from '../../../../Utilities/Store/Store';
 
 const DealerSetting = () => {
+
     const [dealer, setDealer] = useState({})
     const navigation = useNavigation();
     const [logoutVisible, setLogoutVisible] = useState(false);
     const [deviceVisible, setDeviceVisible] = useState(false);
     const [formData, setFormData] = useState({
-        "buyerId" : "",             
-        "noOfOrderDevice" : "",
-        "status" : "Pending",
-        "registerType" : "Dealer"
+        "buyerId": "",
+        "noOfOrderDevice": "",
+        "status": "Pending",
+        "registerType": "Dealer"
     });
 
     const [updateData, setUpdateData] = useState({
-        "_id" : "",
-        "pin" : ""
+        "_id": "",
+        "pin": ""
     })
     useEffect(() => {
         const fetchData = async () => {
-           
             let dealerData = await Store.getLocalDataUserFullDetails();
-            if(dealerData._id != null){
-                setFormData(formData => ({ ...formData ,buyerId :  dealerData._id  }))
-                setUpdateData(updateData => ({ ...updateData ,_id :  dealerData._id  }))
-                setDealer(dealerData);   
-            }   
+            if (dealerData._id != null) {
+                setFormData(formData => ({ ...formData, buyerId: dealerData._id }))
+                setUpdateData(updateData => ({ ...updateData, _id: dealerData._id }))
+                setDealer(dealerData);
+            }
         }
         fetchData()
     }, [])
@@ -51,19 +51,18 @@ const DealerSetting = () => {
     const toggleDeviceOverlay = () => {
         setDeviceVisible(!deviceVisible);
     };
-    const LogoutHandler = () => {
-        toggleLogoutOverlay()
-    }
-    const CancelLogoutHandler = () => {
-        toggleLogoutOverlay()
-    }
-    const CancelDeviceHandler = () => {
-        toggleDeviceOverlay()
-    }
+
+    const logoutHandler = async () => {
+        Store?.setMainLoader(true);
+        await Store?.deleteLocalStorageData();
+        navigation.navigate('LoginScreen');
+        Store?.setMainLoader(false);
+    };
+
     const RequestHandler = () => {
 
-        console.log("form Data  ", JSON.stringify(formData));
-        Store?.postDeviceOrderData(formData?.registerType , formData)
+        //console.log("form Data  ", JSON.stringify(formData));
+        Store?.postDeviceOrderData(formData?.registerType, formData)
         toggleDeviceOverlay()
     }
     // const DeviceOrderHandler = () => {
@@ -87,7 +86,7 @@ const DealerSetting = () => {
                     <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
+                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                     </View>
                 </LinearGradient>
                 <Text style={CommonStyles.pageHeading}>Settings</Text>
@@ -176,14 +175,14 @@ const DealerSetting = () => {
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.secondary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => CancelLogoutHandler()}
+                        onPress={() => toggleLogoutOverlay()}
                     />
                     <Button
                         title="Logout"
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.primary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => LogoutHandler()}
+                        onPress={() => logoutHandler()}
                     />
                 </View>
             </Overlay>
@@ -205,7 +204,7 @@ const DealerSetting = () => {
                         titleStyle={CommonStyles.inputTitleStyle}
                         buttonStyle={[styles.ButtonStyle, { backgroundColor: Colors.secondary }]}
                         containerStyle={styles.ContainerStyle}
-                        onPress={() => CancelDeviceHandler()}
+                        onPress={() => toggleDeviceOverlay()}
                     />
                     <Button
                         title="Request"

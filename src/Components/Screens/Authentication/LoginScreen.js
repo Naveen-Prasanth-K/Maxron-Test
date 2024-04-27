@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Pressable, Keyboard, ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+import { Dimensions, Pressable, Keyboard, ScrollView, Alert, StyleSheet, BackHandler, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
@@ -14,6 +14,7 @@ import axios from 'axios';
 import { URL } from '../../../Utilities/Constant/Environment';
 import { localStorageGetSingleItem, localStorageStoreItem } from '../../../Utilities/Storage/Storage';
 import { errorAlert, addAndUpdateAlert } from '../../../Utilities/Error/ErrorAlert';
+import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,19 +27,31 @@ const LoginScreen = () => {
         registerType: Store.screen,
         otp: ""
     });
-    const [otpStatus, setOtpStatus] = useState(false)
+    const [otpStatus, setOtpStatus] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            let id = await Store.getLocalDataUserDetails("_id");
-            let memberType = await Store.getLocalDataUserDetails("memberType");
-            if (id && memberType?.dataName) {
-                await Store?.getDashboardMemberData(id, memberType?.dataName)
-                await navigation.navigate(memberType?.dataName == 'Admin' ? 'AdminBottomBar' : 'DealerBottomBar');
-            }
+    const backAction = () => {
+        if (navigation.isFocused()) {
+            Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Exit App',
+                textBody: 'Do you want to exit?',
+                button: 'Okay',
+                onPressButton: () => {
+                    BackHandler.exitApp();
+                    Dialog.hide();
+                },
+                onClose: () => Dialog.hide()
+            });
+            return true;
         }
-        fetchData()
-    }, [])
+    };
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+        return () => backHandler.remove();
+    }, []);
 
     const screenChangeHandler = async () => {
         const newValue = Store.screen === 'Admin' ? 'Dealer' : 'Admin';
