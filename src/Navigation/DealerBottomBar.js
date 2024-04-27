@@ -1,23 +1,50 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon, Image } from '@rneui/base';
-import React from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Animated, Dimensions, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../Utilities/GlobalStyles/Colors';
 import { WinDimensions } from '../Utilities/GlobalStyles/WinDimension';
-
+import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
 import DealerCustomerList from '../Components/Screens/Admin/Customer/DealerCustomerList';
 import DealerSetting from '../Components/Screens/Admin/Dealer/DealerSetting';
 import RequestHome from '../Components/Screens/Admin/Request/RequestHome';
+import { useNavigation } from '@react-navigation/native';
 
 const BottomTabs = createBottomTabNavigator();
 
 export default function DealerBottomBar() {
 
+    const navigation = useNavigation();
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const isTablet = Dimensions.get('window').width >= 600;
+
+    const backAction = () => {
+        if (navigation.isFocused()) {
+            Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Exit App',
+                textBody: 'Do you want to exit?',
+                button: 'Okay',
+                onPressButton: () => {
+                    BackHandler.exitApp();
+                    Dialog.hide();
+                },
+                onClose: () => Dialog.hide()
+            });
+            return true;
+        }
+    };
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+        return () => backHandler.remove();
+    }, []);
 
     return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>

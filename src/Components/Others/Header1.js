@@ -12,23 +12,24 @@ export default function Header1() {
     const navigation = useNavigation();
 
     return (
-
-        <View style={styles.Container}>
-            <Image style={styles.image}
-                source={require('../../Images/Logo.png')}
-            />
-            <Pressable
-                style={({ pressed }) => pressed && CommonStyles.pressed}
-                onPress={() => navigation.navigate('NotificationScreen')}
-            >
-                <Icon
-                    type='octicon'
-                    name='bell-fill'
-                    size={19}
-                    color={Colors.primary60}
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <View style={styles.Container}>
+                <Image style={styles.image}
+                    source={require('../../Images/Logo.png')}
                 />
-            </Pressable>
-        </View>
+                <Pressable
+                    style={({ pressed }) => pressed && CommonStyles.pressed}
+                    onPress={() => navigation.navigate('NotificationScreen')}
+                >
+                    <Icon
+                        type='octicon'
+                        name='bell-fill'
+                        size={19}
+                        color={Colors.primary60}
+                    />
+                </Pressable>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     Container: {
         backgroundColor: 'transparent',
         padding: 10,
-        paddingTop: 15,
         paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent: 'space-between'

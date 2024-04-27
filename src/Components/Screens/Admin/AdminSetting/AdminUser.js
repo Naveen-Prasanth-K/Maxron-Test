@@ -19,12 +19,12 @@ const AdminUser = () => {
 
     const navigation = useNavigation();
 
-    useEffect(()=>{
-            const fetchData =async () =>{
-                await Store?.getFilterMemberData(0,0,0,"Staff")
-            }
-            fetchData()
-    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+            await Store?.getFilterMemberData(0, 0, 0, "Staff")
+        }
+        fetchData()
+    }, [])
 
     const InfoHandler = (item) => {
         navigation.navigate('AddAdminUser', { item: item })
@@ -52,6 +52,7 @@ const AdminUser = () => {
             />
         </View>
     )
+
     return (
         <>
             <View style={CommonStyles.pageContainer}>

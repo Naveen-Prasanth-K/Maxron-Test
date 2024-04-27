@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Button, Input, CheckBox } from '@rneui/themed';
+import { Icon, Button, Input } from '@rneui/themed';
 import { observer } from 'mobx-react';
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -9,11 +9,13 @@ import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import Store from '../../../../Utilities/Store/Store';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
-
+import CheckBox from 'react-native-check-box'
 
 const AddAdminUser = ({ route }) => {
+
     const { item } = route.params;
     const navigation = useNavigation();
+
     const [bodyData, setBodyData] = useState({
         _id: item?._id != "" ? item?._id : "",
         customerName: item?.customerName != "" ? item?.customerName : "",
@@ -27,40 +29,39 @@ const AddAdminUser = ({ route }) => {
         GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
         mailId: item?.mailId != "" ? item?.mailId : "",
         registerType: "Staff",
-        permissions: item?.permissions?.length == 0  ? [] : item?.permissions?.map(data=> data?._id)
+        permissions: item?.permissions?.length == 0 ? [] : item?.permissions?.map(data => data?._id)
     });
 
     useEffect(() => {
-       const fetchData =async () =>{
-        Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
-        Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
-       }
-
-       fetchData()
+        const fetchData = async () => {
+            Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
+            Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
+        }
+        fetchData()
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     // on press Handler
-    const onPressHandler = ( value) => {
+    const onPressHandler = (value) => {
         let permission = bodyData?.permissions;
 
-        if(permission?.length > 0 ){
-            if(permission?.filter(data => data == value)?.length == 0) {
+        if (permission?.length > 0) {
+            if (permission?.filter(data => data == value)?.length == 0) {
                 permission.push(value)
-            }else{
-                permission =   permission?.filter(data => data != value);
+            } else {
+                permission = permission?.filter(data => data != value);
             }
-        }else{
+        } else {
             permission.push(value)
         }
-        setBodyData(bodyData => ({ ...bodyData, permissions : permission }));
+        setBodyData(bodyData => ({ ...bodyData, permissions: permission }));
     }
     const sendHandler = () => {
         // console.log(`body data -${ JSON.stringify(bodyData) }`)
-        bodyData?._id == "" || bodyData?._id == undefined ?  Store?.postMemberData(bodyData?.registerType, bodyData) :
-                                    Store?.putMemberData(bodyData?.registerType, bodyData)
+        bodyData?._id == "" || bodyData?._id == undefined ? Store?.postMemberData(bodyData?.registerType, bodyData) :
+            Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -68,7 +69,7 @@ const AddAdminUser = ({ route }) => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <ScrollView>
-                <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update User Info' : 'Create User'}
+                <Text style={CommonStyles.pageHeading}>{item?._id ? 'Update User Info' : 'Create User'}
                 </Text>
                 <Input
                     label='Name'
@@ -167,23 +168,22 @@ const AddAdminUser = ({ route }) => {
                     <Text style={[styles.labelStyle, { marginBottom: 25 }]}>Select Permissions</Text>
                     {
                         Store?.bindPermission?.length > 0 &&
-                        Store?.bindPermission?.map((data, index)=>{                           
-                           const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter( check => check == data?._id)?.length == 1 ? true : false : false
-                           return <View style={styles.checkBoxContainer}>
-                                    <CheckBox
-                                        center
-                                        title={ data?.dataName }
-                                        containerStyle={{ backgroundColor: 'transparent' }}
-                                        checked={ checked }
-                                        onPress={() => onPressHandler(data?._id)}
-                                        textStyle={{ fontSize: 13, fontWeight: '400' }}
-                                    />
-                                </View>
+                        Store?.bindPermission?.map((data, index) => {
+                            const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter(check => check == data?._id)?.length == 1 ? true : false : false
+                            return <View style={styles.checkBoxContainer}>
+                                <CheckBox
+                                    style={{ flex: 1, padding: 18 }}
+                                    onClick={() => onPressHandler(data?._id)}
+                                    isChecked={checked}
+                                    rightText={data?.dataName}
+                                    checkBoxColor={Colors.primary}
+                                />
+                            </View>
                         })
                     }
                 </View>
                 <Button
-                    title={bodyData?._id == "" || bodyData?._id == undefined ? 'Update' : 'Create'}
+                    title={item?._id ? 'Update' : 'Create'}
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
