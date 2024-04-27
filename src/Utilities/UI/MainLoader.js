@@ -5,9 +5,9 @@ import {
     View
 } from 'react-native';
 import { Colors } from '../GlobalStyles/Colors';
-import AnimatedLoader from "react-native-animated-loader";
+import LottieView from "lottie-react-native";
 
-export default function Loader({ visible = false }) {
+export default function MainLoader({ visible = false }) {
 
     const { width, height } = useWindowDimensions();
 
@@ -22,29 +22,35 @@ export default function Loader({ visible = false }) {
     }, [visible]);
 
     return (
-        <AnimatedLoader
-            visible={visible}
-            overlayColor="rgba(0,0,0,0.5)"
-            animationStyle={style.lottie}
-            speed={0.8}>
-        </AnimatedLoader>
+        visible && (
+            <View style={styles.container}>
+                <LottieView
+                    source={require("../../Images/HomeScreen/LoaderAnimation2.json")}
+                    style={styles.lottie}
+                    autoPlay
+                    loop
+                />
+            </View>
+        )
     );
 };
 
-const style = StyleSheet.create({
-
+const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
         position: 'absolute',
-        width: '100%',
-        height: '100%',
-        zIndex: 1,
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        zIndex: 10,
+        backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'center',
-        alignItems: 'center',
+        height: '100%'
     },
     lottie: {
         width: 60,
-        height: 60
+        height: 60,
+        alignSelf: 'center'
     }
 });
 

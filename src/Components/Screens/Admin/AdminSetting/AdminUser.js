@@ -1,30 +1,43 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Button } from '@rneui/themed';
 import { observer } from 'mobx-react';
-import React, { useEffect } from 'react';
-import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, FlatList, Pressable, ScrollView, ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 import { CommonStyles, GradientColor } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../../Utilities/GlobalStyles/WinDimension';
 import HeaderCommon from '../../../Others/HeaderCommon';
-import { LinearGradient } from 'expo-linear-gradient';
-import SearchBar from '../../../Others/SearchBar';
-import { DEALERDATA } from '../../../../Utilities/Data/DummyData';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import Store from '../../../../Utilities/Store/Store';
 import { commonDateFormat } from '../../../../Utilities/Constant/Common';
+import Loader1 from '../../../../Utilities/UI/Loader1';
+
+
 const AdminUser = () => {
 
+    const { screenWidth, screenHeight } = WinDimensions();
+
     const navigation = useNavigation();
+    const [isFetching, setIsFetching] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchData = async () => {
+        setIsFetching(true);
+        await Store?.getFilterMemberData(0, 0, 0, "Staff")
+        setIsFetching(false);
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            await Store?.getFilterMemberData(0, 0, 0, "Staff")
-        }
         fetchData()
     }, [])
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        fetchData();
+        setTimeout(() => {
+            setRefreshing(false)
+        }, 500)
+    }
 
     const InfoHandler = (item) => {
         navigation.navigate('AddAdminUser', { item: item })
@@ -60,6 +73,8 @@ const AdminUser = () => {
                 <FlatList
                     data={Store?.staffData?.length > 0 && Store?.staffData}
                     keyExtractor={(item) => item?._id}
+                    onRefresh={onRefresh}
+                    refreshing={refreshing}
                     ListHeaderComponent={headerItem}
                     renderItem={({ item }) => (
                         <View style={styles.cardContainer}
@@ -97,13 +112,19 @@ const AdminUser = () => {
                         </View>
                     )}
                     ListEmptyComponent={
-                        <View style={CommonStyles.noDeviceImgContainer}>
-                            <Image
-                                resizeMode="cover"
-                                source={require('../../../../Images/HomeScreen/NoDevice.png')}
-                                style={CommonStyles.noDeviceImg}
-                            />
-                        </View>
+                        isFetching ? (
+                            <View style={{ flex: 1, height: screenHeight * 0.80, alignItems: 'center', }}>
+                                <Loader1 />
+                            </View>
+                        ) : (
+                            <View style={CommonStyles.noDeviceImgContainer}>
+                                <Image
+                                    resizeMode="cover"
+                                    source={require('../../../../Images/HomeScreen/NoDevice.png')}
+                                    style={CommonStyles.noDeviceImg}
+                                />
+                            </View>
+                        )
                     } />
             </View>
         </>
@@ -156,6 +177,10 @@ const styles = StyleSheet.create({
         width: '25%',
         borderRadius: 7,
         marginRight: 15
+    },
+    lottie: {
+        width: 60,
+        height: 60
     }
 })
 
