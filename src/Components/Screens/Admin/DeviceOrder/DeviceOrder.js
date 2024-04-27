@@ -13,27 +13,10 @@ import Store from '../../../../Utilities/Store/Store';
 
 const screenHeight = Dimensions.get("window").height;
 
-const DeviceOrder = () =>{
+const DeviceOrder = () => {
 
     const navigation = useNavigation();
     const [index, setIndex] = useState(0);
-
-    const [dealer, setDealer] = useState({});
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            let dealerData = await Store.getLocalDataUserFullDetails();
-            if(dealerData?.memberType?.dataName == "Admin"){
-                await Store?.getFilterDeviceOrderData(0,0,0,0,"Pending",0 )
-                await Store?.getFilterDeviceOrderData(0,0,0,0,"Completed",0 )
-            }
-            setDealer(dealerData)           
-        }
-        fetchData()
-    }, [])
-
-
-
 
     return (
         <View style={CommonStyles.pageContainer}>

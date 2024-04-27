@@ -95,6 +95,10 @@ const AddAdminUser = ({ route }) => {
             handleError('Address must be min 3 Characters', 'address');
             isValid = false;
         }
+        if (!bodyData?.location || bodyData?.location.length < 3) {
+            handleError('Location must be min 3 Characters', 'location');
+            isValid = false;
+        }
         if (!bodyData?.district) {
             handleError('Pick District', 'district');
             isValid = false;
@@ -166,6 +170,17 @@ const AddAdminUser = ({ route }) => {
                     errorMessage={errors.address}
                     onFocus={() => handleError(null, 'address')}
                 />
+                <Input
+                    placeholder='Location *'
+                    inputContainerStyle={CommonStyles.inputContainerStyle}
+                    inputStyle={CommonStyles.inputStyle}
+                    placeholderTextColor={Colors.primary100}
+                    value={bodyData?.location}
+                    onChangeText={(value) => { onChange("location", value) }}
+                    errorStyle={errors.location ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                    errorMessage={errors.location}
+                    onFocus={() => handleError(null, 'location')}
+                />
                 <Dropdown
                     style={CommonStyles.dropdown}
                     placeholderStyle={CommonStyles.placeholderStyle}
@@ -187,17 +202,8 @@ const AddAdminUser = ({ route }) => {
                 />
                 {errors.district &&
                     <Text style={CommonStyles.errorDistrict}>{errors.district}</Text>}
+
                 <Input
-                    placeholder='Location'
-                    inputContainerStyle={CommonStyles.inputContainerStyle}
-                    inputStyle={CommonStyles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    value={bodyData?.location}
-                    onChangeText={(value) => { onChange("location", value) }}
-                />
-                <Input
-                    label='Pincode'
-                    labelStyle={styles.labelStyle}
                     placeholder='Pincode *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}

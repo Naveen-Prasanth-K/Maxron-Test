@@ -24,6 +24,7 @@ const RequestHome = () => {
     const navigation = useNavigation();
     const [index, setIndex] = useState(0);
     const [dealer, setDealer] = useState({});
+
     useEffect(() => {
         const fetchData = async () => {
             let dealerData = await Store.getLocalDataUserFullDetails();
@@ -35,49 +36,55 @@ const RequestHome = () => {
     return (
         <>
             <Header1 />
-            <ScrollView style={CommonStyles.pageContainer}>
-                <LinearGradient
-                    colors={GradientColor}
-                    start={{ x: 0.5, y: 1 }}
-                    end={{ x: 1, y: 0.5 }}
-                >
+            <FlatList
+                data={[1]}
+                renderItem={({ item }) => (
+                    <View style={CommonStyles.pageContainer}>
+                        <LinearGradient
+                            colors={GradientColor}
+                            start={{ x: 0.5, y: 1 }}
+                            end={{ x: 1, y: 0.5 }}
+                        >
+                            <View style={CommonStyles.adminHeader}>
+                                <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
+                                <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
+                                <SearchBar />
+                            </View>
+                        </LinearGradient>
+                        <Text style={CommonStyles.dealerTxt}>REQUEST</Text>
+                        <View style={{ flex: 1, height: screenHeight * 0.90 }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1, borderBottomWidth: index === 0 ? 3 : 0, marginHorizontal: 25, paddingBottom: 10, borderColor: Colors.primary,
+                                    }}
+                                    onPress={() => setIndex(0)}
+                                >
+                                    <Text style={styles.TabText}>Active</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1, borderBottomWidth: index === 1 ? 3 : 0, marginHorizontal: 25, paddingBottom: 10, borderColor: Colors.primary,
+                                    }}
+                                    onPress={() => setIndex(1)}
+                                >
+                                    <Text style={styles.TabText}>Completed</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <TabView value={index} onChange={setIndex} animationType="spring">
+                                <TabView.Item style={styles.tabItem} >
+                                    <ActiveRequest />
+                                </TabView.Item>
+                                <TabView.Item style={styles.tabItem}>
+                                    <CompletedRequest />
+                                </TabView.Item>
+                            </TabView>
+                        </View>
+                    </View>
+                )}
 
-                    <View style={CommonStyles.adminHeader}>
-                        <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
-                        <SearchBar />
-                    </View>
-                </LinearGradient>
-                <Text style={CommonStyles.dealerTxt}>REQUEST</Text>
-                <View style={{ flex: 1, height: screenHeight * 0.90 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                            style={{
-                                flex: 1, borderBottomWidth: index === 0 ? 3 : 0, marginHorizontal: 25, paddingBottom: 10, borderColor: Colors.primary,
-                            }}
-                            onPress={() => setIndex(0)}
-                        >
-                            <Text style={styles.TabText}>Active</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                flex: 1, borderBottomWidth: index === 1 ? 3 : 0, marginHorizontal: 25, paddingBottom: 10, borderColor: Colors.primary,
-                            }}
-                            onPress={() => setIndex(1)}
-                        >
-                            <Text style={styles.TabText}>Completed</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TabView value={index} onChange={setIndex} animationType="spring">
-                        <TabView.Item style={styles.tabItem} >
-                            <ActiveRequest />
-                        </TabView.Item>
-                        <TabView.Item style={styles.tabItem}>
-                            <CompletedRequest />
-                        </TabView.Item>
-                    </TabView>
-                </View>
-            </ScrollView>
+            />
+
         </>
     )
 }

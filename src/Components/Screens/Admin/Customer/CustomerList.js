@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Image, Divider, Button } from '@rneui/themed';
+import { Icon, Divider, Button } from '@rneui/themed';
 import { observer } from 'mobx-react';
 import React, { useEffect } from 'react';
-import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Pressable, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { CUSTOMERDATA } from '../../../../Utilities/Data/DummyData';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
