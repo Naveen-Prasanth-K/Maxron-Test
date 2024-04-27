@@ -12,8 +12,10 @@ import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
 
 
 const AddAdminUser = ({ route }) => {
+
     const { item } = route.params;
     const navigation = useNavigation();
+
     const [bodyData, setBodyData] = useState({
         _id: item?._id != "" ? item?._id : "",
         customerName: item?.customerName != "" ? item?.customerName : "",
@@ -27,40 +29,39 @@ const AddAdminUser = ({ route }) => {
         GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
         mailId: item?.mailId != "" ? item?.mailId : "",
         registerType: "Staff",
-        permissions: item?.permissions?.length == 0  ? [] : item?.permissions?.map(data=> data?._id)
+        permissions: item?.permissions?.length == 0 ? [] : item?.permissions?.map(data => data?._id)
     });
 
     useEffect(() => {
-       const fetchData =async () =>{
-        Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
-        Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
-       }
-
-       fetchData()
+        const fetchData = async () => {
+            Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
+            Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
+        }
+        fetchData()
     }, [])
     // on change
     const onChange = (name, value) => {
         setBodyData({ ...bodyData, [name]: value });
     }
     // on press Handler
-    const onPressHandler = ( value) => {
+    const onPressHandler = (value) => {
         let permission = bodyData?.permissions;
 
-        if(permission?.length > 0 ){
-            if(permission?.filter(data => data == value)?.length == 0) {
+        if (permission?.length > 0) {
+            if (permission?.filter(data => data == value)?.length == 0) {
                 permission.push(value)
-            }else{
-                permission =   permission?.filter(data => data != value);
+            } else {
+                permission = permission?.filter(data => data != value);
             }
-        }else{
+        } else {
             permission.push(value)
         }
-        setBodyData(bodyData => ({ ...bodyData, permissions : permission }));
+        setBodyData(bodyData => ({ ...bodyData, permissions: permission }));
     }
     const sendHandler = () => {
         // console.log(`body data -${ JSON.stringify(bodyData) }`)
-        bodyData?._id == "" || bodyData?._id == undefined ?  Store?.postMemberData(bodyData?.registerType, bodyData) :
-                                    Store?.putMemberData(bodyData?.registerType, bodyData)
+        bodyData?._id == "" || bodyData?._id == undefined ? Store?.postMemberData(bodyData?.registerType, bodyData) :
+            Store?.putMemberData(bodyData?.registerType, bodyData)
         navigation.goBack()
     }
 
@@ -167,18 +168,18 @@ const AddAdminUser = ({ route }) => {
                     <Text style={[styles.labelStyle, { marginBottom: 25 }]}>Select Permissions</Text>
                     {
                         Store?.bindPermission?.length > 0 &&
-                        Store?.bindPermission?.map((data, index)=>{                           
-                           const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter( check => check == data?._id)?.length == 1 ? true : false : false
-                           return <View style={styles.checkBoxContainer}>
-                                    <CheckBox
-                                        center
-                                        title={ data?.dataName }
-                                        containerStyle={{ backgroundColor: 'transparent' }}
-                                        checked={ checked }
-                                        onPress={() => onPressHandler(data?._id)}
-                                        textStyle={{ fontSize: 13, fontWeight: '400' }}
-                                    />
-                                </View>
+                        Store?.bindPermission?.map((data, index) => {
+                            const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter(check => check == data?._id)?.length == 1 ? true : false : false
+                            return <View style={styles.checkBoxContainer}>
+                                <CheckBox
+                                    center
+                                    title={data?.dataName}
+                                    containerStyle={{ backgroundColor: 'transparent' }}
+                                    checked={checked}
+                                    onPress={() => onPressHandler(data?._id)}
+                                    textStyle={{ fontSize: 13, fontWeight: '400' }}
+                                />
+                            </View>
                         })
                     }
                 </View>

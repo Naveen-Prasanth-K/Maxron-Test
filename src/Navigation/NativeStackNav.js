@@ -47,6 +47,7 @@ import CreateCustomer from '../Components/Screens/Admin/Customer/CreateCustomer'
 import DealerBottomBar from './DealerBottomBar';
 import DealerProfile from '../Components/Screens/Admin/Dealer/DealerProfile';
 import SellDevices from '../Components/Screens/Admin/Sell/SellDevices';
+import SplashScreen from '../Components/Screens/EntryScreen/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,10 @@ export default function NativeStackNav() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+                <Stack.Screen
+                    name="SplashScreen"
+                    options={{ headerShown: false }}
+                    component={SplashScreen} />
                 <Stack.Screen
                     name="LoginScreen"
                     options={{ headerShown: false }}
