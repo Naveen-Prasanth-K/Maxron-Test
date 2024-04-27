@@ -18,11 +18,13 @@ import Store from '../../../../Utilities/Store/Store';
 import { commonDateFormat } from '../../../../Utilities/Constant/Common';
 
 const DeviceOrderActive = () => {
-    console.log(`Store?.deviceOrderData?.length -${ Store?.deviceOrderData?.length }`)
+
+    //console.log(`Store?.deviceOrderData?.length -${ Store?.deviceOrderData?.length }`)
+
     return (
         <View>
             <FlatList
-                data={Store?.deviceOrderData?.length > 0 && Store?.deviceOrderData }
+                data={Store?.deviceOrderData?.length > 0 && Store?.deviceOrderData}
                 keyExtractor={(item) => item?._id}
                 renderItem={({ item }) => (
                     <View style={styles.cardContainer}
@@ -47,7 +49,7 @@ const DeviceOrderActive = () => {
                                 />
                                 <Text style={styles.nameTxt}>{item?.buyerId?.location}</Text>
                             </View>
-                            <Text style={styles.nameTxt}>{ commonDateFormat(item?.buyerId?.joinedDate) }</Text>
+                            <Text style={styles.nameTxt}>{commonDateFormat(item?.buyerId?.joinedDate)}</Text>
                         </View>
                     </View>
                 )}

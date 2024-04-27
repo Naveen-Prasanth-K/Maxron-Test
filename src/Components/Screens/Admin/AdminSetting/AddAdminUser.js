@@ -3,7 +3,7 @@ import { Icon, Button, Input } from '@rneui/themed';
 import { observer } from 'mobx-react';
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Keyboard } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
@@ -15,14 +15,14 @@ const AddAdminUser = ({ route }) => {
 
     const { item } = route.params;
     const navigation = useNavigation();
-
+    const [errors, setErrors] = useState({});
     const [bodyData, setBodyData] = useState({
         _id: item?._id != "" ? item?._id : "",
         customerName: item?.customerName != "" ? item?.customerName : "",
-        mobileNo: item?.mobileNo != "" ? item?.mobileNo : "",
+        mobileNo: item?.mobileNo != "" ? item?.mobileNo?.toString() : "",
         location: item?.location != "" ? item?.location : "",
         bussinessName: item?.bussinessName != "" ? item?.bussinessName : "",
-        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile : "",
+        alternateMobile: item?.alternateMobile != "" ? item?.alternateMobile?.toString() : "",
         address: item?.address != "" ? item?.address : "",
         district: item?.district?._id != "" ? item?.district?._id : "",
         Pincode: item?.Pincode != "" ? item?.Pincode : "",
@@ -39,10 +39,7 @@ const AddAdminUser = ({ route }) => {
         }
         fetchData()
     }, [])
-    // on change
-    const onChange = (name, value) => {
-        setBodyData({ ...bodyData, [name]: value });
-    }
+
     // on press Handler
     const onPressHandler = (value) => {
         let permission = bodyData?.permissions;
@@ -58,11 +55,63 @@ const AddAdminUser = ({ route }) => {
         }
         setBodyData(bodyData => ({ ...bodyData, permissions: permission }));
     }
+
+    // on change
+    const onChange = (name, value) => {
+        setBodyData({ ...bodyData, [name]: value });
+    }
+    const handleError = (error, input) => {
+        setErrors(prevState => ({ ...prevState, [input]: error }));
+    };
     const sendHandler = () => {
+        Store?.setMainLoader(true);
         // console.log(`body data -${ JSON.stringify(bodyData) }`)
         bodyData?._id == "" || bodyData?._id == undefined ? Store?.postMemberData(bodyData?.registerType, bodyData) :
             Store?.putMemberData(bodyData?.registerType, bodyData)
-        navigation.goBack()
+        navigation.goBack();
+        Store?.setMainLoader(false);
+    }
+
+    const validate = async () => {
+        Keyboard.dismiss();
+
+        let isValid = true;
+
+        if (!bodyData?.customerName || bodyData?.customerName.length < 3) {
+            handleError('Name must be min 3 Characters', 'customerName');
+            isValid = false;
+        }
+
+        if (
+            !bodyData?.mobileNo ||
+            isNaN(bodyData.mobileNo) ||
+            bodyData.mobileNo.toString().length !== 10 ||
+            bodyData.mobileNo.toString().includes('.')
+        ) {
+            handleError('Enter correct Mobile no', 'mobileNo');
+            isValid = false;
+        }
+        if (!bodyData?.address || bodyData?.address.length < 3) {
+            handleError('Address must be min 3 Characters', 'address');
+            isValid = false;
+        }
+        if (!bodyData?.district) {
+            handleError('Pick District', 'district');
+            isValid = false;
+        }
+        if (
+            !bodyData?.Pincode ||
+            isNaN(bodyData.Pincode) ||
+            bodyData.Pincode.toString().length !== 6 ||
+            bodyData.Pincode.toString().includes('.')
+        ) {
+            handleError('Enter valid Pincode', 'Pincode');
+            isValid = false;
+        }
+
+        if (isValid) {
+            sendHandler();
+        }
     }
 
     return (
@@ -72,58 +121,59 @@ const AddAdminUser = ({ route }) => {
                 <Text style={CommonStyles.pageHeading}>{item?._id ? 'Update User Info' : 'Create User'}
                 </Text>
                 <Input
-                    label='Name'
-                    labelStyle={styles.labelStyle}
-                    placeholder='Name*'
+                    placeholder='Name *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={15}
-                    value={bodyData.customerName}
+                    value={bodyData?.customerName}
                     onChangeText={(value) => { onChange("customerName", value) }}
+                    errorStyle={errors.customerName ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                    errorMessage={errors.customerName}
+                    onFocus={() => handleError(null, 'customerName')}
                 />
                 <Input
-                    label='Mobile Number'
-                    labelStyle={styles.labelStyle}
                     placeholder='Mobile Number *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.mobileNo}
+                    value={bodyData?.mobileNo?.toString()}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
+                    errorStyle={errors.mobileNo ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                    errorMessage={errors.mobileNo}
+                    onFocus={() => handleError(null, 'mobileNo')}
                 />
                 <Input
-                    label='Alternative Mobile Number'
-                    labelStyle={styles.labelStyle}
                     placeholder='Alternative Mobile Number *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.alternateMobile}
+                    value={bodyData?.alternateMobile}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
-                    label='Address'
-                    labelStyle={styles.labelStyle}
                     placeholder='Address *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     value={bodyData.address}
                     onChangeText={(value) => { onChange("address", value) }}
+                    errorStyle={errors.address ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                    errorMessage={errors.address}
+                    onFocus={() => handleError(null, 'address')}
                 />
                 <Dropdown
                     style={CommonStyles.dropdown}
                     placeholderStyle={CommonStyles.placeholderStyle}
                     selectedTextStyle={CommonStyles.selectedTextStyle}
                     inputSearchStyle={CommonStyles.inputSearchStyle}
-                    activeColor={Colors.primary50}
+                    activeColor={Colors.secondary}
                     itemContainerStyle={CommonStyles.itemContainerStyle}
-                    placeholder='District'
+                    placeholder='District *'
                     search
                     searchPlaceholder="Search..."
                     data={Store?.bindDistrict}
@@ -131,33 +181,27 @@ const AddAdminUser = ({ route }) => {
                     valueField="_id"
                     value={bodyData?.district}
                     onChange={item => {
-                        onChange("district", item?._id)
+                        onChange("district", item?._id);
+                        setErrors(prevState => ({ ...prevState, district: '' }));
                     }}
                 />
+                {errors.district &&
+                    <Text style={CommonStyles.errorDistrict}>{errors.district}</Text>}
                 <Input
-                    label='Location'
-                    labelStyle={styles.labelStyle}
-                    placeholder='Location *'
-                    inputContainerStyle={CommonStyles.inputContainerStyle}
-                    inputStyle={CommonStyles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    value={bodyData.location}
-                    onChangeText={(value) => { onChange("location", value) }}
-                />
-                <Input
-                    label='Pincode'
-                    labelStyle={styles.labelStyle}
                     placeholder='Pincode *'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
+                    maxLength={6}
+                    keyboardType='numeric'
                     value={bodyData.Pincode}
                     onChangeText={(value) => { onChange("Pincode", value) }}
+                    errorStyle={errors.Pincode ? CommonStyles.errorStyle : CommonStyles.baseErrorStyle}
+                    errorMessage={errors.Pincode}
+                    onFocus={() => handleError(null, 'Pincode')}
                 />
                 <Input
-                    label='Mail Id'
-                    labelStyle={styles.labelStyle}
-                    placeholder='Mail Id *'
+                    placeholder='Mail Id'
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
@@ -170,7 +214,7 @@ const AddAdminUser = ({ route }) => {
                         Store?.bindPermission?.length > 0 &&
                         Store?.bindPermission?.map((data, index) => {
                             const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter(check => check == data?._id)?.length == 1 ? true : false : false
-                            return <View style={styles.checkBoxContainer}>
+                            return <View style={styles.checkBoxContainer} key={data?._id}>
                                 <CheckBox
                                     style={{ flex: 1, padding: 18 }}
                                     onClick={() => onPressHandler(data?._id)}
@@ -187,7 +231,7 @@ const AddAdminUser = ({ route }) => {
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}
-                    onPress={() => sendHandler()}
+                    onPress={validate}
                 />
             </ScrollView>
         </View>

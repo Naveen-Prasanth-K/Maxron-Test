@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import NativeStackNav from './src/Navigation/NativeStackNav';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import Store from './src/Utilities/Store/Store';
-import Loader from './src/Utilities/UI/Loader';
+import MainLoader from './src/Utilities/UI/MainLoader';
 import { observer } from 'mobx-react';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
     <AlertNotificationRoot>
       <View style={styles.container} >
         <StatusBar style="dark" />
-        <Loader visible={Store?.mainLoader} />
+        <MainLoader visible={Store?.mainLoader} />
         <NativeStackNav />
       </View>
     </AlertNotificationRoot>

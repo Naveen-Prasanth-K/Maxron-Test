@@ -71,8 +71,8 @@ const SellDevices = () => {
 
     const onChange = async (_id) => {
         setBuyerId(_id);
-        console.log(`dealer id -${_id}`)
-        console.log(`Sale Device  id -${JSON.stringify(saleDevice)}`)
+        //console.log(`dealer id -${_id}`)
+        //console.log(`Sale Device  id -${JSON.stringify(saleDevice)}`)
 
     }
 

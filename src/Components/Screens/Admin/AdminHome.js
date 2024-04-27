@@ -31,8 +31,6 @@ const AdminHome = () => {
         fetchData()
     }, [])
 
-    console.log(Store?.adminDashBoard?.unsoldDevices)
-
     return (
         <>
             <Header1 />

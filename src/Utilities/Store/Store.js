@@ -425,12 +425,12 @@ class Store {
         })
     }
     setDeviceOrderRegisterData = (data) => {
-        console.log(`set device data -${data?.length}`)
+        // console.log(`set device data -${data?.length}`)
         this.deviceOrderData = [];
         this.deviceOrderData = data != "null" ? data : [];
     }
     setDeviceOrderCompleteRegisterData = (data) => {
-        console.log(`set device completed data -${data?.length}`)
+        // console.log(`set device completed data -${data?.length}`)
         this.deviceOrderCompleteData = [];
         this.deviceOrderCompleteData = data != "null" ? data : [];
     }
@@ -527,7 +527,7 @@ class Store {
             "status": status == 0 ? "" : status,
             "memberType": memberType == 0 ? "" : memberType
         }
-        console.log(`form Data -${JSON.stringify(formData)}`)
+        //console.log(`form Data -${JSON.stringify(formData)}`)
         await axios.post(`${URL}device-service-filter`, formData).then(async (response) => {
             if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
                 status == "Pending" ? this.setDeviceServiceRegisterData(response?.data?.data) :
