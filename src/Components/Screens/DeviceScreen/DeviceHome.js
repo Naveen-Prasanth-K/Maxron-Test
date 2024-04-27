@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Image } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Pressable, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
