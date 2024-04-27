@@ -101,7 +101,7 @@ const CompletedRequest = () => {
                 )}
                 ListEmptyComponent={
                     isFetching ? (
-                        <View style={{ flex: 1, height: screenHeight * 0.80, alignItems: 'center', }}>
+                        <View style={{ flex: 1, height: screenHeight * 0.50, alignItems: 'center', }}>
                             <Loader1 />
                         </View>
                     ) : (
