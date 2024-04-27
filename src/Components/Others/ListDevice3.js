@@ -13,7 +13,7 @@ export default function ListDevice3({ item , selectedDevice }) {
     const navigation = useNavigation();
 
     const ActivateHandler = (item) => {
-        navigation.navigate('ActivateDevice')
+        navigation.navigate('ActivateDevice', { item: item })
     }
 
     const [isChecked, setIsChecked] = useState(false);
@@ -25,7 +25,7 @@ export default function ListDevice3({ item , selectedDevice }) {
     return (
         <Pressable
             style={({ pressed }) => [pressed && CommonStyles.pressed, styles.cardContainer]}
-            onPress={() => ActivateHandler()}
+            onPress={() => ActivateHandler(item)}
         >
             <View style={{ justifyContent: 'space-between' }}>
                 <Text style={styles.devicenameTxt}>{item?.scanQR}

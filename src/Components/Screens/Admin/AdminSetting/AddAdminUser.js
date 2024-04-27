@@ -79,7 +79,7 @@ const AddAdminUser = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={15}
-                    value={bodyData.customerName}
+                    value={bodyData?.customerName}
                     onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
@@ -91,7 +91,7 @@ const AddAdminUser = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.mobileNo}
+                    value={bodyData?.mobileNo?.toString()}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -103,7 +103,7 @@ const AddAdminUser = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.alternateMobile}
+                    value={bodyData?.alternateMobile?.toString() }
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -113,7 +113,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.address}
+                    value={bodyData?.address}
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
@@ -141,7 +141,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.location}
+                    value={bodyData?.location}
                     onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
@@ -151,7 +151,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.Pincode}
+                    value={ bodyData?.Pincode?.toString() }
                     onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
@@ -161,7 +161,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.mailId}
+                    value={bodyData?.mailId}
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <View style={{ marginHorizontal: 15, }}>
