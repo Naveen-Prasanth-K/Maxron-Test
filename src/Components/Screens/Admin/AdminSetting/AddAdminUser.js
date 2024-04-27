@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Button, Input, CheckBox } from '@rneui/themed';
+import { Icon, Button, Input } from '@rneui/themed';
 import { observer } from 'mobx-react';
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -9,7 +9,7 @@ import HeaderCommon from '../../../Others/HeaderCommon';
 import { CommonStyles } from '../../../../Utilities/GlobalStyles/CommonStyles';
 import Store from '../../../../Utilities/Store/Store';
 import { Colors } from '../../../../Utilities/GlobalStyles/Colors';
-
+import CheckBox from 'react-native-check-box'
 
 const AddAdminUser = ({ route }) => {
 
@@ -69,7 +69,7 @@ const AddAdminUser = ({ route }) => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <ScrollView>
-                <Text style={CommonStyles.pageHeading}>{item?.rfId ? 'Update User Info' : 'Create User'}
+                <Text style={CommonStyles.pageHeading}>{item?._id ? 'Update User Info' : 'Create User'}
                 </Text>
                 <Input
                     label='Name'
@@ -79,7 +79,7 @@ const AddAdminUser = ({ route }) => {
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
                     maxLength={15}
-                    value={bodyData.customerName.toString()}
+                    value={bodyData.customerName}
                     onChangeText={(value) => { onChange("customerName", value) }}
                 />
                 <Input
@@ -91,7 +91,7 @@ const AddAdminUser = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.mobileNo.toString()}
+                    value={bodyData.mobileNo}
                     onChangeText={(value) => { onChange("mobileNo", value) }}
                 />
                 <Input
@@ -103,7 +103,7 @@ const AddAdminUser = ({ route }) => {
                     placeholderTextColor={Colors.primary100}
                     keyboardType="numeric"
                     maxLength={10}
-                    value={bodyData.alternateMobile.toString()}
+                    value={bodyData.alternateMobile}
                     onChangeText={(value) => { onChange("alternateMobile", value) }}
                 />
                 <Input
@@ -113,7 +113,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.address.toString()}
+                    value={bodyData.address}
                     onChangeText={(value) => { onChange("address", value) }}
                 />
                 <Dropdown
@@ -141,7 +141,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.location.toString()}
+                    value={bodyData.location}
                     onChangeText={(value) => { onChange("location", value) }}
                 />
                 <Input
@@ -151,7 +151,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.Pincode.toString()}
+                    value={bodyData.Pincode}
                     onChangeText={(value) => { onChange("Pincode", value) }}
                 />
                 <Input
@@ -161,7 +161,7 @@ const AddAdminUser = ({ route }) => {
                     inputContainerStyle={CommonStyles.inputContainerStyle}
                     inputStyle={CommonStyles.inputStyle}
                     placeholderTextColor={Colors.primary100}
-                    value={bodyData.mailId.toString()}
+                    value={bodyData.mailId}
                     onChangeText={(value) => { onChange("mailId", value) }}
                 />
                 <View style={{ marginHorizontal: 15, }}>
@@ -172,19 +172,18 @@ const AddAdminUser = ({ route }) => {
                             const checked = bodyData?.permissions?.length > 0 ? bodyData?.permissions?.filter(check => check == data?._id)?.length == 1 ? true : false : false
                             return <View style={styles.checkBoxContainer}>
                                 <CheckBox
-                                    center
-                                    title={data?.dataName}
-                                    containerStyle={{ backgroundColor: 'transparent' }}
-                                    checked={checked}
-                                    onPress={() => onPressHandler(data?._id)}
-                                    textStyle={{ fontSize: 13, fontWeight: '400' }}
+                                    style={{ flex: 1, padding: 18 }}
+                                    onClick={() => onPressHandler(data?._id)}
+                                    isChecked={checked}
+                                    rightText={data?.dataName}
+                                    checkBoxColor={Colors.primary}
                                 />
                             </View>
                         })
                     }
                 </View>
                 <Button
-                    title={bodyData?._id == "" || bodyData?._id == undefined ? 'Update' : 'Create'}
+                    title={item?._id ? 'Update' : 'Create'}
                     titleStyle={CommonStyles.inputTitleStyle}
                     buttonStyle={CommonStyles.sendButtonStyle}
                     containerStyle={CommonStyles.sendContainerStyle}

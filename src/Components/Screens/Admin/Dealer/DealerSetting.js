@@ -53,6 +53,7 @@ const DealerSetting = () => {
     };
 
     const logoutHandler = async () => {
+        toggleOverlay();
         Store?.setMainLoader(true);
         await Store?.deleteLocalStorageData();
         navigation.navigate('LoginScreen');
@@ -76,14 +77,14 @@ const DealerSetting = () => {
     }
 
     return (
-        <SafeAreaView style={CommonStyles.pageContainer}>
+        <>
+            <Header1 />
             <ScrollView style={CommonStyles.pageContainer}>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                         <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
@@ -215,10 +216,11 @@ const DealerSetting = () => {
                     />
                 </View>
             </Overlay>
-        </SafeAreaView>
+        </>
     )
 }
 export default observer(DealerSetting);
+
 const styles = StyleSheet.create({
     card: {
         borderRadius: 10,

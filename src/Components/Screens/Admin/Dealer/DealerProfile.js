@@ -26,26 +26,26 @@ const DealerProfile = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-           
+
             let dealerData = await Store.getLocalDataUserFullDetails();
             setDealer(dealerData)
-           
+
         }
         fetchData()
     }, [])
 
     return (
-        <SafeAreaView style={CommonStyles.pageContainer}>
+        <>
+            <Header1 />
             <ScrollView>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
-                        <Text style={CommonStyles.adminTxt}>{ dealer?.customerName != "" ? dealer?.customerName : "" }</Text>
+                        <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
                     </View>
                 </LinearGradient>
                 <View style={styles.container}>
@@ -56,7 +56,7 @@ const DealerProfile = () => {
                         />
                     </View>
                     <View style={{ marginLeft: 30 }}>
-                        <Text style={styles.userID}>{ dealer?.bussinessName != "" ? dealer?.bussinessName : "" }</Text>
+                        <Text style={styles.userID}>{dealer?.bussinessName != "" ? dealer?.bussinessName : ""}</Text>
                         <View style={styles.locationContainer}>
                             <Icon
                                 type='entypo'
@@ -65,7 +65,7 @@ const DealerProfile = () => {
                                 style={{ marginRight: 5 }}
                                 color={Colors.secondary}
                             />
-                            <Text style={styles.nameTxt}>{dealer?.location != "" ? dealer?.location : "" }</Text>
+                            <Text style={styles.nameTxt}>{dealer?.location != "" ? dealer?.location : ""}</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <Icon
@@ -75,7 +75,7 @@ const DealerProfile = () => {
                                 style={{ marginRight: 5 }}
                                 color={Colors.secondary}
                             />
-                            <Text style={styles.nameTxt}>{ dealer?.mobileNo != "" ? dealer?.mobileNo : "" }</Text>
+                            <Text style={styles.nameTxt}>{dealer?.mobileNo != "" ? dealer?.mobileNo : ""}</Text>
                         </View>
 
                     </View>
@@ -97,11 +97,11 @@ const DealerProfile = () => {
                 <View style={styles.bottomContainer}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>{ Store?.dealerDashBoard?.totalPurchased != "" ? Store?.dealerDashBoard?.totalPurchased : 0 } </Text>
+                            <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.totalPurchased != "" ? Store?.dealerDashBoard?.totalPurchased : 0} </Text>
                             <Text style={styles.smallTxt}>Total Purchased</Text>
                         </View>
                         <View style={styles.bottomSubCon}>
-                            <Text style={styles.bigTxt}>{ Store?.dealerDashBoard?.soldDevices != "" ? Store?.dealerDashBoard?.soldDevices : 0 }</Text>
+                            <Text style={styles.bigTxt}>{Store?.dealerDashBoard?.soldDevices != "" ? Store?.dealerDashBoard?.soldDevices : 0}</Text>
                             <Text style={styles.smallTxt}>Sold Devices</Text>
                         </View>
                     </View>
@@ -117,7 +117,7 @@ const DealerProfile = () => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 

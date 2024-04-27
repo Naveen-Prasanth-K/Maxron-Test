@@ -36,6 +36,7 @@ const AdminSettings = () => {
     };
 
     const logoutHandler = async () => {
+        toggleOverlay();
         Store?.setMainLoader(true);
         await Store?.deleteLocalStorageData();
         navigation.navigate('LoginScreen');
@@ -59,14 +60,14 @@ const AdminSettings = () => {
     }
 
     return (
-        <SafeAreaView style={CommonStyles.pageContainer}>
+        <>
+            <Header1 />
             <ScrollView style={CommonStyles.pageContainer}>
                 <LinearGradient
                     colors={GradientColor}
                     start={{ x: 0.5, y: 1 }}
                     end={{ x: 1, y: 0.5 }}
                 >
-                    <Header1 />
                     <View style={CommonStyles.adminHeader}>
                         <Text style={CommonStyles.welcomeTxt}>Welcome!</Text>
                         <Text style={CommonStyles.adminTxt}>{dealer?.customerName != "" ? dealer?.customerName : ""}</Text>
@@ -174,7 +175,7 @@ const AdminSettings = () => {
                         />
                     </Pressable>
                 </View> */}
-                <View style={styles.card}>
+                {/* <View style={styles.card}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.imageContainer}>
                             <Image style={styles.image}
@@ -198,7 +199,7 @@ const AdminSettings = () => {
                             style={styles.rightIcon}
                         />
                     </Pressable>
-                </View>
+                </View> */}
                 <View style={styles.card}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.imageContainer}>
@@ -245,7 +246,7 @@ const AdminSettings = () => {
                     />
                 </View>
             </Overlay>
-        </SafeAreaView>
+        </>
     )
 }
 export default AdminSettings;

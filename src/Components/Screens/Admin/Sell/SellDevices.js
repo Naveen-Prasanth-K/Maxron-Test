@@ -21,44 +21,44 @@ const SellDevices = () => {
     const [saleDevice, setSaleDevice] = useState([]);
     const [buyerId, setBuyerId] = useState("")
 
-    useEffect(()=>{
-       const fetchData = async () =>{
-        await Store?.filterGetDeviceData(0,0,0,0,0, false);
-        await Store?.getFilterMemberData(0,0,0,"Dealer")
-       }
-       fetchData()
-    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+            await Store?.filterGetDeviceData(0, 0, 0, 0, 0, false);
+            await Store?.getFilterMemberData(0, 0, 0, "Dealer")
+        }
+        fetchData()
+    }, [])
 
     const toggleOverlay = () => {
         setVisible(!visible);
     };
-    const sendHandler = async() => {
-            if(saleDevice?.length > 0){
-                const data = await saleDevice?.map((value, i)=>{
-                    value.buyerId = buyerId
-                    return value;
+    const sendHandler = async () => {
+        if (saleDevice?.length > 0) {
+            const data = await saleDevice?.map((value, i) => {
+                value.buyerId = buyerId
+                return value;
             });
             const formData = {
-                data : data,
-                "registerType":"Dealer"
+                data: data,
+                "registerType": "Dealer"
             }
-        await Store?.postSaleDeviceData(formData?.registerType ,formData );
-        setVisible(!visible);
+            await Store?.postSaleDeviceData(formData?.registerType, formData);
+            setVisible(!visible);
         }
     }
 
-    const selectedDevice =async (deviceId , status) =>{
-        if(status == true){
-            await   setSaleDevice(saleDevice =>[...saleDevice ,{ 
+    const selectedDevice = async (deviceId, status) => {
+        if (status == true) {
+            await setSaleDevice(saleDevice => [...saleDevice, {
                 sellerId: "661a1bc046408479fc5eaba3",
-                buyerId : "",
-                deviceId : deviceId
+                buyerId: "",
+                deviceId: deviceId
             }])
-        }else{
-            if(saleDevice?.length > 1){
-                const filterData = await saleDevice?.filter((data,i) => data?.deviceId != deviceId );
+        } else {
+            if (saleDevice?.length > 1) {
+                const filterData = await saleDevice?.filter((data, i) => data?.deviceId != deviceId);
                 setSaleDevice(filterData)
-            }else{
+            } else {
                 setSaleDevice([]);
             }
             // setSaleDevice(saleDevice =>[...saleDevice ,{ 
@@ -66,13 +66,13 @@ const SellDevices = () => {
             //     buyerId : "",
             //     deviceId : deviceId
             // }])
-        }  
+        }
     }
 
-    const onChange =async (_id) =>{
+    const onChange = async (_id) => {
         setBuyerId(_id);
-        console.log(`dealer id -${ _id }`)
-        console.log(`Sale Device  id -${ JSON.stringify(saleDevice) }`)
+        console.log(`dealer id -${_id}`)
+        console.log(`Sale Device  id -${JSON.stringify(saleDevice)}`)
 
     }
 
@@ -92,9 +92,9 @@ const SellDevices = () => {
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
             <FlatList
-                 data={Store?.unsoldDeviceData?.length > 0 && Store?.unsoldDeviceData }
+                data={Store?.unsoldDeviceData?.length > 0 && Store?.unsoldDeviceData}
                 // data={DEVICEDATA}
-                keyExtractor={(item) => item?.rfId}
+                keyExtractor={(item) => item?._id}
                 ListHeaderComponent={headerItem}
                 renderItem={({ item }) => (
                     <>
@@ -124,7 +124,7 @@ const SellDevices = () => {
                                 placeholder='Select Dealer'
                                 search
                                 searchPlaceholder="Search..."
-                                data={ Store?.dealerData?.length > 0 && Store?.dealerData }
+                                data={Store?.dealerData?.length > 0 && Store?.dealerData}
                                 labelField="customerName"
                                 valueField="_id"
                                 //value={bodyData?.district}
