@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, Pressable, Dimensions, ScrollView } from 'react-native'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from '@rneui/themed';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../Others/HeaderCommon';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/Store/Store';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -13,30 +14,36 @@ export default function PumpSettingHome({ route }) {
 
     const navigation = useNavigation();
     const { item } = route.params;
+    const [formData, setFormData] = useState(item);
 
+    const onChange = (name, value) =>{
+        setFormData({ ...formData, [name]: value });
+    }
+
+    
     const VoltageSettingsHandler = (item) => {
-        navigation.navigate('VoltageSettings', { item: item })
+        navigation.navigate('VoltageSettings', { formData: formData , onChange: onChange })
     }
     const CurrentSettingsHandler = (item) => {
-        navigation.navigate('CurrentSettings', { item: item })
+        navigation.navigate('CurrentSettings', { formData: formData , onChange: onChange })
     }
     const TimerSettingsHandler = (item) => {
-        navigation.navigate('TimerSettings', { item: item })
+        navigation.navigate('TimerSettings', { formData: formData , onChange: onChange })
     }
     const DelaySettingsHandler = (item) => {
-        navigation.navigate('DelaySettings', { item: item })
+        navigation.navigate('DelaySettings', { formData: formData , onChange: onChange })
     }
     const ModeSettingsHandler = (item) => {
-        navigation.navigate('ModeSettings', { item: item })
+        navigation.navigate('ModeSettings', { formData: formData , onChange: onChange })
     }
     const NumberRegHandler = (item) => {
-        navigation.navigate('NumberSettings', { item: item })
+        navigation.navigate('NumberSettings', { formData: formData , onChange: onChange })
     }
     const CalibrationSettings = (item) => {
-        navigation.navigate('CalibrationSettings', { item: item })
+        navigation.navigate('CalibrationSettings', { formData: formData , onChange: onChange })
     }
     const RechargeSettings = (item) => {
-        navigation.navigate('RechargeSettings', { item: item })
+        navigation.navigate('RechargeSettings', { formData: formData , onChange: onChange })
     }
 
     return (

@@ -9,17 +9,47 @@ import HeaderCommon from '../../Others/HeaderCommon';
 import MotorOnOff from './MotorOnOff';
 import ThreePhase from './ThreePhase';
 import Selection from './Selection';
+import Store from '../../../Utilities/Store/Store';
 
 export default function DevicePage({ route }) {
 
     const { item } = route.params;
     const navigation = useNavigation();
-
-    const [motorStatus, setMotorStatus] = useState(item.motorState);
+    const [formData, setFormData] = useState(item)
+    const [motorStatus, setMotorStatus] = useState(item?.motorState);
     const batteryPercentage = Math.min(90, Math.max(10, Math.floor(item.batteryLevel / 10) * 10));
-
-    const motorStatusHandler = () => {
-        setMotorStatus(!motorStatus)
+    // Motor Status Handler
+    const motorStatusHandler =async () => {
+        const onTime = new Date();
+        setFormData({ ...formData,motorState : !formData?.motorState,
+            lastOnDateTime : !formData?.motorState == true ? onTime : formData?.lastOnDateTime,
+            lastOffDateTime: !formData?.motorState == false ? onTime : formData?.lastOffDateTime    
+        });    
+        const bodyData = {
+            _id : formData?._id,
+            motorState : !formData?.motorState,
+            lastOnDateTime : !formData?.motorState == true ? onTime : formData?.lastOnDateTime,
+            lastOffDateTime: !formData?.motorState == false ? onTime : formData?.lastOffDateTime           
+        }
+        await Store?.updateDeviceData(bodyData, "Motor")
+    }
+    // Auto Status Updated
+    const autoStatusUpdate =async (autoMode) =>{
+        setFormData({ ...formData,autoMode : autoMode });    
+        const bodyData = {
+            _id : formData?._id,
+            autoMode : autoMode     
+        }
+        await Store?.updateDeviceData(bodyData, "Auto")
+    }
+    // 2 Phase Status Updated 
+    const twoPhaseStatusUpdate =async (twoPhase)=>{
+        setFormData({ ...formData,twoPhase : twoPhase });    
+        const bodyData = {
+            _id : formData?._id,
+            twoPhase : twoPhase     
+        }
+        await Store?.updateDeviceData(bodyData, "two phase")
     }
 
     const PumpSettingsHandler = (item) => {
@@ -36,7 +66,7 @@ export default function DevicePage({ route }) {
             <ScrollView>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 15, marginBottom: 5 }}>
-                        <Text style={styles.deviceName}>{item.deviceName}</Text>
+                        <Text style={styles.deviceName}>{item?.controllerName}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={[styles.circle, { backgroundColor: Colors.red }]} />
                             <View style={[styles.circle, { backgroundColor: Colors.yellow }]} />
@@ -47,7 +77,7 @@ export default function DevicePage({ route }) {
                 <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
                     <Icon
                         type='material-community'
-                        name={`signal-cellular-${item.signalStrength}`}
+                        name={`signal-cellular-${item?.signalStrength == 40 ? 2 : 1}`}
                         size={28}
                         color={Colors.primary}
                     />
@@ -64,20 +94,20 @@ export default function DevicePage({ route }) {
                 </View>
                 <View style={styles.onOffContainer}>
                     <Pressable
-                        style={({ pressed }) => [pressed && CommonStyles.pressed, styles.onBtnContainer, { opacity: motorStatus === true ? 0.5 : 1 }]}
+                        style={({ pressed }) => [pressed && CommonStyles.pressed, styles.onBtnContainer, { opacity: formData?.motorState === true ? 0.5 : 1 }]}
                         onPress={() => motorStatusHandler()}
-                        disabled={motorStatus}
+                        disabled={formData?.motorState}
                     >
                         <View style={styles.onBtnSwitch} />
                     </Pressable>
                     <Pressable
-                        style={({ pressed }) => [pressed && CommonStyles.pressed, styles.offBtnContainer, { opacity: motorStatus === true ? 1 : 0.5 }]}
+                        style={({ pressed }) => [pressed && CommonStyles.pressed, styles.offBtnContainer, { opacity: formData?.motorStatus === true ? 1 : 0.5 }]}
                         onPress={() => motorStatusHandler()}
-                        disabled={!motorStatus}
+                        disabled={!formData?.motorState}
                     >
                         <View style={styles.offBtnSwitch} />
                     </Pressable>
-                    <MotorOnOff motorState={motorStatus} />
+                    <MotorOnOff motorState={formData?.motorState} />
                 </View>
                 <ThreePhase item={item} />
                 {item?.float &&
@@ -87,7 +117,7 @@ export default function DevicePage({ route }) {
                     </View>
                 }
                 <View style={{ marginTop: item?.float != true ? 40 : 0 }}>
-                    <Selection item={item} />
+                    <Selection item={formData} autoStatusUpdate={autoStatusUpdate}  twoPhaseStatusUpdate={twoPhaseStatusUpdate} />
                 </View>
 
                 <View style={{ marginVertical: 20, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
@@ -95,7 +125,7 @@ export default function DevicePage({ route }) {
                         title="Pump Settings"
                         titleStyle={styles.inputTitleStyle}
                         buttonStyle={styles.ButtonContainerStyle}
-                        onPress={() => PumpSettingsHandler(item)}
+                        onPress={() => PumpSettingsHandler(formData)}
                         icon={{
                             type: 'material-community',
                             name: 'pipe-valve',

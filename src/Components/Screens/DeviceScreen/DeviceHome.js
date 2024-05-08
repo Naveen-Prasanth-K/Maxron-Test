@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Pressable, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DEVICEDATA } from '../../../Utilities/Data/DummyData';
@@ -9,18 +10,22 @@ import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { WinDimensions } from '../../../Utilities/GlobalStyles/WinDimension';
 import Header1 from '../../Others/Header1';
 import Switch from '../../../Utilities/UI/Switch';
-
+import Store from '../../../Utilities/Store/Store';
 const { width, height } = Dimensions.get('window');
 const cardGap = 10;
 
-export default function DeviceHome({ data }) {
+const DeviceHome = ({ data }) => {
 
     const navigation = useNavigation();
     const { screenWidth, screenHeight } = WinDimensions();
     const isLandscape = screenWidth > screenHeight;
     const cardWidth = (screenWidth - cardGap * 5) / (isLandscape ? 4 : 2);
 
-    const [userActive, setUserActive] = useState(data?.customerStatus)
+    const [userActive, setUserActive] = useState(data?.customerStatus);
+
+    useEffect(()=>{
+        Store?.getActiveDeviceFilterData(0,0,0,0,0, data?._id, 0);
+    },[])
 
     const userHandler = () => {
         setUserActive(!userActive);
@@ -75,7 +80,6 @@ export default function DeviceHome({ data }) {
     )
 
     const DevicePageHandler = (item) => {
-        //console.log(item)
         navigation.navigate('DevicePage', { item: item })
     }
 
@@ -87,8 +91,9 @@ export default function DeviceHome({ data }) {
         <>
             <View style={CommonStyles.pageContainer}>
                 <FlatList
-                    data={DEVICEDATA}
-                    keyExtractor={(item) => item?.rfId}
+                    data={ Store?.activeDeviceData?.length > 0 && Store?.activeDeviceData }
+                    // data={DEVICEDATA}
+                    keyExtractor={(item) => item?._id}
                     ListHeaderComponent={headerItem}
                     numColumns={2}
                     columnWrapperStyle={{
@@ -101,14 +106,14 @@ export default function DeviceHome({ data }) {
                         <View style={[styles.cardHomeContainer, { width: cardWidth }]}>
                             <Pressable
                                 style={({ pressed }) => [pressed && CommonStyles.pressed, styles.deviceContainer]}
-                                onPress={() => DevicePageHandler(item)}>
+                                onPress={() => DevicePageHandler(item?.deviceId)}>
                                 <Image
                                     resizeMode="cover"
                                     source={require('../../../Images/HomeScreen/electricmotor.png')}
                                     style={{ width: cardWidth * 0.50, height: 75, alignSelf: 'center', opacity: item?.motorState === true ? 1 : 0.4 }}
                                 />
-                                <Text style={styles.deviceName}>{item?.deviceName}</Text>
-                                <Text style={styles.deviceType}>{item?.deviceType}</Text>
+                                <Text style={styles.deviceName}>{item?.deviceId?.controllerName}</Text>
+                                <Text style={styles.deviceType}>{item?.deviceId?.IMEI}</Text>
                             </Pressable>
                         </View>
                     )}
@@ -125,7 +130,7 @@ export default function DeviceHome({ data }) {
         </>
     )
 }
-
+export default observer( DeviceHome)
 const styles = StyleSheet.create({
     cardHomeContainer: {
         marginTop: cardGap,

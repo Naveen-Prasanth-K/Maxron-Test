@@ -7,20 +7,21 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Icon, Image, Divider, Input, Button } from '@rneui/themed';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/Store/Store';
 
 export default function DelaySettings({ route }) {
 
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
     const navigation = useNavigation();
-    //console.log(`DelaySettings Data - ${JSON.stringify(item)}`)
-
+    //console.log(`DelaySettings Data - ${JSON.stringify(formData)}`)
+    const [bodyData, setBodyData] = useState(formData);
     const [showPicker, setShowPicker] = useState(false);
     const [pickerSetting, setPickerSetting] = useState(null);
 
-    const [onRelayTime, setOnRelayTime] = useState(item?.onRelayTime);
-    const [starToDeltaTime, setStarToDeltaTime] = useState(item?.starToDeltaTime);
-    const [onDelayTime, setOnDelayTime] = useState(item?.onDelayTime);
-    const [powerOnDelayTime, setPowerOnDelayTime] = useState(item?.powerOnDelayTime);
+    const [onRelayTime, setOnRelayTime] = useState(formData?.onRelayTime);
+    const [starToDeltaTime, setStarToDeltaTime] = useState(formData?.starToDeltaTime);
+    const [onDelayTime, setOnDelayTime] = useState(formData?.onDelayTime);
+    const [powerOnDelayTime, setPowerOnDelayTime] = useState(formData?.powerOnDelayTime);
 
     const openPicker = (setting) => {
         setShowPicker(true);
@@ -29,23 +30,39 @@ export default function DelaySettings({ route }) {
 
     const onRelayTimeTimeHandler = (time) => {
         setOnRelayTime(time);
+        setBodyData({ ...bodyData, onRelayTime: time });
+        onChange("onRelayTime", time);
         setShowPicker(false);
     };
 
     const starToDeltaTimeHandler = (time) => {
         setStarToDeltaTime(time);
+        setBodyData({ ...bodyData, starToDeltaTime: time });
+        onChange("starToDeltaTime", time);
         setShowPicker(false);
     };
     const onDelayTimeHandler = (time) => {
         setOnDelayTime(time);
+        setBodyData({ ...bodyData, onDelayTime: time });
+        onChange("onDelayTime", time);
         setShowPicker(false);
     };
     const powerOnDelayTimeHandler = (time) => {
         setPowerOnDelayTime(time);
+        setBodyData({ ...bodyData, powerOnDelayTime: time });
+        onChange("powerOnDelayTime", time);
         setShowPicker(false);
     };
 
-    const sendHandler = () => {
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            onRelayTime : bodyData?.onRelayTime  ,
+            starToDeltaTime : bodyData?.starToDeltaTime,
+            onDelayTime : bodyData?.onDelayTime,
+            powerOnDelayTime: bodyData?.powerOnDelayTime
+        }
+        await Store?.updateDeviceData(bodyDatas, "Delay Settings")
         navigation.goBack()
     }
 

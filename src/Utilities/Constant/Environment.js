@@ -1,1 +1,1 @@
-export const URL = "https://snapcodetech.com/maxron-develop/api/v1/";
+export const URL = "https://snapcodetech.com/maxron/api/v1/";

@@ -10,16 +10,25 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
-
+import Store from "../../../Utilities/Store/Store";
 export default function CalibrationSettings({ route }) {
-
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
     const navigation = useNavigation();
-
+    const [bodyData, setBodyData] = useState(formData)
     const [calVoltage, setCalVoltage] = useState(true);
     const [calAmps, setCalAmps] = useState(true);
-
-    const sendHandler = () => {
+    // Send Handler
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            RYVolt : bodyData?.RYVolt  ,
+            YBVolt : bodyData?.YBVolt,
+            BRVolt : bodyData?.BRVolt,
+            ampR: bodyData?.ampR,
+            ampY :bodyData?.ampY ,
+            ampB: bodyData?.ampB
+        }
+        await Store?.updateDeviceData(bodyDatas, "Calibration Settings")
         navigation.goBack()
     }
 
@@ -30,6 +39,11 @@ export default function CalibrationSettings({ route }) {
     const CalAmpsHandler = () => {
         setCalAmps(!calAmps);
     };
+    // On Change Handler
+    const onChangeHandler = (name, value) =>{
+        setBodyData({ ...bodyData, [name]: value });
+        onChange(name, value);
+    }
 
     return (
         <View style={CommonStyles.pageContainer}>
@@ -56,9 +70,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.RYVolt.toString()}
+                                    onChangeText={(value) => { onChangeHandler("RYVolt", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("RYVolt", bodyData?.RYVolt-1)}>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} />
@@ -67,7 +83,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("RYVolt", bodyData?.RYVolt+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>
@@ -86,9 +102,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.YBVolt.toString()}
+                                    onChangeText={(value) => { onChangeHandler("YBVolt", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("YBVolt", bodyData?.YBVolt-1) }>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} />
@@ -97,7 +115,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("YBVolt", bodyData?.YBVolt+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>
@@ -116,9 +134,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.BRVolt.toString()}
+                                    onChangeText={(value) => { onChangeHandler("BRVolt", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("BRVolt", bodyData?.BRVolt-1) }>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} />
@@ -127,7 +147,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("BRVolt", bodyData?.BRVolt+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>
@@ -157,9 +177,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.ampR.toString()}
+                                    onChangeText={(value) => { onChangeHandler("ampR", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampR", bodyData?.ampR-1) }>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} style={{}} />
@@ -168,7 +190,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} style={{}} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampR", bodyData?.ampR+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>
@@ -187,9 +209,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.ampY.toString()}
+                                    onChangeText={(value) => { onChangeHandler("ampY", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampY", bodyData?.ampY-1) }>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} />
@@ -198,7 +222,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampY", bodyData?.ampY+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>
@@ -217,9 +241,11 @@ export default function CalibrationSettings({ route }) {
                                     placeholderTextColor={Colors.primary100}
                                     keyboardType='numeric'
                                     maxLength={3}
+                                    value={bodyData.ampB.toString()}
+                                    onChangeText={(value) => { onChangeHandler("ampB", value) }}
                                     leftIcon={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampB", bodyData?.ampB-1) }>
                                                 <Text style={styles.leftText}>-</Text>
                                             </Pressable>
                                             <Divider orientation="vertical" color={'lightgrey'} />
@@ -228,7 +254,7 @@ export default function CalibrationSettings({ route }) {
                                     rightIcon={
                                         <View style={{ flexDirection: 'row' }}>
                                             <Divider orientation="vertical" color={'lightgrey'} />
-                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed}>
+                                            <Pressable style={({ pressed }) => pressed && CommonStyles.pressed} onPress={() => onChangeHandler("ampB", bodyData?.ampB+1) }>
                                                 <Text style={styles.rightText}>+</Text>
                                             </Pressable>
                                         </View>

@@ -6,18 +6,20 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import Switch from '../../../Utilities/UI/Switch';
 import { CommonStyles } from '../../../Utilities/GlobalStyles/CommonStyles';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-
-export default function Selection({ item }) {
+import { commonDateFormat, commonTimeFormat } from '../../../Utilities/Constant/Common';
+export default function Selection({ item , autoStatusUpdate, twoPhaseStatusUpdate }) {
 
     const [autoMode, setAutoMode] = useState(item?.autoMode);
     const [twoPhase, setTwoPhase] = useState(item?.twoPhase);
 
     const AutoModeHandler = () => {
         setAutoMode(!autoMode);
+        autoStatusUpdate(!autoMode);
     };
 
     const TwoPhaseHandler = () => {
         setTwoPhase(!twoPhase);
+        twoPhaseStatusUpdate(!twoPhase)
     };
     return (
         <View>
@@ -39,8 +41,8 @@ export default function Selection({ item }) {
                     <View >
                         <Text style={styles.lastText1}>Last On Time</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                            <Text style={styles.lastTextTime}>{item?.lastOnTime} / </Text>
-                            <Text style={styles.lastTextDate}>{item?.lastOnDate}</Text>
+                            <Text style={styles.lastTextTime}>{commonTimeFormat(item?.lastOnDateTime)} / </Text>
+                            <Text style={styles.lastTextDate}>{commonDateFormat(item?.lastOnDateTime)}</Text>
                         </View>
                     </View>
                 </View>
@@ -63,8 +65,8 @@ export default function Selection({ item }) {
                     <View >
                         <Text style={styles.lastText1}>Last Off Time</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                            <Text style={styles.lastTextTime}>{item?.lastOffTime} / </Text>
-                            <Text style={styles.lastTextDate}>{item?.lastOffDate}</Text>
+                            <Text style={styles.lastTextTime}>{commonTimeFormat(item?.lastOffDateTime)} / </Text>
+                            <Text style={styles.lastTextDate}>{commonDateFormat(item?.lastOffDateTime)}</Text>
                         </View>
                     </View>
                 </View>

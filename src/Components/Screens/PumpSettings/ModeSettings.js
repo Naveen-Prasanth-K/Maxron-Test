@@ -7,38 +7,59 @@ import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import Switch from '../../../Utilities/UI/Switch';
+import Store from '../../../Utilities/Store/Store';
 
 export default function ModeSettings({ route }) {
 
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
     const navigation = useNavigation();
-    //console.log(`ModeSettings Data - ${JSON.stringify(item)}`)
-    const [iotOrsms, setIotOrsms] = useState(item?.iotOrsms);
-    const [smsFeedback, setSmsFeedback] = useState(item?.smsFeedback);
-    const [pushNotifications, setPushNotifications] = useState(item?.pushNotifications);
-    const [autoOrManual, setAutoOrManual] = useState(item?.autoOrManual);
-    const [float, setFloat] = useState(item?.float)
+    const [bodyData, setBodyData] = useState(formData);
+    //console.log(`ModeSettings Data - ${JSON.stringify(formData)}`)
+    const [iotOrsms, setIotOrsms] = useState(formData?.iotOrsms);
+    const [smsFeedback, setSmsFeedback] = useState(formData?.smsFeedback);
+    const [pushNotifications, setPushNotifications] = useState(formData?.pushNotifications);
+    const [autoOrManual, setAutoOrManual] = useState(formData?.autoOrManual);
+    const [float, setFloat] = useState(formData?.float)
 
-    const sendHandler = () => {
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            iotOrsms : bodyData?.iotOrsms  ,
+            smsFeedback : bodyData?.smsFeedback,
+            pushNotifications : bodyData?.pushNotifications,
+            autoOrManual: bodyData?.autoOrManual,
+            float: bodyData?.float
+        }
+        await Store?.updateDeviceData(bodyDatas, "Mode Settings")
         navigation.goBack()
     }
 
     const iotOrsmsToggle = () => {
         const newValue = iotOrsms === 'IOT' ? 'SMS' : 'IOT';
         setIotOrsms(newValue);
+        setBodyData({ ...bodyData, iotOrsms: newValue });
+        onChange("iotOrsms", newValue);
     };
     const smsFeedbackHandler = () => {
         setSmsFeedback(!smsFeedback);
+        setBodyData({ ...bodyData, smsFeedback: !smsFeedback });
+        onChange("smsFeedback", !smsFeedback);
     };
     const pushNotificationsHandler = () => {
         setPushNotifications(!pushNotifications);
+        setBodyData({ ...bodyData, pushNotifications: !pushNotifications });
+        onChange("pushNotifications", !pushNotifications);
     };
     const autoOrManualHandler = () => {
-        const newValue = autoOrManual === 'Manual' ? 'Auto' : 'Manual';
+        const newValue = autoOrManual === 'Manual' ? 'Auto' : 'Manual';        
         setAutoOrManual(newValue);
+        setBodyData({ ...bodyData, autoOrManual: newValue });
+        onChange("autoOrManual", newValue);
     };
     const floatHandler = () => {
         setFloat(!float);
+        setBodyData({ ...bodyData, float: !float });
+        onChange("float", !float);
     };
 
     return (

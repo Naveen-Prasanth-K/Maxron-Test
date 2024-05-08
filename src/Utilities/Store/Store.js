@@ -22,6 +22,7 @@ class Store {
     deviceOrderCompleteData = [];
     deviceServiceData = [];
     deviceServiceCompleteData = [];
+    activeDeviceData= [];
     customerData = [];
     dealerData = [];
     staffData = [];
@@ -40,6 +41,7 @@ class Store {
             setScreen: action,
             setSoldDeviceData: action,
             setUnSoldDeviceData: action,
+            setActiveDeviceData: action,
             setCustomerData: action,
             setStaffData: action,
             setDealerData: action,
@@ -65,6 +67,7 @@ class Store {
             setDeviceRegisterData: action,
             //Active Device
             postActiveDeviceData: action,
+            getActiveDeviceFilterData: action,
             //Device Order
             postDeviceOrderData: action,
             putDeviceOrderData: action,
@@ -97,6 +100,7 @@ class Store {
             unsoldDeviceData: observable,
             saleDeviceData: observable,
             deviceOrderData: observable,
+            activeDeviceData: observable,
             deviceOrderCompleteData: observable,
             deviceServiceCompleteData: observable,
             deviceServiceData: observable,
@@ -284,11 +288,11 @@ class Store {
         })
     }
     // Update Device based data
-    updateDeviceData = async (memberType, formData) => {
-        await axios.post(`${URL}device`, formData).then(async (response) => {
-            if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
-                addAndUpdateAlert(200, "Device Data updated.")
-                this.getDeviceData(memberType);
+    updateDeviceData = async (formData, alertType) => {
+        // console.log(`motor update -${ JSON.stringify(formData) }`)
+        await axios.put(`${URL}device`, formData).then(async (response) => {
+            if (response?.data?.message == "Success") {
+                addAndUpdateAlert(200, `${ alertType } status updated in device`);
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {
@@ -393,6 +397,39 @@ class Store {
                 errorAlert(error?.message, "Please check network connectivity")
             }
         })
+    }
+    // Active Device Filter Based Data
+    getActiveDeviceFilterData = async (_id = 0, fromDate = 0, toDate = 0, search = 0, buyerId = 0, customerId = 0 ,deviceId = 0 ) => {
+
+        const formData ={
+            "_id" : "", 
+            "fromDate" : "", 
+            "toDate": "" , 
+            "pageNumber" : ""  , 
+            "limit" : "", 
+            "search" : "" ,
+            "buyerId" : buyerId == 0 ? "" : buyerId,
+            "customerId" : customerId == 0 ? "" : customerId,
+            "deviceId" :  deviceId == 0 ? "" : deviceId
+        }
+
+
+        await axios.post(`${URL}active-device-filter`, formData).then(async (response) => {
+            if (response?.status == 200) {            
+                this.setActiveDeviceData(response?.data?.data)
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+    //set Active device data
+    setActiveDeviceData = (data) => {
+        this.activeDeviceData = [];
+        this.activeDeviceData = data != "null" ? data : [];
     }
     // POst Device Order
     postDeviceOrderData = async (registerType, formData) => {
