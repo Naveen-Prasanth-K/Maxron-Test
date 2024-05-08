@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
+import { StyleSheet,Alert, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Timer from '../../Others/Timer';
 import { CommonStyles, GradientColor } from '../../../Utilities/GlobalStyles/CommonStyles';
@@ -11,21 +11,50 @@ import Collapsible from 'react-native-collapsible';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Store from '../../../Utilities/Store/Store';
 
 export default function NumberSettings({ route }) {
 
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
+    const [bodyData, setBodyData] = useState(formData);
     const navigation = useNavigation();
-    const [permission, setPermission] = useState(item?.permission);
+    const [permission, setPermission] = useState(formData?.permission);
+    const [numbers, setNumbers] = useState(formData?.numbers == 0 ? [{  name: "", mobileNo : "" }] : formData?.numbers)
 
-    const sendHandler = () => {
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            numbers : numbers
+        }
+        setBodyData({ ...bodyData, numbers: numbers });
+        onChange("numbers", numbers);
+        await Store?.updateDeviceData(bodyDatas, "Number Settings")
         navigation.goBack()
     }
     const permissionHandler = () => {
         setPermission(!permission);
     };
 
-    //console.log(`NumberSettings = ${JSON.stringify(item)}`)
+    const handleAddClick = () => {
+        if (numbers.length < 5) {
+            setNumbers([...numbers, { name: '', mobileNo: '' }]);
+        } else {
+            Alert.alert('Limit Reached', 'You can only add up to 5 alternative Name & Mobile No\'s.');
+        }
+    };
+    const handleInputChange = (value, index, name) => {
+        const list = [...numbers];
+        list[index][name] = value;
+        setNumbers(list);
+       
+    };
+    const handleRemoveClick = (index) => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+    };
+
+    //console.log(`NumberSettings = ${JSON.stringify(formData)}`)
 
     return (
         <View View style={CommonStyles.pageContainer}>
@@ -33,7 +62,7 @@ export default function NumberSettings({ route }) {
             <ScrollView >
                 <Text style={CommonStyles.pageHeading}>Number Registration</Text>
                 <View >
-                    <Input
+                    {/* <Input
                         label="Device Mobile Number"
                         labelStyle={styles.labelStyle}
                         placeholder='Device Mobile Number *'
@@ -41,7 +70,9 @@ export default function NumberSettings({ route }) {
                         inputStyle={styles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
-                    />
+                        value={formData.masterMobileNo.toString()}
+                        onChangeText={(value) => { onChange("masterMobileNo", value) }}
+                    /> */}
                     <Input
                         label="Master Mobile Number"
                         labelStyle={styles.labelStyle}
@@ -50,28 +81,39 @@ export default function NumberSettings({ route }) {
                         inputStyle={styles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
+                        value={formData.masterMobileNo.toString()}
+                        onChangeText={(value) => { onChange("masterMobileNo", value) }}
                     />
                 </View>
                 <Text style={[CommonStyles.pageHeading, { marginTop: 0 }]}>Add Numbers</Text>
-                <Input
-                    label="Name"
-                    labelStyle={styles.labelStyle}
-                    placeholder='User Name *'
-                    inputContainerStyle={styles.inputContainerStyle}
-                    inputStyle={styles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    keyboardType='default'
-                />
-                <Input
-                    label="Mobile"
-                    labelStyle={styles.labelStyle}
-                    placeholder='Mobile No *'
-                    inputContainerStyle={styles.inputContainerStyle}
-                    inputStyle={styles.inputStyle}
-                    placeholderTextColor={Colors.primary100}
-                    keyboardType='numeric'
-                />
-                <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, { flexDirection: 'row', justifyContent: 'center' }]}>
+                {
+                    numbers?.length > 0 && 
+                    numbers.map((data,index)=>{
+                       return(<><Input
+                        label="Name"
+                        labelStyle={styles.labelStyle}
+                        placeholder='User Name *'
+                        inputContainerStyle={styles.inputContainerStyle}
+                        inputStyle={styles.inputStyle}
+                        placeholderTextColor={Colors.primary100}
+                        keyboardType='default'
+                        value={data.name}
+                        onChangeText={(value) => handleInputChange(value, index, 'name')}
+                    />
+                    <Input
+                        label="Mobile"
+                        labelStyle={styles.labelStyle}
+                        placeholder='Mobile No *'
+                        inputContainerStyle={styles.inputContainerStyle}
+                        inputStyle={styles.inputStyle}
+                        placeholderTextColor={Colors.primary100}
+                        keyboardType='numeric'
+                        value={data?.mobileNo}
+                        onChangeText={(value) => handleInputChange(value, index, 'mobileNo')}
+                    /></>)
+                    })
+                }
+                <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, { flexDirection: 'row', justifyContent: 'center' }]} onPress={handleAddClick}>
                     <Icon
                         type='ionicon'
                         name='add-circle'
@@ -84,7 +126,7 @@ export default function NumberSettings({ route }) {
                 <Divider color={Colors.primary100} style={{ marginHorizontal: 15, marginVertical: 20 }} />
                 <Text style={[CommonStyles.pageHeading, { marginTop: 0 }]}>Numbers</Text>
                 {
-                    item?.numbers.map((item, index) => {
+                    formData?.numbers.map((formData, index) => {
                         return (
                             <LinearGradient
                                 colors={GradientColor}
@@ -96,11 +138,11 @@ export default function NumberSettings({ route }) {
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                                     <View style={styles.useNameContainer}>
                                         <Text style={styles.userName}>User Name</Text>
-                                        <Text style={styles.mobileNo}>+91 {item?.mobileNo}</Text>
+                                        <Text style={styles.mobileNo}>+91 {formData?.mobileNo}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <View style={{ marginRight: 15, marginTop: 20 }}>
-                                            <Switch value={item?.permission} onToggle={permissionHandler} activeColor={'orange'} />
+                                            <Switch value={formData?.permission} onToggle={permissionHandler} activeColor={'orange'} />
                                         </View>
                                         <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.removeContainer]}>
                                             <Text style={styles.removeText}>Remove</Text>

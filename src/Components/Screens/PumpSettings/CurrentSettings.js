@@ -10,29 +10,35 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/Store/Store';
 
 export default function CurrentSettings({ route }) {
 
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
     const navigation = useNavigation();
     //console.log(`CurrentSettings Data - ${JSON.stringify(item)}`)
 
     const [showPicker, setShowPicker] = useState(false);
     const [pickerSetting, setPickerSetting] = useState(null);
 
-    const [dryScan, setDryScan] = useState(item?.dryRunScan);
-    const [dryScanTime, setDryScanTime] = useState(item?.dryRunScanTime);
+    const [bodyData, setBodyData] = useState(formData);
 
-    const [overLoadScan, setOverLoadScan] = useState(item?.overLoadScan);
-    const [overLoadTime, setOverLoadTime] = useState(item?.overLoadScanTime);
+    const [dryScan, setDryScan] = useState(formData?.dryRunScan);
+    const [dryScanTime, setDryScanTime] = useState(formData?.dryRunScanTime);
+    const [overLoadScan, setOverLoadScan] = useState(formData?.overLoadScan);
+    const [overLoadTime, setOverLoadTime] = useState(formData?.overLoadScanTime);
 
     const dryScanTimeHandler = (time) => {
         setDryScanTime(time);
+        setBodyData({ ...bodyData, dryRunScanTime: time });
+        onChange("dryRunScanTime", time);
         setShowPicker(false);
     };
 
     const overLoadTimeHandler = (time) => {
         setOverLoadTime(time);
+        setBodyData({ ...bodyData, overLoadScanTime: time });
+        onChange("overLoadScanTime", time);
         setShowPicker(false);
     };
 
@@ -43,14 +49,37 @@ export default function CurrentSettings({ route }) {
 
     const DryRunScanHandler = () => {
         setDryScan(!dryScan);
+        setBodyData({ ...bodyData, dryRunScan: !dryScan });
+        onChange("dryRunScan", !dryScan);
     };
 
     const OverLoadScanHandler = () => {
         setOverLoadScan(!overLoadScan);
+        setBodyData({ ...bodyData, overLoadScan: !overLoadScan });
+        onChange("overLoadScan", !overLoadScan);
     };
 
-    const sendHandler = () => {
+    
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            dryRunScanTime : bodyData?.dryRunScanTime  ,
+            overLoadScanTime : bodyData?.overLoadScanTime,
+            dryRunScan : bodyData?.dryRunScan,
+            overLoadScan: bodyData?.overLoadScan,
+            threeDryAmps: bodyData?.threeDryAmps,
+            twoDryAmps: bodyData?.twoDryAmps,
+            overloadRestartCount: bodyData?.overloadRestartCount,
+            threePhaseOverloadAmps: bodyData?.threePhaseOverloadAmps,
+            twoPhaseOverloadAmps: bodyData?.twoPhaseOverloadAmps,
+        }
+        await Store?.updateDeviceData(bodyDatas, "Current Settings")
         navigation.goBack()
+    }
+
+    const onChangeHandler = (name, value) =>{
+        setBodyData({ ...bodyData, [name]: value });
+        onChange(name, value);
     }
 
     return (
@@ -101,6 +130,8 @@ export default function CurrentSettings({ route }) {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         maxLength={3}
+                        value={bodyData.threeDryAmps.toString()}
+                        onChangeText={(value) => { onChangeHandler("threeDryAmps", value) }}
                         rightIcon={
                             <View style={{ flexDirection: 'row' }}>
                                 <Divider orientation="vertical" color={'black'} style={{ marginRight: 10 }} />
@@ -120,6 +151,8 @@ export default function CurrentSettings({ route }) {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         maxLength={3}
+                        value={bodyData.twoDryAmps.toString()}
+                        onChangeText={(value) => { onChangeHandler("twoDryAmps", value) }}
                         rightIcon={
                             <View style={{ flexDirection: 'row' }}>
                                 <Divider orientation="vertical" color={'black'} style={{ marginRight: 10 }} />
@@ -171,6 +204,8 @@ export default function CurrentSettings({ route }) {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         maxLength={3}
+                        value={bodyData.overloadRestartCount.toString()}
+                        onChangeText={(value) => { onChangeHandler("overloadRestartCount", value) }}
                         rightIcon={
                             <View style={{ flexDirection: 'row' }}>
                                 <Divider orientation="vertical" color={'black'} style={{ marginRight: 10 }} />
@@ -190,6 +225,8 @@ export default function CurrentSettings({ route }) {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         maxLength={3}
+                        value={bodyData.threePhaseOverloadAmps.toString()}
+                        onChangeText={(value) => { onChangeHandler("threePhaseOverloadAmps", value) }}
                         rightIcon={
                             <View style={{ flexDirection: 'row' }}>
                                 <Divider orientation="vertical" color={'black'} style={{ marginRight: 10 }} />
@@ -209,6 +246,8 @@ export default function CurrentSettings({ route }) {
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
                         maxLength={3}
+                        value={bodyData.twoPhaseOverloadAmps.toString()}
+                        onChangeText={(value) => { onChangeHandler("twoPhaseOverloadAmps", value) }}
                         rightIcon={
                             <View style={{ flexDirection: 'row' }}>
                                 <Divider orientation="vertical" color={'black'} style={{ marginRight: 10 }} />

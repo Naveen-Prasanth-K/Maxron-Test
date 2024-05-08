@@ -23,8 +23,6 @@ export default function RechargeSettings() {
     const sendHandler = () => {
         navigation.goBack()
     }
-
-
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />

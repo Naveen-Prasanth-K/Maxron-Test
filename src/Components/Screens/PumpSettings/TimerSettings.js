@@ -10,38 +10,39 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
+import Store from '../../../Utilities/Store/Store';
 
 export default function TimerSettings({ route }) {
 
-    const { item } = route.params;
+    const { formData, onChange } = route.params;
     const navigation = useNavigation();
+
+   //  console.log("formData", JSON.stringify(formData))
 
     const [showPicker, setShowPicker] = useState(false);
     const [pickerSetting, setPickerSetting] = useState(null);
-
-    const [cyclicTimer, setCyclicTimer] = useState(item?.cyclicTimer);
-    const [onCyclicTimer, setOnCyclicTimer] = useState(item?.onCyclicTimer);
-    const [offCyclicTimer, setOffCyclicTimer] = useState(item?.offCyclicTimer);
-
-    const [dryRunRestart, setDryRunRestart] = useState(item?.dryRunRestart);
-    const [dryRunRestartTime, setDryRunRestartTime] = useState(item?.dryRunRestartTime);
-
-    const [overloadRestart, setOverloadRestart] = useState(item?.overloadRestart);
-    const [overloadRestartTime, setOverloadRestartTime] = useState(item?.overloadRestartTime);
-
-    const [maxRun, setMaxRun] = useState(item?.maxRun);
-    const [maxRunTime, setMaxRunTime] = useState(item?.maxRunTime);
-
-    const [roomLight, setRoomLight] = useState(item?.roomLight);
-    const [onRoomLightTime, setOnRoomLightTime] = useState(item?.onRoomLightTime);
-    const [offRoomLightTime, setOffRoomLightTime] = useState(item?.offRoomLightTime);
-
-    const [rtc, setRtc] = useState(item?.rtc);
-    // const [rtcOnTime, setRtcOnTime] = useState(item?.rtcOnTime);
-    // const [rtcOffTime, setRtcOffTime] = useState(item?.rtcOffTime);
+    const [bodyData, setBodyData] = useState(formData);
+    const [cyclicTimer, setCyclicTimer] = useState(formData?.cyclicTimer);
+    const [onCyclicTimer, setOnCyclicTimer] = useState(formData?.onCyclicTimer);
+    const [offCyclicTimer, setOffCyclicTimer] = useState(formData?.offCyclicTimer);
+    const [dryRunRestart, setDryRunRestart] = useState(formData?.dryRunRestart);
+    const [dryRunRestartTime, setDryRunRestartTime] = useState(formData?.dryRunRestartTime);
+    const [overloadRestart, setOverloadRestart] = useState(formData?.overloadRestart);
+    const [overloadRestartTime, setOverloadRestartTime] = useState(formData?.overloadRestartTime);
+    const [maxRun, setMaxRun] = useState(formData?.maxRun);
+    const [maxRunTime, setMaxRunTime] = useState(formData?.maxRunTime);
+    const [roomLight, setRoomLight] = useState(formData?.roomLight);
+    const [onRoomLightTime, setOnRoomLightTime] = useState(formData?.onRoomLightTime);
+    const [offRoomLightTime, setOffRoomLightTime] = useState(formData?.offRoomLightTime);
+    const [rtc, setRtc] = useState(formData?.rtc);
+    // const [rtcOnTime, setRtcOnTime] = useState(formData?.rtcOnTime);
+    // const [rtcOffTime, setRtcOffTime] = useState(formData?.rtcOffTime);
+    // const [timers, setTimers] = useState([
+    //     { rtcOnTime:formData?.rtcOnTime},  {rtcOffTime: formData?.rtcOffTime},
+    //    ]);
     const [timers, setTimers] = useState([{
-        rtcOnTime: { hours: 0, minutes: 0 },
-        rtcOffTime: { hours: 0, minutes: 0 }
+        rtcOnTime: { hours: formData?.rtcOnTime?.hours, minutes: formData?.rtcOnTime?.hours },
+        rtcOffTime: { hours: formData?.rtcOffTime?.hours, minutes: formData?.rtcOffTime?.hours }
     }]);
 
     const addTimer = () => {
@@ -82,58 +83,101 @@ export default function TimerSettings({ route }) {
         setPickerSetting(setting);
     };
 
-    const sendHandler = () => {
+    const sendHandler =async () => {
+        const bodyDatas = {
+            _id : formData?._id,
+            cyclicTimer : bodyData?.cyclicTimer  ,
+            onCyclicTimer : bodyData?.onCyclicTimer,
+            offCyclicTimer : bodyData?.offCyclicTimer,
+            dryRunRestart: bodyData?.dryRunRestart,
+            dryRunRestartTime :bodyData?.dryRunRestartTime ,
+            overloadRestart: bodyData?.overloadRestart,
+            overloadRestartTime: bodyData?.overloadRestartTime,
+            maxRun: bodyData?.maxRun,
+            maxRunTime: bodyData?.maxRunTime,
+            roomLight: bodyData?.roomLight,
+            onRoomLightTime: bodyData?.onRoomLightTime,
+            offRoomLightTime: bodyData?.offRoomLightTime,
+            rtc: bodyData?.rtc,
+        }
+        await Store?.updateDeviceData(bodyDatas, "Timer Settings")
         navigation.goBack()
     }
 
     const CyclicTimerHandler = () => {
         setCyclicTimer(!cyclicTimer)
+        setBodyData({ ...bodyData, cyclicTimer: !cyclicTimer });
+        onChange("cyclicTimer", !cyclicTimer);
     };
     const onCyclicTimerHandler = (time) => {
         setOnCyclicTimer(time);
+        setBodyData({ ...bodyData, onCyclicTimer: time });
+        onChange("onCyclicTimer", time);
         setShowPicker(false);
     };
     const offCyclicTimerHandler = (time) => {
         setOffCyclicTimer(time);
+        setBodyData({ ...bodyData, offCyclicTimer: time });
+        onChange("offCyclicTimer", time);
         setShowPicker(false);
     };
 
     const DryRunRestartHandler = () => {
         setDryRunRestart(!dryRunRestart)
+        setBodyData({ ...bodyData, dryRunRestart: !dryRunRestart });
+        onChange("dryRunRestart", !dryRunRestart);
     };
     const dryRunRestartTimerHandler = (time) => {
         setDryRunRestartTime(time);
+        setBodyData({ ...bodyData, dryRunRestartTime: time });
+        onChange("dryRunRestartTime", time);
         setShowPicker(false);
     };
 
     const OverloadRestartHandler = () => {
         setOverloadRestart(!overloadRestart)
+        setBodyData({ ...bodyData, overloadRestart: !overloadRestart });
+        onChange("overloadRestart", !overloadRestart);
     };
     const overloadRestartTimeHandler = (time) => {
         setOverloadRestartTime(time);
+        setBodyData({ ...bodyData, overloadRestartTime: time });
+        onChange("overloadRestartTime", time);
         setShowPicker(false);
     };
 
     const MaxRunHandler = () => {
         setMaxRun(!maxRun)
+        setBodyData({ ...bodyData, maxRun: !maxRun });
+        onChange("maxRun", !maxRun);
     };
     const maxRunTimeHandler = (time) => {
         setMaxRunTime(time);
+        setBodyData({ ...bodyData, maxRunTime: time });
+        onChange("maxRunTime", time);
         setShowPicker(false);
     };
     const RoomLightHandler = () => {
         setRoomLight(!roomLight)
+        setBodyData({ ...bodyData, roomLight: !roomLight });
+        onChange("roomLight", !roomLight);
     };
     const onRoomLightTimeHandler = (time) => {
         setOnRoomLightTime(time);
+        setBodyData({ ...bodyData, onRoomLightTime: time });
+        onChange("onRoomLightTime", time);
         setShowPicker(false);
     };
     const offRoomLightTimeHandler = (time) => {
         setOffRoomLightTime(time);
+        setBodyData({ ...bodyData, offRoomLightTime: time });
+        onChange("offRoomLightTime", time);
         setShowPicker(false);
     };
     const RTCHandler = () => {
         setRtc(!rtc)
+        setBodyData({ ...bodyData, rtc: !rtc });
+        onChange("rtc", !rtc);
     };
 
     return (
