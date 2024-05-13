@@ -15,8 +15,8 @@ export default function CalibrationSettings({ route }) {
     const { formData, onChange } = route.params;
     const navigation = useNavigation();
     const [bodyData, setBodyData] = useState(formData)
-    const [calVoltage, setCalVoltage] = useState(true);
-    const [calAmps, setCalAmps] = useState(true);
+    const [calVoltage, setCalVoltage] = useState(formData?.calVoltage);
+    const [calAmps, setCalAmps] = useState(formData?.calAmps);
     // Send Handler
     const sendHandler =async () => {
         const bodyDatas = {
@@ -26,7 +26,9 @@ export default function CalibrationSettings({ route }) {
             BRVolt : bodyData?.BRVolt,
             ampR: bodyData?.ampR,
             ampY :bodyData?.ampY ,
-            ampB: bodyData?.ampB
+            ampB: bodyData?.ampB,
+            calVoltage: bodyData?.calVoltage,
+            calAmps: bodyData?.calAmps
         }
         await Store?.updateDeviceData(bodyDatas, "Calibration Settings")
         navigation.goBack()
@@ -34,10 +36,14 @@ export default function CalibrationSettings({ route }) {
 
     const CalVoltageHandler = () => {
         setCalVoltage(!calVoltage);
+        setBodyData({ ...bodyData, calVoltage: !calVoltage });
+        onChange("calVoltage", !calVoltage);
     };
 
     const CalAmpsHandler = () => {
         setCalAmps(!calAmps);
+        setBodyData({ ...bodyData, calAmps: !calAmps });
+        onChange("calAmps", !calAmps);
     };
     // On Change Handler
     const onChangeHandler = (name, value) =>{

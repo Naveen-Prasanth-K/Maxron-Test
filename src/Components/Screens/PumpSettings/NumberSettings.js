@@ -1,5 +1,6 @@
 import { StyleSheet,Alert, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react';
 import Timer from '../../Others/Timer';
 import { CommonStyles, GradientColor } from '../../../Utilities/GlobalStyles/CommonStyles';
 import HeaderCommon from '../../Others/HeaderCommon';
@@ -13,31 +14,61 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Store from '../../../Utilities/Store/Store';
 
-export default function NumberSettings({ route }) {
+const NumberSettings = ({ route }) => {
 
     const { formData, onChange } = route.params;
     const [bodyData, setBodyData] = useState(formData);
     const navigation = useNavigation();
     const [permission, setPermission] = useState(formData?.permission);
-    const [numbers, setNumbers] = useState(formData?.numbers == 0 ? [{  name: "", mobileNo : "" }] : formData?.numbers)
+    const [numbers, setNumbers] = useState([]);
+
+    useEffect(()=>{
+        if(Store?.activeDeviceNumberData?.length > 0 ){
+            setNumbers(Store?.activeDeviceNumberData)
+        }
+
+    },[Store?.activeDeviceNumberData?.length])
 
     const sendHandler =async () => {
-        const bodyDatas = {
-            _id : formData?._id,
-            numbers : numbers
-        }
-        setBodyData({ ...bodyData, numbers: numbers });
-        onChange("numbers", numbers);
-        await Store?.updateDeviceData(bodyDatas, "Number Settings")
+
+        console.log("number data ", JSON.stringify(numbers))
+        // const bodyDatas = {
+        //     _id : formData?._id,
+        //     numbers : numbers
+        // }
+        // setBodyData({ ...bodyData, numbers: numbers });
+        // onChange("numbers", numbers);
+        // await Store?.updateDeviceData(bodyDatas, "Number Settings")
+           await numbers?.length > 0 && numbers.forEach(async form =>{
+                    await Store?.postActiveDeviceNumberData(form)
+           })  
+
         navigation.goBack()
     }
-    const permissionHandler = () => {
-        setPermission(!permission);
+    const permissionHandler =async (formData) => {
+       //  setPermission(!permission);
+       const bodyData = {
+                                        _id : formData?._id,
+                                        name: formData?.name,
+                                        mobileNo: formData?.mobileNo,  
+                                        deviceViewStatus : !formData?.deviceViewStatus,
+                                        deviceViewType : formData?.deviceViewType ,
+                                        customerId : formData?.ownerId,
+                                        deviceId : formData?._id
+       }
+
+       await Store?.putActiveDeviceNumberData(bodyData);
+       
     };
 
     const handleAddClick = () => {
         if (numbers.length < 5) {
-            setNumbers([...numbers, { name: '', mobileNo: '' }]);
+            setNumbers([...numbers, { name: '', mobileNo: '',  
+                                        deviceViewStatus : false,
+                                        deviceViewType : "User" ,
+                                        customerId : formData?.ownerId,
+                                        deviceId : formData?._id
+                        }]);
         } else {
             Alert.alert('Limit Reached', 'You can only add up to 5 alternative Name & Mobile No\'s.');
         }
@@ -53,8 +84,6 @@ export default function NumberSettings({ route }) {
         list.splice(index, 1);
         setInputList(list);
     };
-
-    //console.log(`NumberSettings = ${JSON.stringify(formData)}`)
 
     return (
         <View View style={CommonStyles.pageContainer}>
@@ -108,7 +137,7 @@ export default function NumberSettings({ route }) {
                         inputStyle={styles.inputStyle}
                         placeholderTextColor={Colors.primary100}
                         keyboardType='numeric'
-                        value={data?.mobileNo}
+                        value={data?.mobileNo?.toString()}
                         onChangeText={(value) => handleInputChange(value, index, 'mobileNo')}
                     /></>)
                     })
@@ -126,7 +155,7 @@ export default function NumberSettings({ route }) {
                 <Divider color={Colors.primary100} style={{ marginHorizontal: 15, marginVertical: 20 }} />
                 <Text style={[CommonStyles.pageHeading, { marginTop: 0 }]}>Numbers</Text>
                 {
-                    formData?.numbers.map((formData, index) => {
+                    numbers.map((formData, index) => {
                         return (
                             <LinearGradient
                                 colors={GradientColor}
@@ -142,7 +171,7 @@ export default function NumberSettings({ route }) {
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <View style={{ marginRight: 15, marginTop: 20 }}>
-                                            <Switch value={formData?.permission} onToggle={permissionHandler} activeColor={'orange'} />
+                                            <Switch value={formData?.deviceViewStatus} onToggle={()=>permissionHandler(formData)} activeColor={'orange'} />
                                         </View>
                                         <Pressable style={({ pressed }) => [pressed && CommonStyles.pressed, styles.removeContainer]}>
                                             <Text style={styles.removeText}>Remove</Text>
@@ -164,7 +193,7 @@ export default function NumberSettings({ route }) {
         </View>
     )
 }
-
+export default observer(NumberSettings);
 const styles = StyleSheet.create({
     numberContainer: {
         marginHorizontal: 15,

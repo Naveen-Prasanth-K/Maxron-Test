@@ -11,18 +11,53 @@ import Collapsible from 'react-native-collapsible';
 import { Colors } from '../../../Utilities/GlobalStyles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import DateInput from '../../Others/DateInput';
+import {commonDateFormat } from "../../../Utilities/Constant/Common"
+import Store from '../../../Utilities/Store/Store';
 
-export default function RechargeSettings() {
+export default function RechargeSettings({ route }) {
 
     const navigation = useNavigation();
-    const [selectedDate, setSelectedDate] = useState("")
-
+    const { formData, onChange } = route.params;
+    const [bodyData, setBodyData] = useState({
+        "customerId" : formData?.ownerId,
+        "deviceId" : formData?._id,
+        "rechargeDate": "",
+        "validateDays": "",
+        "expireDate" : ""
+    })
+    const [selectedDate, setSelectedDate] = useState("");
     const handleDateChange = (date) => {
         setSelectedDate(date);
+        if(bodyData?.validateDays != ""){
+            const expireDate = new Date(date.getTime() + bodyData?.validateDays * 24 * 60 * 60 * 1000);
+            setBodyData({ ...bodyData, rechargeDate: date ,expireDate : expireDate  });
+        }else{
+            setBodyData({ ...bodyData, rechargeDate: date });
+        }
+       
+      
+        
     };
-    const sendHandler = () => {
+    const onChangeHandler = (name, value) =>{
+
+        if(bodyData?.rechargeDate != ""){
+            console.log("user Effect ", bodyData?.rechargeDate)
+            const expireDate = new Date(bodyData?.rechargeDate?.getTime() + value * 24 * 60 * 60 * 1000);
+            setBodyData({ ...bodyData, [name]: value , expireDate : expireDate });
+        }else{
+            setBodyData({ ...bodyData, [name]: value });
+        }
+     
+    }
+
+    const sendHandler = async () => {
+        console.log("Body Data", JSON.stringify(bodyData))
+
+        await Store?.postRechargeDeviceData(bodyData);
         navigation.goBack()
     }
+
+    console.log("bodyData?.expireDate " , JSON.stringify(bodyData?.expireDate ))
     return (
         <View style={CommonStyles.pageContainer}>
             <HeaderCommon />
@@ -41,6 +76,8 @@ export default function RechargeSettings() {
                             placeholderTextColor={Colors.primary100}
                             keyboardType='numeric'
                             maxLength={3}
+                            value={bodyData?.validateDays?.toString()}
+                            onChangeText={(value) => { onChangeHandler("validateDays", value) }}
                         />
                     </View>
                 </View>
@@ -54,7 +91,7 @@ export default function RechargeSettings() {
                             style={{ marginRight: 5 }}
                             color={Colors.secondary}
                         />
-                        <Text style={styles.dateTxt}>12-12-2023</Text>
+                        <Text style={styles.dateTxt}>{ bodyData?.expireDate != undefined && bodyData?.expireDate != "" && bodyData?.expireDate != "null" && commonDateFormat(bodyData?.expireDate?.toString()) }</Text>
                     </View>
                 </View>
                 <Button
