@@ -40,9 +40,9 @@ export default function TimerSettings({ route }) {
     // const [timers, setTimers] = useState([
     //     { rtcOnTime:formData?.rtcOnTime},  {rtcOffTime: formData?.rtcOffTime},
     //    ]);
-    const [timers, setTimers] = useState([{
-        rtcOnTime: { hours: formData?.rtcOnTime?.hours, minutes: formData?.rtcOnTime?.hours },
-        rtcOffTime: { hours: formData?.rtcOffTime?.hours, minutes: formData?.rtcOffTime?.hours }
+    const [timers, setTimers] = useState( formData?.rtcTimer != "" && formData?.rtcTimer != undefined && formData?.rtcTimer != "null" ? formData?.rtcTimer : [{
+        rtcOnTime: { hours: 0, minutes: 0 },
+        rtcOffTime: { hours: 0, minutes: 0 }
     }]);
 
     const addTimer = () => {
@@ -62,6 +62,8 @@ export default function TimerSettings({ route }) {
         const updatedTimers = [...timers];
         updatedTimers.splice(index, 1);
         setTimers(updatedTimers);
+        setBodyData({ ...bodyData, rtcTimer: updatedTimers });
+        onChange("rtcTimer", updatedTimers);
     };
 
     const rtcOnTimeHandler = (time, index) => {
@@ -69,6 +71,8 @@ export default function TimerSettings({ route }) {
         updatedTimers[index].rtcOnTime = time;
         setTimers(updatedTimers);
         setShowPicker(false);
+        setBodyData({ ...bodyData, rtcTimer: updatedTimers });
+        onChange("rtcTimer", updatedTimers);
     };
 
     const rtcOFFTimeHandler = (time, index) => {
@@ -76,6 +80,8 @@ export default function TimerSettings({ route }) {
         updatedTimers[index].rtcOffTime = time;
         setTimers(updatedTimers);
         setShowPicker(false);
+        setBodyData({ ...bodyData, rtcTimer: updatedTimers });
+        onChange("rtcTimer", updatedTimers);
     };
 
     const openPicker = (setting) => {
@@ -84,6 +90,7 @@ export default function TimerSettings({ route }) {
     };
 
     const sendHandler =async () => {
+        console.log("timers" , JSON.stringify(timers))
         const bodyDatas = {
             _id : formData?._id,
             cyclicTimer : bodyData?.cyclicTimer  ,
@@ -98,6 +105,7 @@ export default function TimerSettings({ route }) {
             roomLight: bodyData?.roomLight,
             onRoomLightTime: bodyData?.onRoomLightTime,
             offRoomLightTime: bodyData?.offRoomLightTime,
+            rtcTimer: timers,
             rtc: bodyData?.rtc,
         }
         await Store?.updateDeviceData(bodyDatas, "Timer Settings")

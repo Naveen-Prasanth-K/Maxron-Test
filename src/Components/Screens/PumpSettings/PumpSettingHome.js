@@ -20,6 +20,10 @@ export default function PumpSettingHome({ route }) {
         setFormData({ ...formData, [name]: value });
     }
 
+    useEffect(()=>{
+            Store?.getActiveDeviceNumberFilterData(0,0,0,0,0,0,item?._id, 0)
+    },[])
+
     
     const VoltageSettingsHandler = (item) => {
         navigation.navigate('VoltageSettings', { formData: formData , onChange: onChange })

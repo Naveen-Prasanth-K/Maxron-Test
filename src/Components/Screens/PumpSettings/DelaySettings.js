@@ -13,7 +13,7 @@ export default function DelaySettings({ route }) {
 
     const { formData, onChange } = route.params;
     const navigation = useNavigation();
-    //console.log(`DelaySettings Data - ${JSON.stringify(formData)}`)
+    console.log(`DelaySettings Data - ${JSON.stringify(formData)}`)
     const [bodyData, setBodyData] = useState(formData);
     const [showPicker, setShowPicker] = useState(false);
     const [pickerSetting, setPickerSetting] = useState(null);

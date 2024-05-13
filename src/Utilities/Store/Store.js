@@ -23,6 +23,8 @@ class Store {
     deviceServiceData = [];
     deviceServiceCompleteData = [];
     activeDeviceData= [];
+    activeDeviceNumberData = [];
+    rechargeDeviceData=[];
     customerData = [];
     dealerData = [];
     staffData = [];
@@ -68,6 +70,17 @@ class Store {
             //Active Device
             postActiveDeviceData: action,
             getActiveDeviceFilterData: action,
+            putActiveDeviceNumberData:action,
+            //Active Device Number
+            postActiveDeviceNumberData: action,
+            putActiveDeviceNumberData:action,
+            getActiveDeviceNumberFilterData: action,
+            setActiveDeviceNumberData:action,
+            //Recharge Device Data
+            postRechargeDeviceData:action,
+            getRechargeDeviceFilterData:action,
+            setActiveDeviceRechargeData:action,
+
             //Device Order
             postDeviceOrderData: action,
             putDeviceOrderData: action,
@@ -101,6 +114,8 @@ class Store {
             saleDeviceData: observable,
             deviceOrderData: observable,
             activeDeviceData: observable,
+            activeDeviceNumberData:observable,
+            rechargeDeviceData:observable,
             deviceOrderCompleteData: observable,
             deviceServiceCompleteData: observable,
             deviceServiceData: observable,
@@ -430,6 +445,118 @@ class Store {
     setActiveDeviceData = (data) => {
         this.activeDeviceData = [];
         this.activeDeviceData = data != "null" ? data : [];
+    }
+    // POst Active Device Number based data
+    postActiveDeviceNumberData = async (formData) => {
+        console.log("form Data", JSON.stringify(formData))
+        await axios.post(`${URL}device-numbers`, formData).then(async (response) => {
+            if (response?.status == 200) {
+                addAndUpdateAlert(200, "Device Number Added.")
+                await this.getActiveDeviceNumberFilterData(0,0,0,0,0,0,formData?.deviceId, 0);
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+     // Update Active Device Number based data
+     putActiveDeviceNumberData = async (formData) => {
+        await axios.put(`${URL}device-numbers`, formData).then(async (response) => {
+            if (response?.status == 200) {
+                addAndUpdateAlert(200, "Device Number Updated.")
+                await this.getActiveDeviceNumberFilterData(0,0,0,0,0,0,formData?.deviceId, 0);
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+       // Active Device Number Filter Based Data
+       getActiveDeviceNumberFilterData = async (_id = 0, fromDate = 0, toDate = 0, search = 0, mobileNo = 0, customerId = 0 ,deviceId = 0, deviceViewType = 0 ) => {
+
+        const formData ={
+            "_id" : "", 
+            "fromDate" : "", 
+            "toDate": "" , 
+            "pageNumber" : ""  , 
+            "limit" : "", 
+            "search" : "" ,
+            "mobileNo" : mobileNo == 0 ?  "" : mobileNo,
+            "customerId" : customerId == 0 ? "" : customerId,
+            "deviceId" :  deviceId == 0 ? "" : deviceId,
+            "deviceViewType": deviceViewType == 0 ? "" : deviceViewType
+        }
+
+
+        await axios.post(`${URL}device-numbers-filter`, formData).then(async (response) => {
+            if (response?.status == 200) {            
+                this.setActiveDeviceNumberData(response?.data?.data)
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+    //set Active device Number data
+    setActiveDeviceNumberData = (data) => {
+        this.activeDeviceNumberData = [];
+        this.activeDeviceNumberData = data != "null" ? data : [];
+    }
+     // POst Recharge Number based data
+     postRechargeDeviceData = async (formData) => {
+        await axios.post(`${URL}device-recharge`, formData).then(async (response) => {
+            if (response?.status == 200) {
+                addAndUpdateAlert(200, "Device Recharge Notification Updated.")
+                await this.getRechargeDeviceFilterData(0,0,0,0,0,formData?.deviceId);
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+    // Recharge Device Filter Data
+    getRechargeDeviceFilterData = async (_id = 0, fromDate = 0, toDate = 0, search = 0,customerId = 0 ,deviceId = 0 ) => {
+
+        const formData ={
+            "_id" : "", 
+            "fromDate" : "", 
+            "toDate": "" , 
+            "pageNumber" : ""  , 
+            "limit" : "", 
+            "search" : "" ,
+            "customerId" : customerId == 0 ? "" : customerId,
+            "deviceId" :  deviceId == 0 ? "" : deviceId
+        }
+
+
+        await axios.post(`${URL}device-recharge-filter`, formData).then(async (response) => {
+            if (response?.status == 200) {            
+                this.setActiveDeviceRechargeData(response?.data?.data)
+            }
+        }).catch((error) => {
+            if (error?.response?.status == 404 || error?.response?.status == 500) {
+                errorAlert(error?.response?.status, "Server Error")
+            } else if (error?.message == "Network Error") {
+                errorAlert(error?.message, "Please check network connectivity")
+            }
+        })
+    }
+    //set Active device Recharge
+    setActiveDeviceRechargeData = (data) => {
+        this.rechargeDeviceData = [];
+        this.rechargeDeviceData = data != "null" ? data : [];
     }
     // POst Device Order
     postDeviceOrderData = async (registerType, formData) => {

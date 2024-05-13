@@ -6,7 +6,7 @@ import { Colors } from '../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../Utilities/GlobalStyles/CommonStyles';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const DateInput = ({ onDateChange }) => {
+const DateInput = ({ onDateChange,  }) => {
 
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
@@ -17,18 +17,25 @@ const DateInput = ({ onDateChange }) => {
     }
 
     const onChangeDate = ({ type }, selectedDate) => {
-        if (type == "set") {
+
+        // console.log("type", type)
+        // if (type == "set") {
+            // console.log("selectedDate", selectedDate)
             const currentDate = selectedDate;
             setDate(currentDate);
-            if (Platform.OS === "android") {
-                toggleDatePicker();
-                // setPickedDate(currentDate.toDateString())
-                setPickedDate(formatDate(currentDate))
-                onDateChange(formatDate(currentDate));
-            }
-        } else {
-            toggleDatePicker()
-        }
+            // if (Platform.OS === "android") {
+            //     toggleDatePicker();
+            //     // setPickedDate(currentDate.toDateString())
+            //     setPickedDate(formatDate(currentDate))
+            //     onDateChange(formatDate(currentDate));
+            // }
+            // console.log("format date ",formatDate(currentDate))
+            setPickedDate(formatDate(currentDate))
+            onDateChange(currentDate)
+        // } else {
+        //     toggleDatePicker()
+        // }
+        toggleDatePicker()
     }
     const formatDate = (rawDate) => {
         let date = new Date(rawDate);
@@ -42,6 +49,8 @@ const DateInput = ({ onDateChange }) => {
         return `${day}-${month}-${year}`;
     }
 
+    console.log("pickedDate" , pickedDate)
+
     return (
         <>
             <View style={styles.actionContainer1}>
@@ -54,7 +63,7 @@ const DateInput = ({ onDateChange }) => {
                         inputContainerStyle={styles.inputContainerStyle}
                         inputStyle={styles.inputStyle}
                         placeholderTextColor={Colors.primary75}
-                        value={pickedDate}
+                        value={pickedDate?.toString()}
                         editable={false}
                         onChangeText={setPickedDate}
                         rightIcon={
