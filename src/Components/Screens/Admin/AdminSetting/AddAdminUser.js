@@ -29,31 +29,36 @@ const AddAdminUser = ({ route }) => {
         GSTNo: item?.GSTNo != "" ? item?.GSTNo : "",
         mailId: item?.mailId != "" ? item?.mailId : "",
         registerType: "Staff",
-        permissions: item?.permissions?.length == 0 ? [] : item?.permissions?.map(data => data?._id)
+        permissions:  []
     });
 
     useEffect(() => {
         const fetchData = async () => {
             Store?.bindDistrict?.length == 0 && await Store?.getDistrictData();
             Store?.bindPermission?.length == 0 && await Store?.getPermissionData()
+
+            item?.permissions?.length > 0 && setBodyData({ ...bodyData, permissions : item?.permissions?.map(data => data?._id) })
         }
         fetchData()
     }, [])
 
     // on press Handler
-    const onPressHandler = (value) => {
+    const onPressHandler =async (value) => {
         let permission = bodyData?.permissions;
-
+     
         if (permission?.length > 0) {
+            // console.log("permission?.filter(async data => data == value)?.length == 0", permission?.filter(async data => data == value)?.length)
             if (permission?.filter(data => data == value)?.length == 0) {
+                // console.log("values", value)
                 permission.push(value)
             } else {
-                permission = permission?.filter(data => data != value);
+                permission = await permission?.filter(data => data != value);
             }
         } else {
-            permission.push(value)
+            await permission.push(value)
         }
-        setBodyData(bodyData => ({ ...bodyData, permissions: permission }));
+        // console.log("permission", JSON.stringify(permission))
+        await setBodyData(bodyData => ({ ...bodyData, permissions: permission }));
     }
 
     // on change
