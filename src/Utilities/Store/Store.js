@@ -247,7 +247,7 @@ class Store {
         //console.log(`form Data -${JSON.stringify(formData)}`)
         await axios.post(`${URL}dashboard`, formData).then(async (response) => {
             if (response?.data?.message == "Success") {
-                //console.log(`response?.data -${JSON.stringify(response?.data)}`)
+                // console.log(`response?.data -${JSON.stringify(response?.data)}`)
                 registerType == "Admin" ? this.setAdminDashboardData(response?.data?.data) : this.setDealerDashboardData(response?.data?.data)
             }
         }).catch((error) => {
@@ -350,7 +350,8 @@ class Store {
             "limit": "",
             "search": search == 0 ? "" : search,
             "ownerId": ownerId == 0 ? "" : ownerId,
-            "soldStatus": soldStatus == false ? false : true
+            "soldStatus": soldStatus == false ? false : true,
+            "deviceActiveStatus": ""
         }
         await axios.post(`${URL}device-filter`, formData).then(async (response) => {
             if (response?.data?.data?.length > 0 && response?.data?.data != "null") {
@@ -727,12 +728,13 @@ class Store {
         })
     }
     // Sale Device Data
-    postSaleDeviceData = async (registerType, formData) => {
+    postSaleDeviceData = async (registerType, formData, id) => {
         await axios.post(`${URL}sale`, formData).then(async (response) => {
             if (response?.status == 200) {
                 addAndUpdateAlert(200, "Device Sale Data Added.");
                 await this.filterGetDeviceData(0, 0, 0, 0, 0, true);
                 await this.filterGetDeviceData(0, 0, 0, 0, 0, false);
+                await this.getDashboardMemberData(id, "Admin");
             }
         }).catch((error) => {
             if (error?.response?.status == 404 || error?.response?.status == 500) {

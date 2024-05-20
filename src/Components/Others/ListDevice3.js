@@ -1,25 +1,24 @@
 
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image, Divider, Button } from '@rneui/themed';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Colors } from '../../Utilities/GlobalStyles/Colors';
 import { CommonStyles } from '../../Utilities/GlobalStyles/CommonStyles';
 import CheckBox from 'react-native-check-box'
 
-export default function ListDevice3({ item , selectedDevice }) {
+const ListDevice3 = ({ item , selectedDevice }) => {
 
-    const navigation = useNavigation();
-
+    const navigation = useNavigation(); 
     const ActivateHandler = (item) => {
         navigation.navigate('ActivateDevice', { item: item })
-    }
+    } 
 
     const [isChecked, setIsChecked] = useState(false);
-    const checkBoxStatusUpdate = (_id, status) =>{
+    const checkBoxStatusUpdate =async (_id, status) =>{
         setIsChecked(status);
-        selectedDevice(_id, status)
+        await selectedDevice(_id, status)
     }
 
     return (
@@ -44,7 +43,7 @@ export default function ListDevice3({ item , selectedDevice }) {
         </Pressable>
     )
 }
-
+export default ListDevice3;
 const styles = StyleSheet.create({
     devicenameTxt: {
         fontSize: wp('5'),
