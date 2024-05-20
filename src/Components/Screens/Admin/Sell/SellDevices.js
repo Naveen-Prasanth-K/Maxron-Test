@@ -19,12 +19,23 @@ const SellDevices = () => {
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
     const [saleDevice, setSaleDevice] = useState([]);
+    const [adminId, setAdminId] = useState("")
     const [buyerId, setBuyerId] = useState("")
-
     useEffect(() => {
         const fetchData = async () => {
             await Store?.filterGetDeviceData(0, 0, 0, 0, 0, false);
             await Store?.getFilterMemberData(0, 0, 0, "Dealer")
+        }
+        fetchData()
+    }, []);
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            let id = await Store.getLocalDataUserDetails("_id");
+            setAdminId(id)
+            // console.log(`rfId -${ id }`)
         }
         fetchData()
     }, [])
@@ -42,7 +53,7 @@ const SellDevices = () => {
                 data: data,
                 "registerType": "Dealer"
             }
-            await Store?.postSaleDeviceData(formData?.registerType, formData);
+            await Store?.postSaleDeviceData(formData?.registerType, formData, adminId);
             setVisible(!visible);
         }
     }
@@ -50,7 +61,7 @@ const SellDevices = () => {
     const selectedDevice = async (deviceId, status) => {
         if (status == true) {
             await setSaleDevice(saleDevice => [...saleDevice, {
-                sellerId: "661a1bc046408479fc5eaba3",
+                sellerId: adminId,
                 buyerId: "",
                 deviceId: deviceId
             }])
@@ -79,7 +90,7 @@ const SellDevices = () => {
     const headerItem = () => (
         <View style={styles.headerItemContainer}>
             <Text style={CommonStyles.pageHeading}>Ready to Sell</Text>
-            <Text style={styles.foundCount}>180 Devices found</Text>
+            <Text style={styles.foundCount}>{Store?.unsoldDeviceData?.length > 0 && Store?.unsoldDeviceData?.length} Devices found</Text>
             <View>
                 <View style={{ marginTop: 20 }}>
                     <SearchBar soldStatus={false} type="Device" />
